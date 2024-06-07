@@ -18,6 +18,16 @@ def hello_world():
     return {"message": "Hello World"}
 
 
+@app.get("/api/{name}")
+async def stuff(name: str):
+    mepi = await prisma.stateepidemic.find_first(
+        where={
+            "state": name
+        }
+    )
+    return {"message": f"State Epidemic Data for {name}:{mepi.model_dump()}"}
+
+
 @app.get("/api/python/{name}")
 async def hello_name(name: str):
     mvac = await prisma.malaysiavaccination.find_first(

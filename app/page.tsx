@@ -14,8 +14,15 @@ export default async function Home() {
     "http://127.0.0.1:3000/api/python/Pulau Pinang"
   ).then((response) => response.json());
   return (
-    <div>
-      <h2>{data.message}</h2>
-    </div>
+    <>
+      <div></div>
+      <div className="flex flex-col gap-4">
+        <h1 className="font-mono">
+          To use the Python and Python API, access state epidemic data by using
+          going to /api/state_name; for example, /api/Pulau Pinang
+        </h1>
+        <h2>{data.message}</h2>
+      </div>
+    </>
   );
 }
