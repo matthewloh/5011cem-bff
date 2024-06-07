@@ -30,7 +30,7 @@ async def stuff(name: str):
 
 @app.get("/api/python/{name}")
 async def hello_name(name: str):
-    mvac = await prisma.malaysiavaccination.find_first(
+    mvac = await prisma.statevaccination.find_first(
         where={
             "state": name
         }

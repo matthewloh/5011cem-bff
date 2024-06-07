@@ -11,7 +11,7 @@ from prisma import Prisma
 # Batch size for bulk inserts
 BATCH_SIZE = 1000
 
-CSV_NAME = Path(__file__).resolve().parent / "state_epidemic.csv"
+CSV_NAME = Path(__file__).resolve().parent / "state_epidemicHAS_ID.csv"
 
 """ 
 model StateEpidemic {

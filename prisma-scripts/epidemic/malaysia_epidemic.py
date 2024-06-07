@@ -11,7 +11,7 @@ from prisma import Prisma
 # Batch size for bulk inserts
 BATCH_SIZE = 1000
 
-CSV_NAME = Path(__file__).resolve().parent / "malaysia_epidemic.csv"
+CSV_NAME = Path(__file__).resolve().parent / "malaysia_epidemicHAS_ID.csv"
 # Function to process a chunk of data and prepare for insertion
 
 """ 
@@ -35,10 +35,10 @@ model MalaysiaEpidemic {
   cases_pvax       Int?
   cases_fvax       Int?
   cases_boost      Int?
-  cases_child      Int?
-  cases_adolescent Int?
-  cases_adult      Int?
-  cases_elderly    Int?
+#   cases_child      Int?
+#   cases_adolescent Int?
+#   cases_adult      Int?
+#   cases_elderly    Int?
   cases_0_4        Int?
   cases_5_11       Int?
   cases_12_17      Int?
