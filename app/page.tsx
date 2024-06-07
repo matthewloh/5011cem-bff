@@ -10,9 +10,9 @@ export default async function Home() {
   //     .then((responseData) => setData(responseData))
   //     .catch((error) => console.error(error));
   // }, []);
-  const data = await fetch("http://127.0.0.1:8000/api/python").then(
-    (response) => response.json()
-  );
+  const data = await fetch(
+    "http://127.0.0.1:3000/api/python/Pulau Pinang"
+  ).then((response) => response.json());
   return (
     <div>
       <h2>{data.message}</h2>

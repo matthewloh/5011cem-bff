@@ -20,5 +20,10 @@ def hello_world():
 
 @app.get("/api/python/{name}")
 async def hello_name(name: str):
-    mvac = await prisma.malaysiavaccination.find_first()
+    mvac = await prisma.malaysiavaccination.find_first(
+        where={
+            "state": name
+        }
+    )
+    print(mvac.model_dump())
     return {"message": f"{mvac.model_dump()}"}
