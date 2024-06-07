@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator js {
+  provider = "prisma-client-js"
+}
+
+generator py {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model StateEpidemic {
+  id               Int       @id @default(autoincrement())
+  date             DateTime?
+  state            String
+  cases_new        Int?
+  cases_import     Int?
+  cases_recovered  Int?
+  cases_active     Int?
+  cases_cluster    Int?
+  cases_unvax      Int?
+  cases_pvax       Int?
+  cases_fvax       Int?
+  cases_boost      Int?
+  cases_0_4        Int?
+  cases_5_11       Int?
+  cases_12_17      Int?
+  cases_18_29      Int?
+  cases_30_39      Int?
+  cases_40_49      Int?
+  cases_50_59      Int?
+  cases_60_69      Int?
+  cases_70_79      Int?
+  cases_80         Int?
+  deaths_new       Int?
+  deaths_bid       Int?
+  deaths_new_dod   Int?
+  deaths_bid_dod   Int?
+  deaths_unvax     Int?
+  deaths_pvax      Int?
+  deaths_fvax      Int?
+  deaths_boost     Int?
+  beds             Int?
+  beds_covid       Int?
+  beds_noncrit     Int?
+  admitted_pui     Int?
+  admitted_covid   Int?
+  admitted_total   Int?
+  discharged_pui   Int?
+  discharged_covid Int?
+  discharged_total Int?
+  hosp_covid       Int?
+  hosp_pui         Int?
+  hosp_noncovid    Int?
+  beds_icu         Int?
+  beds_icu_rep     Int?
+  beds_icu_total   Int?
+  beds_icu_covid   Int?
+  vent             Int?
+  vent_port        Int?
+  icu_covid        Int?
+  icu_pui          Int?
+  icu_noncovid     Int?
+  vent_covid       Int?
+  vent_pui         Int?
+  vent_noncovid    Int?
+  vent_used        Int?
+  vent_port_used   Int?
+  rtk_ag           Int?
+  pcr              Int?
+
+  @@index([date, state])
+}
+
+model MalaysiaEpidemic {
+  id               Int       @id @default(autoincrement())
+  date             DateTime?
+  deaths_new       Int?
+  deaths_bid       Int?
+  deaths_new_dod   Int?
+  deaths_bid_dod   Int?
+  deaths_unvax     Int?
+  deaths_pvax      Int?
+  deaths_fvax      Int?
+  deaths_boost     Int?
+  cases_new        Int?
+  cases_import     Int?
+  cases_recovered  Int?
+  cases_active     Int?
+  cases_cluster    Int?
+  cases_unvax      Int?
+  cases_pvax       Int?
+  cases_fvax       Int?
+  cases_boost      Int?
+  cases_child      Int?
+  cases_adolescent Int?
+  cases_adult      Int?
+  cases_elderly    Int?
+  cases_0_4        Int?
+  cases_5_11       Int?
+  cases_12_17      Int?
+  cases_18_29      Int?
+  cases_30_39      Int?
+  cases_40_49      Int?
+  cases_50_59      Int?
+  cases_60_69      Int?
+  cases_70_79      Int?
+  cases_80         Int?
+  rtk_ag           Int?
+  pcr              Int?
+
+  @@index([date])
+}
+
+model MalaysiaVaccination {
+  id                   Int       @id @default(autoincrement())
+  date                 DateTime?
+  state                String?
+  daily_partial        Int?
+  daily_full           Int?
+  daily_booster        Int?
+  daily_booster2       Int?
+  daily                Int?
+  daily_partial_adol   Int?
+  daily_full_adol      Int?
+  daily_booster_adol   Int?
+  daily_booster2_adol  Int?
+  daily_partial_child  Int?
+  daily_full_child     Int?
+  daily_booster_child  Int?
+  daily_booster2_child Int?
+  cumul_partial        Int?
+  cumul_full           Int?
+  cumul_booster        Int?
+  cumul_booster2       Int?
+  cumul                Int?
+  cumul_partial_adol   Int?
+  cumul_full_adol      Int?
+  cumul_booster_adol   Int?
+  cumul_booster2_adol  Int?
+  cumul_partial_child  Int?
+  cumul_full_child     Int?
+  cumul_booster_child  Int?
+  cumul_booster2_child Int?
+  pfizer1              Int?
+  pfizer2              Int?
+  pfizer3              Int?
+  pfizer4              Int?
+  sinovac1             Int?
+  sinovac2             Int?
+  sinovac3             Int?
+  sinovac4             Int?
+  astra1               Int?
+  astra2               Int?
+  astra3               Int?
+  astra4               Int?
+  sinopharm1           Int?
+  sinopharm2           Int?
+  sinopharm3           Int?
+  sinopharm4           Int?
+  cansino              Int?
+  cansino3             Int?
+  cansino4             Int?
+  pending1             Int?
+  pending2             Int?
+  pending3             Int?
+  pending4             Int?
+}
