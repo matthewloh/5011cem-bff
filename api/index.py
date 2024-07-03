@@ -37,3 +37,13 @@ async def hello_name(name: str):
     )
     print(mvac.model_dump())
     return {"message": f"{mvac.model_dump()}"}
+
+
+@app.get("/api/python/{name}/vaccination")
+async def get_vaccination_data(name: str):
+    mvac = await prisma.statevaccination.find_first(
+        where={
+            "state": name
+        }
+    )
+    return {"message": f"{mvac.model_dump()}"}
