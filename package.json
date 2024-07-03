@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "fastapi-dev": "pip3 install -r requirements.txt && prisma generate && python -m uvicorn api.index:app --reload",
-    "next-dev": "next dev",
+    "next-dev": "next dev --turbo",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db:genpy": "prisma generate --generator=py",
-    "db:genjs": "prisma generate --generator=javascript"
+    "db:genjs": "prisma generate --generator=javascript",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.4",

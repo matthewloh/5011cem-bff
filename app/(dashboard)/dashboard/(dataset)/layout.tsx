@@ -6,9 +6,5 @@ export default function DatasetViewLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="">
-      <div className="">{children}</div>
-    </div>
-  );
+  return <div className="h-screen">{children}</div>;
 }
