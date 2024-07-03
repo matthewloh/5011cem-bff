@@ -8,9 +8,11 @@ import {
 } from "@remixicon/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Separator } from "./ui/separator";
+import { ModeToggle } from "./mode-toggle";
 
 const navigation = [
-  { name: "Overview", href: "/home", icon: RiHome2Line },
+  { name: "Home", href: "/home", icon: RiHome2Line },
   { name: "Dashboard", href: "/dashboard", icon: RiListCheck },
 ] as const;
 
@@ -55,9 +57,9 @@ export function Sidebar() {
         <aside className="flex grow flex-col gap-y-6 overflow-y-auto border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950">
           <nav
             aria-label="core navigation links"
-            className="flex flex-1 flex-col space-y-10"
+            className="flex flex-1 flex-col justify-between"
           >
-            <ul role="list" className="space-y-6">
+            <ul role="list" className="mt-2 space-y-6">
               {navigation.map((item) => (
                 <li key={item.name}>
                   <Link
@@ -75,12 +77,15 @@ export function Sidebar() {
                   </Link>
                 </li>
               ))}
+
+              <Separator />
             </ul>
-            <div>
-              <span className="text-xs font-medium leading-6 text-gray-500">
+            <div className="mb-8">
+              <Separator />
+              <span className="text-xs font-medium leading-loose text-gray-600">
                 Shortcuts
               </span>
-              <ul aria-label="shortcuts" role="list" className="space-y-6">
+              <ul aria-label="shortcuts" role="list" className="mt-2 space-y-6">
                 {shortcuts.map((item) => (
                   <li key={item.name}>
                     <Link
@@ -101,6 +106,9 @@ export function Sidebar() {
                     </Link>
                   </li>
                 ))}
+                <div className="flex items-center justify-center">
+                  <ModeToggle />
+                </div>
               </ul>
             </div>
           </nav>

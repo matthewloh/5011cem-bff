@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="p">
-      <Navbar/>
+      {/* <Navbar/> */}
       <Sidebar />
       <div className="pl-72">{children}</div>
     </div>

@@ -11,7 +11,7 @@ export default function DashboardPage() {
       </h1>
       <div className="flex flex-col h-full w-full space-y-6">
         <BarChart
-          className="h-80 w-[50%]"
+          className="h-80 w-full"
           data={chartdata}
           index="date"
           categories={["SolarPanels", "Inverters"]}

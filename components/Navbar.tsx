@@ -11,7 +11,9 @@ export default function Navbar() {
           <Link href="/">Home</Link>
           <Link href="/dashboard">Dashboard</Link>
         </div>
-        <ModeToggle />
+        <div>
+          <ModeToggle />
+        </div>
       </nav>
     </header>
   );
