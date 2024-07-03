@@ -227,7 +227,7 @@ export default function BarChart() {
   ];
 
   return (
-    <div className="w-full h-full p-16 bg-red-500">
+    <div className="h-full w-full bg-red-500 p-16">
       <MyResponsiveBar data={data} />
     </div>
   );

@@ -5,11 +5,11 @@ import { LineChart } from "@/components/LineChart";
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col justify-center items-center p-6">
+    <div className="flex flex-col items-center justify-center p-6">
       <h1 className="text-3xl font-bold">
         What is the COVID-19 Situation Like?
       </h1>
-      <div className="flex flex-col h-full w-full space-y-6">
+      <div className="flex h-full w-full flex-col space-y-6">
         <BarChart
           className="h-80 w-full"
           data={chartdata}

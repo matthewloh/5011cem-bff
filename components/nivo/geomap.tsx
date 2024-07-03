@@ -792,7 +792,7 @@ export default function Geomap() {
   ];
 
   return (
-    <div className="w-full h-[400px] bg-red-300">
+    <div className="h-[400px] w-full bg-red-300">
       <MyResponsiveChoropleth data={data} />
     </div>
   );

@@ -22,7 +22,6 @@ export default async function Home() {
   // const stateepidemics = await prisma.stateEpidemic.findMany({
   //   take: 16,
   // });
-
   // useEffect(() => {
   //   fetch("/api/python")
   //     .then((response) => response.text())
@@ -32,7 +31,6 @@ export default async function Home() {
   // const data = await fetch(
   //   "http://127.0.0.1:3000/api/python/Pulau Pinang",
   // ).then((response) => response.json());
-
   // return (
   //   // <>
   //   //   <div className="flex flex-col gap-4">
@@ -96,6 +94,5 @@ export default async function Home() {
   //   //     </div>
   //   //   </div>
   //   // </>
-
   // );
 }
