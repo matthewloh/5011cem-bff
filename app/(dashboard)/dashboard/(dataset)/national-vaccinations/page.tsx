@@ -13,19 +13,19 @@ import { getFirstDoseByBrand } from "./getFirstDoseByBrand";
 import { getSecondDoseByBrand } from "./getSecondDoseByBrand";
 import { getThirdDoseByBrand } from "./getThirdDoseByBrand";
 import { getFourthDoseByBrand } from "./getFourthDoseByBrand";
-import TotalVaccinationsChart from "@/components/charts/national-vaccinations/TotalVaccinationsChart";
-import DailyVaccinationDoseChart from "@/components/charts/national-vaccinations/DailyVaccinationDoseChart";
-import CumulVaccinationDoseChart from "@/components/charts/national-vaccinations/CumulVaccinationDoseChart";
-import DailyVaccinationsAdolChart from "@/components/charts/national-vaccinations/DailyVaccinationsAdolChart";
-import CumulVaccinationsAdolChart from "@/components/charts/national-vaccinations/CumulVaccinationsAdolChart";
-import DailyVaccinationsChildChart from "@/components/charts/national-vaccinations/DailyVaccinationsChildChart";
-import CumulVaccinationsChildChart from "@/components/charts/national-vaccinations/CumulVaccinationsChildChart";
-import VaccineBrandDistributionChart from "@/components/charts/national-vaccinations/VaccineBrandDistributionChart";
-import DailyVaccinationsByBrandChart from "@/components/charts/national-vaccinations/DailyVaccinationsByBrandChart";
-import FirstDoseByBrandChart from "@/components/charts/national-vaccinations/FirstDoseByBrandChart";
-import SecondDoseByBrandChart from "@/components/charts/national-vaccinations/SecondDoseByBrandChart";
-import ThirdDoseByBrandChart from "@/components/charts/national-vaccinations/ThirdDoseByBrandChart";
-import FourthDoseByBrandChart from "@/components/charts/national-vaccinations/FourthDoseByBrandChart";
+import TotalVaccinationsChart from "@/components/charts/vaccinations/TotalVaccinationsChart";
+import DailyVaccinationDoseChart from "@/components/charts/vaccinations/DailyVaccinationDoseChart";
+import CumulVaccinationDoseChart from "@/components/charts/vaccinations/CumulVaccinationDoseChart";
+import DailyVaccinationsAdolChart from "@/components/charts/vaccinations/DailyVaccinationsAdolChart";
+import CumulVaccinationsAdolChart from "@/components/charts/vaccinations/CumulVaccinationsAdolChart";
+import DailyVaccinationsChildChart from "@/components/charts/vaccinations/DailyVaccinationsChildChart";
+import CumulVaccinationsChildChart from "@/components/charts/vaccinations/CumulVaccinationsChildChart";
+import VaccineBrandDistributionChart from "@/components/charts/vaccinations/VaccineBrandDistributionChart";
+import DailyVaccinationsByBrandChart from "@/components/charts/vaccinations/DailyVaccinationsByBrandChart";
+import FirstDoseByBrandChart from "@/components/charts/vaccinations/FirstDoseByBrandChart";
+import SecondDoseByBrandChart from "@/components/charts/vaccinations/SecondDoseByBrandChart";
+import ThirdDoseByBrandChart from "@/components/charts/vaccinations/ThirdDoseByBrandChart";
+import FourthDoseByBrandChart from "@/components/charts/vaccinations/FourthDoseByBrandChart";
 
 export default async function NationalVaccinations({
   searchParams: {
@@ -291,7 +291,7 @@ export default async function NationalVaccinations({
             <div className="col-span-2">
               <ChartCard
                 title="Total Vaccinations"
-                description="Daily and cumulative vaccinations"
+                description={"Cumulative vaccinations: " + totalVaccinationsData.chartData[totalVaccinationsData.chartData.length - 1].cumul}
                 queryKey="totalVaccinationsRange"
                 selectedRangeLabel={totalVaccinationsRangeOption.label}>
                   <TotalVaccinationsChart data={totalVaccinationsData.chartData}></TotalVaccinationsChart>
