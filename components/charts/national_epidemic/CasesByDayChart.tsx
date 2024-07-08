@@ -11,24 +11,24 @@ import {
   YAxis,
 } from "recharts";
 
-type TestingByDayChartProps = {
+type CasesByDayChartProps = {
   data: {
-    id: number;
-    date: string;
-    deaths_new: number | null;
-    deaths_bid: number | null;
-    deaths_new_dod: number | null;
-    deaths_bid_dod: number | null;
-    deaths_unvax: number | null;
-    deaths_pvax: number | null;
-    deaths_fvax: number | null;
-    deaths_boost: number | null;
+    date: string | null;
+    cases_new: number | null;
+    cases_import: number | null;
+    cases_recovered: number | null;
+    cases_active: number | null;
+    cases_cluster: number | null;
+    cases_unvax: number | null;
+    cases_boost: number | null;
+    cases_pvax: number | null;
+    cases_fvax: number | null;
   }[];
 };
 
-export default function DeathsByDayChart({ data }: TestingByDayChartProps) {
+export default function CasesByDayChart({ data }: CasesByDayChartProps) {
   return (
-    <ResponsiveContainer width="100%" minHeight={300}>
+    <ResponsiveContainer width="100%" minHeight={500}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" stroke="hsl(var(--primary))" />
@@ -41,57 +41,64 @@ export default function DeathsByDayChart({ data }: TestingByDayChartProps) {
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_new"
-          name="New Deaths"
+          dataKey="cases_new"
+          name="New Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_bid"
-          name="Brought-in Dead"
+          dataKey="cases_import"
+          name="Imported Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_new_dod"
-          name="New Deaths (DoD)"
+          dataKey="cases_recovered"
+          name="Recovered Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_bid_dod"
-          name="Brought-in Dead (DoD)"
+          dataKey="cases_active"
+          name="Active Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_unvax"
-          name="Unvaccinated Deaths"
+          dataKey="cases_cluster"
+          name="Cluster Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_pvax"
-          name="Partially Vaccinated Deaths"
+          dataKey="cases_unvax"
+          name="Unvaccinated Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_fvax"
-          name="Fully Vaccinated Deaths"
+          dataKey="cases_boost"
+          name="Booster Cases"
           stroke="hsl(var(--primary))"
         />
         <Line
           dot={false}
           type="monotone"
-          dataKey="deaths_boost"
-          name="Booster Dose Deaths"
+          dataKey="cases_pvax"
+          name="Partially Vaccinated Cases"
+          stroke="hsl(var(--primary))"
+        />
+        <Line
+          dot={false}
+          type="monotone"
+          dataKey="cases_fvax"
+          name="Fully Vaccinated Cases"
           stroke="hsl(var(--primary))"
         />
       </LineChart>

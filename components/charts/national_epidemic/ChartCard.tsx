@@ -21,14 +21,16 @@ import { Button } from "@/components/ui/button";
 import { RANGE_OPTIONS } from "@/lib/rangeOptions";
 import { ReactNode, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "../../ui/calendar";
 
 import type { DateRange } from "react-day-picker";
 import { subDays } from "date-fns";
+import { TrendingUp } from "lucide-react";
 
 type ChartCardProps = {
   title: string;
   description: string;
+  footer?: string;
   queryKey: string;
   selectedRangeLabel: string;
   children: ReactNode;
@@ -37,6 +39,7 @@ type ChartCardProps = {
 export function ChartCard({
   title,
   description,
+  footer,
   children,
   queryKey,
   selectedRangeLabel,
@@ -116,6 +119,21 @@ export function ChartCard({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
+      {footer && (
+        <CardFooter>
+          <div className="flex w-full items-start gap-2 text-sm">
+            <div className="grid gap-2">
+              <div className="flex items-center gap-2 font-medium leading-none">
+                Trending up by 5.2% this month{" "}
+                <TrendingUp className="h-4 w-4" />
+              </div>
+              <div className="flex items-center gap-2 leading-none text-muted-foreground">
+                January - June 2024
+              </div>
+            </div>
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 }

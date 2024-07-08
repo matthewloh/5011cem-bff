@@ -2,6 +2,7 @@ import { ResponsiveBump } from "@nivo/bump";
 
 const MyResponsiveBump = (data: any) => {
   return (
+    // @ts-ignore
     <ResponsiveBump
       data={data}
       colors={{ scheme: "spectral" }}

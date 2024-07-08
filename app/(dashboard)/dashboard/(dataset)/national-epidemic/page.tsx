@@ -1,13 +1,14 @@
-import CasesByDayChart from "@/components/charts/CasesByDayChart";
+import CasesByDayChart from "@/components/charts/national_epidemic/CasesByDayChart";
 
 import { RANGE_OPTIONS, getRangeOption } from "@/lib/rangeOptions";
-import { ChartCard } from "@/components/charts/ChartCard";
+import { ChartCard } from "@/components/charts/national_epidemic/ChartCard";
 import { getTotalCases } from "./getCasesData";
-import BarChartClient from "@/components/charts/BarChartClient";
 import { getCumulativeTestingData } from "./getTestingData";
-import TestingByDayChart from "@/components/charts/TestingByDayChart";
+import TestingByDayChart from "@/components/charts/national_epidemic/TestingByDayChart";
 import { getDeathsData } from "./getDeathsData";
-import DeathsByDayChart from "@/components/charts/DeathsByDayChart";
+import DeathsByDayChart from "@/components/charts/national_epidemic/DeathsByDayChart";
+import CasesTremorClientChart from "@/components/charts/national_epidemic/BarChartClient";
+import { AreaChartClient } from "@/components/charts/AreaChart";
 
 export default async function NationalEpidemic({
   searchParams: {
@@ -67,24 +68,8 @@ export default async function NationalEpidemic({
     ),
   ]);
 
-  /* 
-    TODO:
-    const [casesData, deathsData, recoveredData, testingData] = await Promise.all([
-      server components 
-      getTotalCases(totalCasesRangeOption.startDate, totalCasesRangeOption.endDate), DONE
-      getTotalDeaths(totalDeathsRangeOption.startDate, totalDeathsRangeOption.endDate), DONE
-      getRecoveredData(totalRecoveredRangeOption.startDate, totalRecoveredRangeOption.endDate), 
-      getTestingData(totalTestingRangeOption.startDate, totalTestingRangeOption.endDate), DONE
-    ])
-  */
-
-  const pythonCall = await fetch(
-    "http://127.0.0.1:3000/api/python/Pulau Pinang",
-    // "http://127.0.0.1:3000/api/python/Pulau Pinang/vaccination"
-  ).then((response) => response.json());
-  // console.log(data);
   return (
-    <div className="max-h-full">
+    <div className="">
       <h2 className="m-6 text-3xl font-bold">National Epidemic Dataset</h2>
       <p className="m-6 text-lg text-gray-700">
         This dataset contains the national epidemic data of Malaysia.
@@ -94,12 +79,16 @@ export default async function NationalEpidemic({
           partially vax, fully vax)
         </strong>{" "}
       </p>
-      {/* <DatasetViewOptions /> */}
-
-      <pre>{JSON.stringify(pythonCall, null, 2)}</pre>
-      <BarChartClient data={casesData.chartData} />
-
-      <div className="grid h-full grid-cols-1 grid-rows-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4">
+        <ChartCard
+          title="Total Cases"
+          description={`Cases (New, Imported, Recovered, Active, Cluster, Unvax, Boost, Partially Vax, Fully Vax)`}
+          queryKey="totalCasesRange"
+          selectedRangeLabel={totalCasesRangeOption.label}
+        >
+          <AreaChartClient data={casesData.chartData} />
+        </ChartCard>
+        {/* <CasesTremorClientChart data={casesData.chartData} /> */}
         <ChartCard
           title="Total Cases"
           description={`Cases (New, Imported, Recovered, Active, Cluster, Unvax, Boost, Partially Vax, Fully Vax)`}
@@ -112,7 +101,7 @@ export default async function NationalEpidemic({
           title="Total Deaths"
           description={`Deaths (New)`}
           queryKey="totalDeathsRange"
-          selectedRangeLabel={totalCasesRangeOption.label}
+          selectedRangeLabel={totalDeathsRangeOption.label}
         >
           <DeathsByDayChart data={deathsData.chartData} />
         </ChartCard>

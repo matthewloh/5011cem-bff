@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BarChart } from "../BarChart";
+import { BarChart } from "../../BarChart";
 
 type CasesData = {
   id: number;
@@ -23,11 +23,11 @@ type CasesData = {
 type BarChartClientProps = {
   data: CasesData;
 };
-export default function BarChartClient({ data }: BarChartClientProps) {
+export default function CasesTremorClientChart({ data }: BarChartClientProps) {
   return (
     <>
       <BarChart
-        className="container h-80 w-full"
+        className="container h-80 w-full bg-white p-6 rounded-xl"
         data={data}
         index="date"
         categories={[

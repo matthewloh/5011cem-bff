@@ -22,7 +22,7 @@ type TestingByDayChartProps = {
 
 export default function TestingByDayChart({ data }: TestingByDayChartProps) {
   return (
-    <ResponsiveContainer width="100%" minHeight={300}>
+    <ResponsiveContainer width="100%" minHeight={500}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" stroke="hsl(var(--primary))" />

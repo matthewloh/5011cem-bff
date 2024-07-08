@@ -20,6 +20,7 @@ const MyResponsiveChoropleth = (data: any) => {
       graticuleLineColor="#dddddd"
       borderWidth={0.5}
       borderColor="#152538"
+      // @ts-ignore
       defs={[
         {
           id: "dots",
