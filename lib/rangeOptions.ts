@@ -47,6 +47,21 @@ export const RANGE_OPTIONS = {
     startDate: new Date("2022-01-01"),
     endDate: new Date("2023-12-31"),
   },
+  from_2021_to_now: {
+    label: "2021 - Now",
+    startDate: new Date("2021-01-01"),
+    endDate: new Date(),
+  },
+  from_2022_to_now: {
+    label: "2022 - Now",
+    startDate: new Date("2022-01-01"),
+    endDate: new Date(),
+  },
+  from_2023_to_now: {
+    label: "2023 - Now",
+    startDate: new Date("2023-01-01"),
+    endDate: new Date(),
+  },
   all_time: {
     label: "All Time",
     startDate: null, // null means no start date constraint
