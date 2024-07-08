@@ -64,7 +64,7 @@ def process_chunk(chunk):
         # print(row[2]) # date
         # CSV Format is 2024-06-01
 
-        date_obj = dt.strptime(row[2], "%Y-%m-%d")
+        date_obj = dt.strptime(row[2], "%d/%m/%Y")
         # print(date_obj)
         malaysia_epidemic = MalaysiaEpidemic(
             id=row[1] + 1,
