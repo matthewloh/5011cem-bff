@@ -85,7 +85,7 @@ export function Sidebar() {
             <div className="mb-8">
               <Separator />
               <span className="text-xs font-medium leading-loose text-gray-600">
-                Shortcuts
+                Datasets
               </span>
               <ul aria-label="shortcuts" role="list" className="mt-2 space-y-6">
                 {shortcuts.map((item) => (

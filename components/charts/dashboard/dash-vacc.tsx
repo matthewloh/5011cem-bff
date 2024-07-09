@@ -10,8 +10,8 @@ import {
 import { formatDate } from "@/utils/formatters";
 import Link from "next/link";
 
-export async function DashboardDeathsCard() {
-  const { date } = (await prisma.malaysiaEpidemic.findFirst({
+export default async function DashboardVaccinationCard() {
+  const { date } = (await prisma.malaysiaVaccination.findFirst({
     orderBy: {
       date: "desc",
     },
@@ -19,25 +19,36 @@ export async function DashboardDeathsCard() {
       date: true,
     },
   })) as { date: Date };
-  const vacData = await prisma.malaysiaEpidemic.findMany({
+  const vacData = await prisma.malaysiaVaccination.findMany({
     orderBy: {
       date: "desc",
     },
     take: 14,
     select: {
       date: true,
+      daily: true,
     },
   });
-  const data = await prisma.malaysiaEpidemic.aggregate({
-    _sum: { deaths_new: true },
-    _count: { deaths_new: true },
-    _max: { date: true, deaths_new: true },
-    // _min: {},
-    // _avg: {},
+  const data = await prisma.malaysiaVaccination.aggregate({
+    _sum: {
+      daily: true,
+    },
+    _count: {
+      daily: true,
+    },
+    _max: {
+      daily: true,
+    },
+    _min: {
+      daily: true,
+    },
+    _avg: {
+      daily: true,
+    },
   });
 
   return (
-    <Card className="col-span-1 row-span-2 rounded-lg bg-card p-6 shadow">
+    <Card className="col-span-2 row-span-1 rounded-lg bg-card p-6 shadow">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Vaccinations</CardTitle>
         <CardDescription>
@@ -45,23 +56,24 @@ export async function DashboardDeathsCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p>{`Highest number of deaths : ${data._max.deaths_new} recorded ${formatDate(data._max.date!)}`}</p>
+        <p>{`Highest number of daily vaccinations: ${data._max.daily}`}</p>
       </CardContent>
       <CardFooter>
         <div className="flex flex-col">
-          <Link href="/dashboard/state-epidemic" className="text-indigo-400">
-            <p>View State Epidemic Data</p>
+          <Link
+            href="/dashboard/state-vaccinations"
+            className="text-indigo-400"
+          >
+            <p>View State Vaccination Data</p>
           </Link>
           <Link
             href="/dashboard/national-vaccinations"
             className="text-indigo-400"
           >
-            <p>View National Epidemic Data</p>
+            <p>View National Vaccination Data</p>
           </Link>
         </div>
       </CardFooter>
     </Card>
   );
 }
-
-export default DashboardDeathsCard;
