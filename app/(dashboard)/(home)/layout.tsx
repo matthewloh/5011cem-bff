@@ -5,7 +5,7 @@ export default function HomeLayout({
 }) {
   return (
     <div className="">
-      <div className="p-8">{children}</div>
+      <div className="">{children}</div>
     </div>
   );
 }

@@ -67,6 +67,26 @@ export const RANGE_OPTIONS = {
     startDate: null, // null means no start date constraint
     endDate: new Date(),
   },
+  next_30_days: {
+    label: "Next 30 Days",
+    startDate: new Date(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 30)),
+  },
+  next_90_days: {
+    label: "Next 90 Days",
+    startDate: new Date(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 90)),
+  },
+  next_180_days: {
+    label: "Next 180 Days",
+    startDate: new Date(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 180)),
+  },
+  next_365_days: {
+    label: "Next 365 Days",
+    startDate: new Date(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 365)),
+  },
 };
 
 export function getRangeOption(
@@ -88,3 +108,36 @@ export function getRangeOption(
   }
   return RANGE_OPTIONS[range as keyof typeof RANGE_OPTIONS];
 }
+
+export const PREDICTION_RANGE_OPTIONS = {
+  next_7_days: {
+    label: "Next 7 Days",
+    startDate: new Date(),
+    endDate: startOfDay(subDays(new Date(), 6)),
+  },
+  next_14_days: {
+    label: "Next 14 Days",
+    startDate: new Date(),
+    endDate: startOfDay(subDays(new Date(), 13)),
+  },
+  next_30_days: {
+    label: "Next 30 Days",
+    startDate: new Date(),
+    endDate: startOfDay(subDays(new Date(), 29)),
+  },
+  next_90_days: {
+    label: "Next 90 Days",
+    startDate: new Date(),
+    endDate: startOfDay(subDays(new Date(), 89)),
+  },
+  next_180_days: {
+    label: "Next 180 Days",
+    startDate: new Date(),
+    endDate: startOfDay(subDays(new Date(), 179)),
+  },
+  next_365_days: {
+    label: "Next 365 Days",
+    startDate: new Date(),
+    endDate: startOfDay(subDays(new Date(), 364)),
+  },
+};

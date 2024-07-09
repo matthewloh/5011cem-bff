@@ -125,32 +125,6 @@ async def train_lstm_model(
     return data
 
 
-def predict_lstm_model():
-    with open(r'model\LSTM_model.pkl', 'rb') as file:
-        model = pickle.load(file)
-    future_dates_count = 365//2
-    forecast_dates = pd.date_range(
-        start=test_data.index[-1], periods=future_dates_count)
-    forecast = model.predict(trainX[-future_dates_count:])
-
-    forecast_copies = np.repeat(forecast, df.shape[1], axis=-1)
-    pred = scaler.inverse_transform(forecast_copies)[:, 0]
-
-    forecast_df = pd.DataFrame(
-        {'Date': forecast_dates, 'Forecast': pred})  # plot this one out
-    forecast_df.set_index('Date', inplace=True)
-
-    return forecast_df
-
-
-def convert_lstm(prediction_list: List[dict]):
-    pass
-
-
-def train_prophet_model():
-    pass
-
-
 if __name__ == "__main__":
     TICKER = "AAPL"
     train(TICKER)

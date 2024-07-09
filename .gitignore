@@ -33,6 +33,9 @@ venv
 # vercel
 .vercel
 
+# __pycache__
+/api/__pycache__/*.pyc
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
