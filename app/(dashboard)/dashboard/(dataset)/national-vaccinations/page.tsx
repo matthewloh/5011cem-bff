@@ -122,7 +122,7 @@ export default async function NationalVaccinations({
   };
 }) {
   // Overview
-  const defaultRangeOption = RANGE_OPTIONS.from_2021_to_2022;
+  const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
   const totalVaccinationsRangeOption =
     getRangeOption(
       totalVaccinationsRange,
@@ -179,7 +179,7 @@ export default async function NationalVaccinations({
       vaccineBrandDistributionRange,
       vaccineBrandDistributionRangeFrom,
       vaccineBrandDistributionRangeTo,
-    ) || defaultRangeOption;
+    ) || RANGE_OPTIONS.all_time;
 
   const dailyVaccinationsByBrandRangeOption =
     getRangeOption(
@@ -290,8 +290,10 @@ export default async function NationalVaccinations({
 
   return (
     <div className="max-h-full">
-      <h2 className="m-6 text-4xl font-bold">National Vaccinations Dataset</h2>
-      <p className="m-6 text-lg text-foreground">
+      <div className="sticky top-0 z-10 mb-6 flex flex-col justify-between gap-4 border-b bg-background p-6">
+        <h2 className="text-4xl font-bold">National Vaccinations Dataset</h2>
+      </div>
+      <p className="px-6 text-lg text-foreground">
         This dataset contains the national vaccination data of Malaysia.
       </p>
 
