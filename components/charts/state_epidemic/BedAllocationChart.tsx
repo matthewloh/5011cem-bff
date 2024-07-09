@@ -81,7 +81,7 @@ export function BedAllocationChart({ data }: BedAllocationChartProps) {
           fill="var(--color-beds_noncrit)"
           fillOpacity={0.2}
           stroke="var(--color-beds_noncrit)"
-          stackId="c"
+          stackId="b"
         />
       </AreaChart>
     </ChartContainer>

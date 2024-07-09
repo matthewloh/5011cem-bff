@@ -1,6 +1,6 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   ChartConfig,
@@ -43,7 +43,7 @@ const chartConfig = {
 export function DeathsByVaccinationStatusChart({ data }: DeathsByVaccinationStatusChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
-      <AreaChart
+      <LineChart
         accessibilityLayer
         data={data}
         margin={{
@@ -64,39 +64,35 @@ export function DeathsByVaccinationStatusChart({ data }: DeathsByVaccinationStat
           content={<ChartLegendContent verticalAlign="top" />}
           wrapperStyle={{ paddingTop: 12 }}
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="deaths_unvax"
-          type="natural"
+          type="monotone"
           fill="var(--color-deaths_unvax)"
-          fillOpacity={0.4}
           stroke="var(--color-deaths_unvax)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="deaths_pvax"
-          type="natural"
+          type="monotone"
           fill="var(--color-deaths_pvax)"
-          fillOpacity={0.4}
           stroke="var(--color-deaths_pvax)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="deaths_fvax"
-          type="natural"
+          type="monotone"
           fill="var(--color-deaths_fvax)"
-          fillOpacity={0.4}
           stroke="var(--color-deaths_fvax)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="deaths_boost"
-          type="natural"
+          type="monotone"
           fill="var(--color-deaths_boost)"
-          fillOpacity={0.4}
           stroke="var(--color-deaths_boost)"
-          stackId="a"
         />
-      </AreaChart>
+      </LineChart>
     </ChartContainer>
   );
 }

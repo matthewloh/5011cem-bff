@@ -31,7 +31,7 @@ const chartConfig = {
   },
   discharged_pui: {
     label: "Patients Under Investigation",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
@@ -60,11 +60,11 @@ export function DischargedChart({ data }: DischargedChartProps) {
           wrapperStyle={{ paddingTop: 12 }}
         />
         <Area
-          dataKey="discharged_total"
+          dataKey="discharged_pui"
           type="natural"
-          fill="var(--color-discharged_total)"
-          fillOpacity={0}
-          stroke="var(--color-discharged_total)"
+          fill="var(--color-discharged_pui)"
+          fillOpacity={0.4}
+          stroke="var(--color-discharged_pui)"
           stackId="a"
         />
         <Area
@@ -73,15 +73,7 @@ export function DischargedChart({ data }: DischargedChartProps) {
           fill="var(--color-discharged_covid)"
           fillOpacity={0.4}
           stroke="var(--color-discharged_covid)"
-          stackId="b"
-        />
-        <Area
-          dataKey="discharged_pui"
-          type="natural"
-          fill="var(--color-discharged_pui)"
-          fillOpacity={0.4}
-          stroke="var(--color-discharged_pui)"
-          stackId="b"
+          stackId="a"
         />
       </AreaChart>
     </ChartContainer>

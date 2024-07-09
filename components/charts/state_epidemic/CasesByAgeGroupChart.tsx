@@ -1,6 +1,6 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   ChartConfig,
@@ -73,7 +73,7 @@ const chartConfig = {
 export function CasesByAgeGroupChart({ data }: CasesByAgeGroupChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
-      <AreaChart
+      <LineChart
         accessibilityLayer
         data={data}
         margin={{
@@ -94,87 +94,77 @@ export function CasesByAgeGroupChart({ data }: CasesByAgeGroupChartProps) {
           content={<ChartLegendContent verticalAlign="top" />}
           wrapperStyle={{ paddingTop: 12 }}
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_0_4"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_0_4)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_0_4)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_5_11"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_5_11)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_5_11)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_12_17"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_12_17)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_12_17)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_18_29"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_18_29)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_18_29)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_30_39"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_30_39)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_30_39)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_40_49"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_40_49)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_40_49)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_50_59"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_50_59)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_50_59)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_60_69"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_60_69)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_60_69)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_70_79"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_70_79)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_70_79)"
-          stackId="a"
         />
-        <Area
+        <Line
+          dot={false}
           dataKey="cases_80"
-          type="natural"
+          type="monotone"
           fill="var(--color-cases_80)"
-          fillOpacity={0.4}
           stroke="var(--color-cases_80)"
-          stackId="a"
         />
-      </AreaChart>
+      </LineChart>
     </ChartContainer>
   );
 }

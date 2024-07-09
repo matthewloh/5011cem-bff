@@ -73,19 +73,19 @@ export function ICUBedUtilizationChart({ data }: ICUBedUtilizationChartProps) {
           stackId="a"
         />
         <Area
-          dataKey="icu_covid"
-          type="natural"
-          fill="var(--color-icu_covid)"
-          fillOpacity={0.4}
-          stroke="var(--color-icu_covid)"
-          stackId="b"
-        />
-        <Area
           dataKey="icu_pui"
           type="natural"
           fill="var(--color-icu_pui)"
           fillOpacity={0.4}
           stroke="var(--color-icu_pui)"
+          stackId="b"
+        />
+        <Area
+          dataKey="icu_covid"
+          type="natural"
+          fill="var(--color-icu_covid)"
+          fillOpacity={0.4}
+          stroke="var(--color-icu_covid)"
           stackId="b"
         />
         <Area

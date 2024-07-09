@@ -31,7 +31,7 @@ const chartConfig = {
   },
   admitted_pui: {
     label: "Patients Under Investigation",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
@@ -60,11 +60,11 @@ export function AdmissionsChart({ data }: AdmissionsChartProps) {
           wrapperStyle={{ paddingTop: 12 }}
         />
         <Area
-          dataKey="admitted_total"
+          dataKey="admitted_pui"
           type="natural"
-          fill="var(--color-admitted_total)"
-          fillOpacity={0}
-          stroke="var(--color-admitted_total)"
+          fill="var(--color-admitted_pui)"
+          fillOpacity={0.4}
+          stroke="var(--color-admitted_pui)"
           stackId="a"
         />
         <Area
@@ -73,15 +73,7 @@ export function AdmissionsChart({ data }: AdmissionsChartProps) {
           fill="var(--color-admitted_covid)"
           fillOpacity={0.4}
           stroke="var(--color-admitted_covid)"
-          stackId="b"
-        />
-        <Area
-          dataKey="admitted_pui"
-          type="natural"
-          fill="var(--color-admitted_pui)"
-          fillOpacity={0.4}
-          stroke="var(--color-admitted_pui)"
-          stackId="b"
+          stackId="a"
         />
       </AreaChart>
     </ChartContainer>
