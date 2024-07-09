@@ -32,7 +32,7 @@ export default function TotalVaccinationsChart({ data }: TotalVaccinationsChartP
         />
         <YAxis
           tickFormatter={(number) => number.toLocaleString()}
-          width={85}
+          width={95}
           stroke="hsl(var(--primary))"
         />
         <Tooltip />

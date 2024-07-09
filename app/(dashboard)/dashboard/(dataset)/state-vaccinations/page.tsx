@@ -131,7 +131,7 @@ export default async function StateVaccinations({
   const selectedStateOption =
     getStateOption(selectedState) || STATE_OPTIONS.pulau_pinang;
   // Default range option
-  const defaultRangeOption = RANGE_OPTIONS.from_2021_to_2022;
+  const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
   // Overview
   const totalVaccinationsRangeOption =
     getRangeOption(
@@ -322,7 +322,7 @@ export default async function StateVaccinations({
           />
         </div>
       </div>
-      <p className="m-6 mt-0 text-lg text-gray-700">
+      <p className="px-6 text-lg text-gray-700">
         This dataset contains the vaccination data of every state in Malaysia.
       </p>
 

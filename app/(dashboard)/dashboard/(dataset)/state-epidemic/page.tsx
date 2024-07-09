@@ -156,27 +156,30 @@ export default async function StateEpidemic({
   // State Selection
   const selectedStateOption = getStateOption(selectedState) || STATE_OPTIONS.pulau_pinang;
 
+  // Default range option
+  const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
+
   // Cases
   const casesByTypeRangeOption =
     getRangeOption(
       casesByTypeRange,
       casesByTypeRangeFrom,
       casesByTypeRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const casesByVaccinationStatusRangeOption =
     getRangeOption(
       casesByVaccinationStatusRange,
       casesByVaccinationStatusRangeFrom,
       casesByVaccinationStatusRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const casesByAgeGroupRangeOption =
     getRangeOption(
       casesByAgeGroupRange,
       casesByAgeGroupRangeFrom,
       casesByAgeGroupRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   // Deaths
   const totalDeathsRangeOption =
@@ -184,21 +187,21 @@ export default async function StateEpidemic({
       totalDeathsRange,
       totalDeathsRangeFrom,
       totalDeathsRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const deathsByDateOfDeathRangeOption =
     getRangeOption(
       deathsByDateOfDeathRange,
       deathsByDateOfDeathRangeFrom,
       deathsByDateOfDeathRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const deathsByVaccinationStatusRangeOption =
     getRangeOption(
       deathsByVaccinationStatusRange,
       deathsByVaccinationStatusRangeFrom,
       deathsByVaccinationStatusRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   // Tests
   const testsByTypeRangeOption =
@@ -206,7 +209,7 @@ export default async function StateEpidemic({
       testsByTypeRange,
       testsByTypeRangeFrom,
       testsByTypeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   // Hospital Resources
   const bedAllocationRangeOption =
@@ -214,63 +217,63 @@ export default async function StateEpidemic({
       bedAllocationRange,
       bedAllocationRangeFrom,
       bedAllocationRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const admissionsRangeOption =
     getRangeOption(
       admissionsRange,
       admissionsRangeFrom,
       admissionsRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const dischargedRangeOption =
     getRangeOption(
       dischargedRange,
       dischargedRangeFrom,
       dischargedRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const hospitalizationsRangeOption =
     getRangeOption(
       hospitalizationsRange,
       hospitalizationsRangeFrom,
       hospitalizationsRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const icuBedAllocationRangeOption =
     getRangeOption(
       icuBedAllocationRange,
       icuBedAllocationRangeFrom,
       icuBedAllocationRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const icuBedUtilizationRangeOption =
     getRangeOption(
       icuBedUtilizationRange,
       icuBedUtilizationRangeFrom,
       icuBedUtilizationRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const ventilatorUtilizationRangeOption =
     getRangeOption(
       ventilatorUtilizationRange,
       ventilatorUtilizationRangeFrom,
       ventilatorUtilizationRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const portableVentilatorUtilizationRangeOption =
     getRangeOption(
       portableVentilatorUtilizationRange,
       portableVentilatorUtilizationRangeFrom,
       portableVentilatorUtilizationRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
   
   const ventilatorUsageByTypeRangeOption =
     getRangeOption(
       ventilatorUsageByTypeRange,
       ventilatorUsageByTypeRangeFrom,
       ventilatorUsageByTypeRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const [
     casesByTypeData, casesByVaccinationStatusData, casesByAgeGroupData,
@@ -366,7 +369,7 @@ export default async function StateEpidemic({
 
   return (
     <div className="max-h-full">
-      <div className="m-6 flex gap-4 justify-between">
+      <div className="sticky top-0 z-10 mb-6 flex h-16 items-center justify-between gap-4 border-b bg-background p-6">
         <h2 className="text-4xl font-bold">State Epidemic Dataset</h2>
         <div className="self-auto rounded-md shadow-sm">
           <StateDropdown
@@ -375,7 +378,7 @@ export default async function StateEpidemic({
           />
         </div>
       </div>
-      <p className="m-6 text-lg text-gray-700">
+      <p className="px-6 text-lg text-gray-700">
         This dataset contains the epidemic data of every state in Malaysia.
       </p>
 
