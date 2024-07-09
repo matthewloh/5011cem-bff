@@ -10,20 +10,14 @@
 //   return <div>ModelInsightPage</div>;
 // }
 
-import { File, ListFilter } from "lucide-react";
 import Link from "next/link";
 
-import { ChartCard } from "@/components/charts/ChartCard";
 import { LSTMChart } from "@/components/charts/model-insights/LSTMLineChart";
 import {
   Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+  BreadcrumbItem, BreadcrumbList,
+  BreadcrumbPage
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -33,8 +27,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RANGE_OPTIONS, getRangeOption } from "@/lib/rangeOptions";
+import {
+  RANGE_OPTIONS,
+  getPredictionRangeOption
+} from "@/lib/rangeOptions";
 import { getLSTMForecastData } from "./getLSTMForecastData";
+import { PredictChartCard } from "@/components/charts/PredictChartCard";
 
 type Forecast = Record<string, number>;
 export default async function ModelInsightsPage({
@@ -60,8 +58,11 @@ export default async function ModelInsightsPage({
   // }));
   const defaultRangeOption = RANGE_OPTIONS.last_90_days;
   const totalLSTMRangeOption =
-    getRangeOption(totalLSTMRange, totalLSTMRangeFrom, totalLSTMRangeTo) ||
-    defaultRangeOption;
+    getPredictionRangeOption(
+      totalLSTMRange,
+      totalLSTMRangeFrom,
+      totalLSTMRangeTo,
+    ) || defaultRangeOption;
 
   const { chartDataFormatted } = await getLSTMForecastData(
     totalLSTMRangeOption.startDate,
@@ -181,14 +182,14 @@ export default async function ModelInsightsPage({
                 </div>
               </div>
               <TabsContent value="LSTM">
-                <ChartCard
+                <PredictChartCard
                   title="Forecast"
                   description="Forecast Cases using LSTM"
                   queryKey="totalLSTMRange"
                   selectedRangeLabel={totalLSTMRangeOption.label}
                 >
                   <LSTMChart data={chartDataFormatted} />
-                </ChartCard>
+                </PredictChartCard>
               </TabsContent>
               <TabsContent value="Prophet"></TabsContent>
             </Tabs>
