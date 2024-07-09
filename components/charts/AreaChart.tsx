@@ -10,6 +10,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatDate } from "@/utils/formatters";
 
 type CasesByDayChartProps = {
   data: {
@@ -77,8 +78,22 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
         }}
       >
         <CartesianGrid strokeDasharray={"3 3"} />
-        <XAxis dataKey="date" tickLine={true} axisLine={false} tickMargin={8} />
-        <YAxis tickLine={true} axisLine={false} tickMargin={8} />
+        <XAxis
+          dataKey="date"
+          tickLine={true}
+          axisLine={false}
+          tickMargin={8}
+          // tickFormatter={(value) => {
+          //   // Receives string in the format
+          //   const date ;
+          // }}
+        />
+        <YAxis
+          tickLine={true}
+          axisLine={false}
+          tickMargin={8}
+          tickFormatter={(number) => number.toLocaleString()}
+        />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="dot" />}
@@ -103,7 +118,7 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
           fill="var(--color-cases_import)"
           fillOpacity={0.4}
           stroke="var(--color-cases_import)"
-          stackId="a"
+          stackId="b"
         />
         <Area
           dataKey="cases_recovered"
@@ -111,7 +126,7 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
           fill="var(--color-cases_recovered)"
           fillOpacity={0.4}
           stroke="var(--color-cases_recovered)"
-          stackId="a"
+          stackId="c"
         />
         <Area
           dataKey="cases_active"
@@ -119,7 +134,7 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
           fill="var(--color-cases_active)"
           fillOpacity={0.4}
           stroke="var(--color-cases_active)"
-          stackId="a"
+          stackId="d"
         />
         <Area
           dataKey="cases_cluster"
@@ -127,7 +142,7 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
           fill="var(--color-cases_cluster)"
           fillOpacity={0.4}
           stroke="var(--color-cases_cluster)"
-          stackId="a"
+          stackId="e"
         />
         <Area
           dataKey="cases_unvax"
@@ -135,7 +150,7 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
           fill="var(--color-cases_unvax)"
           fillOpacity={0.4}
           stroke="var(--color-cases_unvax)"
-          stackId="a"
+          stackId="f"
         />
         <Area
           dataKey="cases_boost"
@@ -143,7 +158,7 @@ export function AreaChartClient({ data }: CasesByDayChartProps) {
           fill="var(--color-cases_boost)"
           fillOpacity={0.4}
           stroke="var(--color-cases_boost)"
-          stackId="a"
+          stackId="g"
         />
         <Area
           dataKey="cases_pvax"

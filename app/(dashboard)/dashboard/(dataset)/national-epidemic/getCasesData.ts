@@ -66,29 +66,6 @@ export async function getTotalCases(
     recordedBefore || new Date(),
   );
 
-  // console.log(array, format);
-  // console.log(data);
-  // console.log(chartData);
-  // console.log(array);
-  // const dayArray = array.map((date) => {
-  //   return {
-  //     date: format(date),
-  //     totalCases: 0,
-  //   };
-  // });
-
-  //   return { chartData : chartData.reduce((data, case) => {
-  //     const formattedDate = format(case!);
-  //     const entry = dayArray.find(day=> day.date === formattedDate);
-  //     if (entry == null) return data
-  //     entry.totalCases = case.cases_new!;
-  //     return data;
-  //   }, dayArray),
-  //   totalCases: data._sum.cases_new!,
-  //   totalDeaths: data._sum.deaths_new!,
-  //   totalRecovered: data._sum.cases_recovered!,
-  //   totalActive: data._sum.cases_active!,
-  // };
   return {
     chartData: chartData.map((day) => ({
       ...day,

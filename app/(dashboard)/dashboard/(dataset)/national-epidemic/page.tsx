@@ -9,6 +9,8 @@ import { getDeathsData } from "./getDeathsData";
 import DeathsByDayChart from "@/components/charts/national_epidemic/DeathsByDayChart";
 import CasesTremorClientChart from "@/components/charts/national_epidemic/BarChartClient";
 import { AreaChartClient } from "@/components/charts/AreaChart";
+import { Separator } from "@/components/ui/separator";
+import { InteractiveLineChart } from "@/components/charts/national_epidemic/InteractiveLine";
 
 export default async function NationalEpidemic({
   searchParams: {
@@ -35,23 +37,24 @@ export default async function NationalEpidemic({
     totalDeathsRangeTo?: string;
   };
 }) {
+  const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
   const totalCasesRangeOption =
     getRangeOption(totalCasesRange, totalCasesRangeFrom, totalCasesRangeTo) ||
-    RANGE_OPTIONS.from_2021_to_2022;
+    defaultRangeOption;
 
   const totalTestingRangeOption =
     getRangeOption(
       totalTestingRange,
       totalTestingRangeFrom,
       totalTestingRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const totalDeathsRangeOption =
     getRangeOption(
       totalDeathsRange,
       totalDeathsRangeFrom,
       totalDeathsRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const [casesData, testingData, deathsData] = await Promise.all([
     getTotalCases(
@@ -69,9 +72,11 @@ export default async function NationalEpidemic({
   ]);
 
   return (
-    <div className="">
-      <h2 className="m-6 text-3xl font-bold">National Epidemic Dataset</h2>
-      <p className="m-6 text-lg text-gray-700">
+    <div className="max-h-full">
+      <div className="sticky top-0 z-10 mb-6 flex flex-col justify-between gap-4 border-b bg-background p-6">
+        <h2 className="text-3xl font-bold">National Epidemic Dataset</h2>
+      </div>
+      <p className="px-6 text-lg text-foreground">
         This dataset contains the national epidemic data of Malaysia.
         Represented are{" "}
         <strong>
@@ -79,40 +84,49 @@ export default async function NationalEpidemic({
           partially vax, fully vax)
         </strong>{" "}
       </p>
-      <div className="grid grid-cols-1 gap-4">
+
+      <div className="m-6 flex h-full flex-col gap-8">
         <ChartCard
-          title="Total Cases"
+          title="Overview of Overall Cases"
           description={`Cases (New, Imported, Recovered, Active, Cluster, Unvax, Boost, Partially Vax, Fully Vax)`}
           queryKey="totalCasesRange"
           selectedRangeLabel={totalCasesRangeOption.label}
         >
           <AreaChartClient data={casesData.chartData} />
         </ChartCard>
-        {/* <CasesTremorClientChart data={casesData.chartData} /> */}
-        <ChartCard
-          title="Total Cases"
+        {/* <ChartCard
+          title="Overview of Overall Cases"
           description={`Cases (New, Imported, Recovered, Active, Cluster, Unvax, Boost, Partially Vax, Fully Vax)`}
           queryKey="totalCasesRange"
           selectedRangeLabel={totalCasesRangeOption.label}
         >
           <CasesByDayChart data={casesData.chartData} />
-        </ChartCard>
+        </ChartCard> */}
         <ChartCard
-          title="Total Deaths"
-          description={`Deaths (New)`}
+          title="Overview of Overall Deaths"
+          description={`Deaths (New, Brought-in Dead, New Deaths (DoD), Brought-in Dead (DoD), Unvaccinated Deaths, Partially Vaccinated Deaths, Fully Vaccinated Deaths, Booster Dose Deaths)`}
           queryKey="totalDeathsRange"
           selectedRangeLabel={totalDeathsRangeOption.label}
         >
           <DeathsByDayChart data={deathsData.chartData} />
         </ChartCard>
-        <ChartCard
+        {/* <ChartCard
           title="Cumulative Testing Data"
           description={`A cumulative count of tests conducted`}
           queryKey="totalTestingRange"
           selectedRangeLabel={totalTestingRangeOption.label}
         >
           <TestingByDayChart data={testingData.chartData} />
-        </ChartCard>
+        </ChartCard> */}
+      </div>
+      <div className="m-6 flex flex-col">
+        <InteractiveLineChart
+          title="Interactive Testing Line Chart"
+          description="Filter by date range according to the categories of RTK Antigen and PCR tests."
+          queryKey="totalTestingRange"
+          selectedRangeLabel={totalTestingRangeOption.label}
+          chartData={testingData.chartData}
+        />
       </div>
     </div>
   );

@@ -74,160 +74,172 @@ export default async function StateVaccinations({
     thirdDoseByBrandRangeTo,
     fourthDoseByBrandRange,
     fourthDoseByBrandRangeFrom,
-    fourthDoseByBrandRangeTo
-  }
+    fourthDoseByBrandRangeTo,
+  },
 }: {
   searchParams: {
     // State
-    selectedState?: string,
+    selectedState?: string;
     // Overview
-    totalVaccinationsRange?: string,
-    totalVaccinationsRangeFrom?: string,
-    totalVaccinationsRangeTo?: string,
-    dailyVaccinationsDoseRange?: string,
-    dailyVaccinationsDoseRangeFrom?: string,
-    dailyVaccinationsDoseRangeTo?: string,
-    cumulVaccinationsDoseRange?: string,
-    cumulVaccinationsDoseRangeFrom?: string,
-    cumulVaccinationsDoseRangeTo?: string,
+    totalVaccinationsRange?: string;
+    totalVaccinationsRangeFrom?: string;
+    totalVaccinationsRangeTo?: string;
+    dailyVaccinationsDoseRange?: string;
+    dailyVaccinationsDoseRangeFrom?: string;
+    dailyVaccinationsDoseRangeTo?: string;
+    cumulVaccinationsDoseRange?: string;
+    cumulVaccinationsDoseRangeFrom?: string;
+    cumulVaccinationsDoseRangeTo?: string;
     // Vaccinations by Age Group
-    dailyVaccinationsAdultRange?: string,
-    dailyVaccinationsAdultRangeFrom?: string,
-    dailyVaccinationsAdultRangeTo?: string,
-    dailyVaccinationsAdolRange?: string,
-    dailyVaccinationsAdolRangeFrom?: string,
-    dailyVaccinationsAdolRangeTo?: string,
-    cumulVaccinationsAdolRange?: string,
-    cumulVaccinationsAdolRangeFrom?: string,
-    cumulVaccinationsAdolRangeTo?: string,
-    dailyVaccinationsChildRange?: string,
-    dailyVaccinationsChildRangeFrom?: string,
-    dailyVaccinationsChildRangeTo?: string,
-    cumulVaccinationsChildRange?: string,
-    cumulVaccinationsChildRangeFrom?: string,
-    cumulVaccinationsChildRangeTo?: string,
+    dailyVaccinationsAdultRange?: string;
+    dailyVaccinationsAdultRangeFrom?: string;
+    dailyVaccinationsAdultRangeTo?: string;
+    dailyVaccinationsAdolRange?: string;
+    dailyVaccinationsAdolRangeFrom?: string;
+    dailyVaccinationsAdolRangeTo?: string;
+    cumulVaccinationsAdolRange?: string;
+    cumulVaccinationsAdolRangeFrom?: string;
+    cumulVaccinationsAdolRangeTo?: string;
+    dailyVaccinationsChildRange?: string;
+    dailyVaccinationsChildRangeFrom?: string;
+    dailyVaccinationsChildRangeTo?: string;
+    cumulVaccinationsChildRange?: string;
+    cumulVaccinationsChildRangeFrom?: string;
+    cumulVaccinationsChildRangeTo?: string;
     // Vaccinations by Brand
-    vaccineBrandDistributionRange?: string,
-    vaccineBrandDistributionRangeFrom?: string,
-    vaccineBrandDistributionRangeTo?: string,
-    dailyVaccinationsByBrandRange?: string,
-    dailyVaccinationsByBrandRangeFrom?: string,
-    dailyVaccinationsByBrandRangeTo?: string,
-    firstDoseByBrandRange?: string,
-    firstDoseByBrandRangeFrom?: string,
-    firstDoseByBrandRangeTo?: string,
-    secondDoseByBrandRange?: string,
-    secondDoseByBrandRangeFrom?: string,
-    secondDoseByBrandRangeTo?: string,
-    thirdDoseByBrandRange?: string,
-    thirdDoseByBrandRangeFrom?: string,
-    thirdDoseByBrandRangeTo?: string,
-    fourthDoseByBrandRange?: string,
-    fourthDoseByBrandRangeFrom?: string,
-    fourthDoseByBrandRangeTo?: string
-  }
+    vaccineBrandDistributionRange?: string;
+    vaccineBrandDistributionRangeFrom?: string;
+    vaccineBrandDistributionRangeTo?: string;
+    dailyVaccinationsByBrandRange?: string;
+    dailyVaccinationsByBrandRangeFrom?: string;
+    dailyVaccinationsByBrandRangeTo?: string;
+    firstDoseByBrandRange?: string;
+    firstDoseByBrandRangeFrom?: string;
+    firstDoseByBrandRangeTo?: string;
+    secondDoseByBrandRange?: string;
+    secondDoseByBrandRangeFrom?: string;
+    secondDoseByBrandRangeTo?: string;
+    thirdDoseByBrandRange?: string;
+    thirdDoseByBrandRangeFrom?: string;
+    thirdDoseByBrandRangeTo?: string;
+    fourthDoseByBrandRange?: string;
+    fourthDoseByBrandRangeFrom?: string;
+    fourthDoseByBrandRangeTo?: string;
+  };
 }) {
   // State Selection
-  const selectedStateOption = getStateOption(selectedState) || STATE_OPTIONS.pulau_pinang;
-
+  const selectedStateOption =
+    getStateOption(selectedState) || STATE_OPTIONS.pulau_pinang;
+  // Default range option
+  const defaultRangeOption = RANGE_OPTIONS.from_2021_to_2022;
   // Overview
   const totalVaccinationsRangeOption =
     getRangeOption(
       totalVaccinationsRange,
       totalVaccinationsRangeFrom,
-      totalVaccinationsRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      totalVaccinationsRangeTo,
+    ) || defaultRangeOption;
 
   const dailyVaccinationsDoseRangeOption =
     getRangeOption(
       dailyVaccinationsDoseRange,
       dailyVaccinationsDoseRangeFrom,
-      dailyVaccinationsDoseRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      dailyVaccinationsDoseRangeTo,
+    ) || defaultRangeOption;
 
   const cumulVaccinationsDoseRangeOption =
     getRangeOption(
       cumulVaccinationsDoseRange,
       cumulVaccinationsDoseRangeFrom,
-      cumulVaccinationsDoseRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      cumulVaccinationsDoseRangeTo,
+    ) || defaultRangeOption;
 
   // Vaccinations by Age Group
   const dailyVaccinationsAdolRangeOption =
     getRangeOption(
       dailyVaccinationsAdolRange,
       dailyVaccinationsAdolRangeFrom,
-      dailyVaccinationsAdolRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      dailyVaccinationsAdolRangeTo,
+    ) || defaultRangeOption;
 
   const cumulVaccinationsAdolRangeOption =
     getRangeOption(
       cumulVaccinationsAdolRange,
       cumulVaccinationsAdolRangeFrom,
-      cumulVaccinationsAdolRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      cumulVaccinationsAdolRangeTo,
+    ) || defaultRangeOption;
 
   const dailyVaccinationsChildRangeOption =
     getRangeOption(
       dailyVaccinationsChildRange,
       dailyVaccinationsChildRangeFrom,
       dailyVaccinationsChildRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
-  
+    ) || defaultRangeOption;
+
   const cumulVaccinationsChildRangeOption =
     getRangeOption(
       cumulVaccinationsChildRange,
       cumulVaccinationsChildRangeFrom,
-      cumulVaccinationsChildRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      cumulVaccinationsChildRangeTo,
+    ) || defaultRangeOption;
 
   // Vaccinations by Brand
   const vaccineBrandDistributionRangeOption =
     getRangeOption(
       vaccineBrandDistributionRange,
       vaccineBrandDistributionRangeFrom,
-      vaccineBrandDistributionRangeTo
+      vaccineBrandDistributionRangeTo,
     ) || RANGE_OPTIONS.all_time;
-  
+
   const dailyVaccinationsByBrandRangeOption =
     getRangeOption(
       dailyVaccinationsByBrandRange,
       dailyVaccinationsByBrandRangeFrom,
       dailyVaccinationsByBrandRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const firstDoseByBrandRangeOption =
     getRangeOption(
       firstDoseByBrandRange,
       firstDoseByBrandRangeFrom,
       firstDoseByBrandRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const secondDoseByBrandRangeOption =
     getRangeOption(
       secondDoseByBrandRange,
       secondDoseByBrandRangeFrom,
       secondDoseByBrandRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const thirdDoseByBrandRangeOption =
     getRangeOption(
       thirdDoseByBrandRange,
       thirdDoseByBrandRangeFrom,
       thirdDoseByBrandRangeTo,
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+    ) || defaultRangeOption;
 
   const fourthDoseByBrandRangeOption =
     getRangeOption(
       fourthDoseByBrandRange,
       fourthDoseByBrandRangeFrom,
-      fourthDoseByBrandRangeTo
-    ) || RANGE_OPTIONS.from_2021_to_2022;
+      fourthDoseByBrandRangeTo,
+    ) || defaultRangeOption;
 
   const [
-    totalVaccinationsData, dailyVaccinationDoseData, cumulVaccinationDoseData,
-    dailyVaccinationsAdolData, cumulVaccinationsAdolData, dailyVaccinationsChildData, cumulVaccinationsChildData,
-    vaccineBrandDistributionData, dailyVaccinationsByBrandData, firstDoseByBrandData, secondDoseByBrandData, thirdDoseByBrandData, fourthDoseByBrandData
+    totalVaccinationsData,
+    dailyVaccinationDoseData,
+    cumulVaccinationDoseData,
+    dailyVaccinationsAdolData,
+    cumulVaccinationsAdolData,
+    dailyVaccinationsChildData,
+    cumulVaccinationsChildData,
+    vaccineBrandDistributionData,
+    dailyVaccinationsByBrandData,
+    firstDoseByBrandData,
+    secondDoseByBrandData,
+    thirdDoseByBrandData,
+    fourthDoseByBrandData,
   ] = await Promise.all([
     // Overview
     getTotalVaccinations(
@@ -296,12 +308,12 @@ export default async function StateVaccinations({
       fourthDoseByBrandRangeOption.startDate,
       fourthDoseByBrandRangeOption.endDate,
       selectedStateOption.value,
-    )
+    ),
   ]);
 
   return (
     <div className="max-h-full">
-      <div className="m-6 flex gap-4 justify-between">
+      <div className="sticky top-0 z-10 mb-6 flex h-16 items-center justify-between gap-4 border-b bg-background p-6">
         <h2 className="text-4xl font-bold">State Vaccinations Dataset</h2>
         <div className="self-auto rounded-md shadow-sm">
           <StateDropdown
@@ -314,114 +326,164 @@ export default async function StateVaccinations({
         This dataset contains the vaccination data of every state in Malaysia.
       </p>
 
-      <div className="flex h-full m-6 flex-col gap-8">
+      <div className="m-6 flex h-full flex-col gap-8">
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Overview</h3>
-          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
+            {selectedStateOption.label}: Overview
+          </h3>
+          <div className="grid grid-cols-1 grid-rows-1 gap-2 lg:grid-cols-2">
             <div className="col-span-2">
               <ChartCard
                 title="Total Vaccinations"
-                description={"Cumulative vaccinations: " + totalVaccinationsData.chartData[totalVaccinationsData.chartData.length - 1].cumul}
+                description={
+                  "Cumulative vaccinations: " +
+                  totalVaccinationsData.chartData[
+                    totalVaccinationsData.chartData.length - 1
+                  ].cumul
+                }
                 queryKey="totalVaccinationsRange"
-                selectedRangeLabel={totalVaccinationsRangeOption.label}>
-                  <TotalVaccinationsChart data={totalVaccinationsData.chartData}></TotalVaccinationsChart>
+                selectedRangeLabel={totalVaccinationsRangeOption.label}
+              >
+                <TotalVaccinationsChart
+                  data={totalVaccinationsData.chartData}
+                ></TotalVaccinationsChart>
               </ChartCard>
             </div>
             <ChartCard
               title="Daily Vaccinations by Dose Type"
               description="Daily amounts of partial, full, or booster vaccination doses administered"
               queryKey="dailyVaccinationsDoseRange"
-              selectedRangeLabel={dailyVaccinationsDoseRangeOption.label}>
-                <DailyVaccinationDoseChart data={dailyVaccinationDoseData.chartData}></DailyVaccinationDoseChart>
+              selectedRangeLabel={dailyVaccinationsDoseRangeOption.label}
+            >
+              <DailyVaccinationDoseChart
+                data={dailyVaccinationDoseData.chartData}
+              ></DailyVaccinationDoseChart>
             </ChartCard>
             <ChartCard
               title="Cumulative Vaccinations by Dose Type"
               description="Cumulative amounts of partial, full, or booster vaccination doses administered"
               queryKey="cumulVaccinationsDoseRange"
-              selectedRangeLabel={cumulVaccinationsDoseRangeOption.label}>
-                <CumulVaccinationDoseChart data={cumulVaccinationDoseData.chartData}></CumulVaccinationDoseChart>
+              selectedRangeLabel={cumulVaccinationsDoseRangeOption.label}
+            >
+              <CumulVaccinationDoseChart
+                data={cumulVaccinationDoseData.chartData}
+              ></CumulVaccinationDoseChart>
             </ChartCard>
           </div>
         </div>
 
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Vaccinations by Age Group</h3>
-          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
+            {selectedStateOption.label}: Vaccinations by Age Group
+          </h3>
+          <div className="grid grid-cols-1 grid-rows-1 gap-2 lg:grid-cols-2">
             <ChartCard
               title="Adolescents (Daily)"
               description="Daily vaccinations administered to adolescents"
               queryKey="dailyVaccinationsAdolRange"
-              selectedRangeLabel={dailyVaccinationsAdolRangeOption.label}>
-                <DailyVaccinationsAdolChart data={dailyVaccinationsAdolData.chartData}></DailyVaccinationsAdolChart>
+              selectedRangeLabel={dailyVaccinationsAdolRangeOption.label}
+            >
+              <DailyVaccinationsAdolChart
+                data={dailyVaccinationsAdolData.chartData}
+              ></DailyVaccinationsAdolChart>
             </ChartCard>
             <ChartCard
               title="Adolescents (Cumulative)"
               description="Cumulative vaccinations administered to adolescents"
               queryKey="cumulVaccinationsAdolRange"
-              selectedRangeLabel={cumulVaccinationsAdolRangeOption.label}>
-                <CumulVaccinationsAdolChart data={cumulVaccinationsAdolData.chartData}></CumulVaccinationsAdolChart>
+              selectedRangeLabel={cumulVaccinationsAdolRangeOption.label}
+            >
+              <CumulVaccinationsAdolChart
+                data={cumulVaccinationsAdolData.chartData}
+              ></CumulVaccinationsAdolChart>
             </ChartCard>
             <ChartCard
               title="Children (Daily)"
               description="Daily vaccinations administered to children"
               queryKey="dailyVaccinationsChildRange"
-              selectedRangeLabel={dailyVaccinationsChildRangeOption.label}>
-                <DailyVaccinationsChildChart data={dailyVaccinationsChildData.chartData}></DailyVaccinationsChildChart>
+              selectedRangeLabel={dailyVaccinationsChildRangeOption.label}
+            >
+              <DailyVaccinationsChildChart
+                data={dailyVaccinationsChildData.chartData}
+              ></DailyVaccinationsChildChart>
             </ChartCard>
             <ChartCard
               title="Children (Cumulative)"
               description="Cumulative vaccinations administered to children"
               queryKey="cumulVaccinationsChildRange"
-              selectedRangeLabel={cumulVaccinationsChildRangeOption.label}>
-                <CumulVaccinationsChildChart data={cumulVaccinationsChildData.chartData}></CumulVaccinationsChildChart>
+              selectedRangeLabel={cumulVaccinationsChildRangeOption.label}
+            >
+              <CumulVaccinationsChildChart
+                data={cumulVaccinationsChildData.chartData}
+              ></CumulVaccinationsChildChart>
             </ChartCard>
           </div>
         </div>
 
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Vaccinations by Brand</h3>
-          <div className="pb-4 grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
+            {selectedStateOption.label}: Vaccinations by Brand
+          </h3>
+          <div className="grid grid-cols-1 grid-rows-1 gap-2 pb-4 lg:grid-cols-2">
             <ChartCard
               title="Vaccine Brand Distribution"
               description="Distribution of vaccination doses by brand"
               queryKey="vaccineBrandDistributionRange"
-              selectedRangeLabel={vaccineBrandDistributionRangeOption.label}>
-                <VaccineDistributionChart data={vaccineBrandDistributionData.chartData}></VaccineDistributionChart>
+              selectedRangeLabel={vaccineBrandDistributionRangeOption.label}
+            >
+              <VaccineDistributionChart
+                data={vaccineBrandDistributionData.chartData}
+              ></VaccineDistributionChart>
             </ChartCard>
             <ChartCard
               title="Daily Vaccinations"
               description="Daily total vaccination doses administered"
               queryKey="dailyVaccinationsByBrandRange"
-              selectedRangeLabel={dailyVaccinationsByBrandRangeOption.label}>
-                <DailyVaccinationsByBrandChart data={dailyVaccinationsByBrandData.chartData}></DailyVaccinationsByBrandChart>
+              selectedRangeLabel={dailyVaccinationsByBrandRangeOption.label}
+            >
+              <DailyVaccinationsByBrandChart
+                data={dailyVaccinationsByBrandData.chartData}
+              ></DailyVaccinationsByBrandChart>
             </ChartCard>
             <ChartCard
               title="First Dose"
               description="First vaccination doses"
               queryKey="firstDoseByBrandRange"
-              selectedRangeLabel={firstDoseByBrandRangeOption.label}>
-                <FirstDoseByBrandChart data={firstDoseByBrandData.chartData}></FirstDoseByBrandChart>
+              selectedRangeLabel={firstDoseByBrandRangeOption.label}
+            >
+              <FirstDoseByBrandChart
+                data={firstDoseByBrandData.chartData}
+              ></FirstDoseByBrandChart>
             </ChartCard>
             <ChartCard
               title="Second Dose"
               description="Second vaccination doses"
               queryKey="secondDoseByBrandRange"
-              selectedRangeLabel={secondDoseByBrandRangeOption.label}>
-                <SecondDoseByBrandChart data={secondDoseByBrandData.chartData}></SecondDoseByBrandChart>
+              selectedRangeLabel={secondDoseByBrandRangeOption.label}
+            >
+              <SecondDoseByBrandChart
+                data={secondDoseByBrandData.chartData}
+              ></SecondDoseByBrandChart>
             </ChartCard>
             <ChartCard
               title="Third Dose"
               description="Third vaccination doses"
               queryKey="thirdDoseByBrandRange"
-              selectedRangeLabel={thirdDoseByBrandRangeOption.label}>
-                <ThirdDoseByBrandChart data={thirdDoseByBrandData.chartData}></ThirdDoseByBrandChart>
+              selectedRangeLabel={thirdDoseByBrandRangeOption.label}
+            >
+              <ThirdDoseByBrandChart
+                data={thirdDoseByBrandData.chartData}
+              ></ThirdDoseByBrandChart>
             </ChartCard>
             <ChartCard
               title="Fourth Dose"
               description="Fourth vaccination doses"
               queryKey="fourthDoseByBrandRange"
-              selectedRangeLabel={fourthDoseByBrandRangeOption.label}>
-                <FourthDoseByBrandChart data={fourthDoseByBrandData.chartData}></FourthDoseByBrandChart>
+              selectedRangeLabel={fourthDoseByBrandRangeOption.label}
+            >
+              <FourthDoseByBrandChart
+                data={fourthDoseByBrandData.chartData}
+              ></FourthDoseByBrandChart>
             </ChartCard>
           </div>
         </div>
