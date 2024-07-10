@@ -28,7 +28,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RANGE_OPTIONS, getPredictionRangeOption } from "@/lib/rangeOptions";
+import {
+  PREDICTION_RANGE_OPTIONS,
+  RANGE_OPTIONS,
+  getPredictionRangeOption,
+} from "@/lib/rangeOptions";
 import { getLSTMForecastData } from "./getLSTMForecastData";
 import { PredictChartCard } from "@/components/charts/PredictChartCard";
 import { Search } from "lucide-react";
@@ -56,7 +60,7 @@ export default async function ModelInsightsPage({
   //   date: key,
   //   value: value,
   // }));
-  const defaultRangeOption = RANGE_OPTIONS.last_90_days;
+  const defaultRangeOption = PREDICTION_RANGE_OPTIONS.predict_range;
   const totalLSTMRangeOption =
     getPredictionRangeOption(
       totalLSTMRange,
@@ -83,14 +87,7 @@ export default async function ModelInsightsPage({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
-          </div>
+          <div className="relative ml-auto flex-1 md:grow-0"></div>
         </header>
         <main className="flex-1 items-start gap-4 p-4">
           <div className="items-start gap-4">
@@ -143,55 +140,43 @@ export default async function ModelInsightsPage({
               <div className="my-6 flex items-center">
                 <TabsList>
                   <TabsTrigger value="LSTM">LSTM</TabsTrigger>
-                  <TabsTrigger value="Prophet">Prophet</TabsTrigger>
+                  <TabsTrigger value="Random Forest Regression">
+                    Random Forest Regression
+                  </TabsTrigger>
+                  <TabsTrigger value="ARIMA">ARIMA</TabsTrigger>
                 </TabsList>
-                <div className="ml-auto flex items-center gap-2">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      {/* <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 gap-1 text-sm"
-                      >
-                        <ListFilter className="h-3.5 w-3.5" />
-                        <span className="sr-only sm:not-sr-only">Filter</span>
-                      </Button> */}
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuCheckboxItem checked>
-                        Fulfilled
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem>
-                        Declined
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem>
-                        Refunded
-                      </DropdownMenuCheckboxItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  {/* <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 gap-1 text-sm"
-                  >
-                    <File className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Export</span>
-                  </Button> */}
-                </div>
+                <div className="ml-auto flex items-center gap-2"></div>
               </div>
               <TabsContent value="LSTM">
                 <PredictChartCard
                   title="Forecast"
-                  description="Forecast Cases using LSTM"
+                  description="Machine learning forecasting provides estimates based on historical data and patterns. Forecast accuracy diminishes as the forecast extends. Long-term forecasts are prone to higher uncertainty and potential error due to the compounding of prediction inaccuracies and the influence of unforeseen events."
                   queryKey="totalLSTMRange"
                   selectedRangeLabel={totalLSTMRangeOption.label}
                 >
                   <LSTMChart data={chartDataFormatted} />
                 </PredictChartCard>
               </TabsContent>
-              <TabsContent value="Prophet"></TabsContent>
+              {/* <TabsContent value="Random Forest Regression">
+                <PredictChartCard
+                  title="Random Forest Regression"
+                  description="Forecast Cases using Random Forest Regression"
+                  queryKey="totalLSTMRange"
+                  selectedRangeLabel={totalLSTMRangeOption.label}
+                >
+                  <LSTMChart data={chartDataFormatted} />
+                </PredictChartCard>
+              </TabsContent>
+              <TabsContent value="ARIMA">
+                <PredictChartCard
+                  title="ARIMA"
+                  description="Forecast Cases using ARIMA"
+                  queryKey="totalLSTMRange"
+                  selectedRangeLabel={totalLSTMRangeOption.label}
+                >
+                  <LSTMChart data={chartDataFormatted} />
+                </PredictChartCard>
+              </TabsContent> */}
             </Tabs>
           </div>
         </main>

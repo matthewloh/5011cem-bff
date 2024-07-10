@@ -18,15 +18,23 @@ app = FastAPI()
 with open(r"api/model_binaries/LSTM_model.pkl", "rb") as file:
     model = pickle.load(file)
 
+with open(r"api/model_binaries/random_forest_regression_model.pkl", "rb") as file:
+    random_forest_model = pickle.load(file)
+
+with open(r"api/model_binaries/ARIMA_model.pkl", "rb") as file:
+    arima_model = pickle.load(file)
+
 
 @app.on_event("startup")
 async def startup():
-    await prisma.connect()
+    pass
+    # await prisma.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    await prisma.disconnect()
+    pass
+    # await prisma.disconnect()
 
 
 @app.get("/api/python")
@@ -126,7 +134,7 @@ async def predict_lstm_model(
     # print(recorded_before_has_tz, recorded_after_has_tz)
     # Load and preprocess the data
     df = pd.read_csv(r"api/dataset/training_dataset.csv")  # Up to 20/4/2021
-    df.drop(columns=['Unnamed: 0', 'state'], inplace=True)
+    df.drop(columns=['Unnamed: 0', 'state', 'cases_new_capita'], inplace=True)
     # sum each date for each column sum all 14 rows
     df = df.groupby('date').sum()
     df.index = pd.to_datetime(df.index)
@@ -151,29 +159,107 @@ async def predict_lstm_model(
         trainX.append(df_scaled[i-past:i, 0:df.shape[1]])
 
     trainX = np.array(trainX)
+    # recorded_after = pd.to_datetime(recorded_after)
+    # recorded_before = pd.to_datetime(recorded_before)
 
-    recorded_after = pd.to_datetime(recorded_after)
-    recorded_before = pd.to_datetime(recorded_before)
-
-    recorded_after = recorded_after.replace(tzinfo=None)
-    recorded_before = recorded_before.replace(tzinfo=None)
+    # recorded_after = recorded_after.replace(tzinfo=None)
+    # recorded_before = recorded_before.replace(tzinfo=None)
     # future_dates_count = (recorded_before - test_data.index[-1]).days
-    future_dates_count = int((recorded_before - recorded_after).days)
+    future_dates_count = len(test_data)
     # print(test_data.index[-1])  # the last date in the test data
 
-    startInput = test_data.index[-1] if test_data.index[-1] else datetime(
-        year=2022, month=3, day=9)
-    startInput = recorded_after if recorded_after else startInput
-    periodsInput = future_dates_count if future_dates_count else 90
     forecast_dates = pd.date_range(
-        start=recorded_after,
-        periods=periodsInput,
+        start=test_data.index[0],
+        periods=future_dates_count,
     )
-
     forecast = model.predict(trainX[-future_dates_count:])
     forecast_copies = np.repeat(forecast, df.shape[1], axis=-1)
     pred = scaler.inverse_transform(forecast_copies)[:, 0]
     forecast_df = pd.DataFrame(
         {'Date': forecast_dates, 'Forecast': pred})  # plot this one out
     forecast_df.set_index('Date', inplace=True)
+    print(forecast_df)
     return {"message": forecast_df.to_dict()}
+
+
+@app.get("/api/predict/random_forest")
+async def predict_random_forest(
+    recorded_before: Optional[datetime] = Query(
+        None, alias="recordedBefore", description="End date in ISO format received from the frontend"),
+    # Start date of the range to forecast
+    recorded_after: Optional[datetime] = Query(
+        None, alias="recordedAfter", description="Start date in ISO format received from the frontend")
+):
+    recorded_after = pd.to_datetime(recorded_after)
+    recorded_before = pd.to_datetime(recorded_before)
+
+    recorded_after = recorded_after.replace(tzinfo=None)
+    recorded_before = recorded_before.replace(tzinfo=None)
+    #
+    df = pd.read_csv(r'api/dataset/training_dataset.csv')  # Marcus csv
+    df.drop(columns=['Unnamed: 0', "state", "cases_new_capita"], inplace=True)
+    df["date"] = pd.to_datetime(df["date"])
+    df = df[df["date"] >= "2021-01-01"]
+    df = df.groupby('date').sum()
+
+    # df_var = df.copy()
+
+    col_name = df.columns.tolist()  # Combine
+
+    for col in col_name:
+        for i in range(1, 3):  # Two lag columns
+            df[f"{col}_lag_{i}"] = df[col].shift(i)
+
+    pd.set_option('display.max_columns', None)
+
+    df.dropna(inplace=True)
+
+    df_x = df.drop(columns=col_name)
+    df_y = df[col_name]  # Target variable
+
+    # test_data_x = test_data.drop(columns=col_name)
+    # test_data_y = test_data[col_name]
+
+    # Prediction process
+
+    recorded_after  # Start Date
+    recorded_before  # End Date
+    future_dates_count = int((recorded_before - recorded_after).days)
+
+    # if recorded_after > "2024-04-20":  # You cant set a start date after the last date in the dataset
+    #     return "Invalid date range. Please enter a date range before 2024-04-20."
+
+    data = df.loc[df.index.get_level_values('date') == "2024-04-20"]
+    data = data.drop(columns=col_name)
+
+    days = future_dates_count + 365
+
+    result = []
+
+    next_day = random_forest_model.predict(data)
+    result.append(next_day[0])
+
+    for i in range(days):
+        count = 0
+        for col in col_name:
+            data[f"{col}_lag_1"] = data[f"{col}_lag_2"]
+            data[f"{col}_lag_2"] = next_day[0][count]
+            count = count + 1
+
+        next_day = random_forest_model.predict(data)
+        result.append(next_day[0])
+
+    result_df = pd.DataFrame(result, columns=col_name)
+    result_df.index = pd.date_range(
+        start=recorded_after, periods=days + 1, freq='D')
+    # Get cases_new only
+    result_df = result_df["cases_new"]
+    print(result_df)
+    return {"message": result_df.to_dict()}
+
+
+@app.get("/api/predict/arima")
+async def predict_arima(
+
+):
+    pass

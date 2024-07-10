@@ -91,11 +91,11 @@ export function PredictChartCard({
                   <div>
                     <Calendar
                       mode="range"
-                      // disabled={{}}
+                      disabled={{ before: new Date("2022-03-09") }}
                       selected={dateRange}
                       defaultMonth={dateRange?.from}
                       onSelect={setDateRange}
-                      numberOfMonths={2}
+                      numberOfMonths={3}
                     />
                     <DropdownMenuItem className="hover:bg-auto">
                       <Button

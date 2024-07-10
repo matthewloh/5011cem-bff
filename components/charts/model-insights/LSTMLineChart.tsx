@@ -33,8 +33,8 @@ import { Line } from "recharts";
 
 type LSTMForecastProps = {
   date: string;
-  value: number;
-  actual_value: number;
+  value: number | null;
+  actual_value: number | null;
 }[];
 
 const chartConfig = {
@@ -65,6 +65,7 @@ export function LSTMChart({ data }: { data: LSTMForecastProps }) {
           tickLine={true}
           axisLine={false}
           tickMargin={8}
+          tickCount={5}
           // tickFormatter={(value) => {
           //   // Receives string in the format
           //   const date ;
@@ -91,15 +92,16 @@ export function LSTMChart({ data }: { data: LSTMForecastProps }) {
           dataKey="value"
           type="natural"
           fill="var(--color-value)"
-          fillOpacity={0.4}
+          fillOpacity={1}
           stroke="var(--color-value)"
+          strokeWidth={3}
         />
         <Line
           dot={false}
           dataKey="actual_value"
-          type="natural"
+          type="linear"
           fill="var(--color-actual_value)"
-          fillOpacity={0.4}
+          fillOpacity={1}
           stroke="var(--color-actual_value)"
         />
       </LineChart>
