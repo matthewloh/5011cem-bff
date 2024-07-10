@@ -404,22 +404,6 @@ export default async function StateEpidemic({
 
       <div className="flex h-full m-6 flex-col gap-8">
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">Overview</h3>
-          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
-            <div className="col-span-2">
-              <ChartCard
-                title="Lorem Ipsum"
-                description="Lorem ipsum dolor sit amet"
-                queryKey=""
-                selectedRangeLabel=""
-              >
-                <></>
-              </ChartCard>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col">
           <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Cases</h3>
           <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
             <div className="col-span-2">
