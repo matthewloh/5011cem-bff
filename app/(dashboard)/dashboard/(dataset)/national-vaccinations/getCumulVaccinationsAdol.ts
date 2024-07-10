@@ -22,7 +22,7 @@ export async function getCumulVaccinationsAdol(
         cumul_partial_adol: true,
         cumul_full_adol: true,
         cumul_booster_adol: true,
-        cumul_booster2_adol: true
+        cumul_booster2_adol: true,
       },
       where: {
         date: recordedAtQuery,
@@ -42,6 +42,6 @@ export async function getCumulVaccinationsAdol(
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

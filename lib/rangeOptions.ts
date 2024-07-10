@@ -1,5 +1,5 @@
 import { formatDate } from "@/utils/formatters";
-import { addDays, isValid, startOfDay, subDays } from "date-fns";
+import { add, addDays, isValid, startOfDay, subDays } from "date-fns";
 
 export const RANGE_OPTIONS = {
   last_7_days: {
@@ -190,10 +190,30 @@ export const PREDICTION_RANGE_OPTIONS = {
     startDate: new Date("2020-01-25"),
     endDate: new Date("2024-04-20"),
   },
-  predict_range_with_a_year: {
+  predict_range_add_a_year: {
     label: "Dataset Range + 1 Year",
     startDate: new Date("2020-01-25"),
-    endDate: new Date("2025-04-20"),
+    endDate: addDays(new Date("2024-04-20"), 365),
+  },
+  predict_range_add_180_days: {
+    label: "Dataset Range + 180 Days",
+    startDate: new Date("2020-01-25"),
+    endDate: addDays(new Date("2024-04-20"), 180),
+  },
+  predict_range_add_90_days: {
+    label: "Dataset Range + 90 Days",
+    startDate: new Date("2020-01-25"),
+    endDate: addDays(new Date("2024-04-20"), 90),
+  },
+  predict_range_add_30_days: {
+    label: "Dataset Range + 30 Days",
+    startDate: new Date("2020-01-25"),
+    endDate: addDays(new Date("2024-04-20"), 30),
+  },
+  predict_range_add_7_days: {
+    label: "Dataset Range + 7 Days",
+    startDate: new Date("2020-01-25"),
+    endDate: addDays(new Date("2024-04-20"), 7),
   },
 };
 

@@ -41,11 +41,11 @@ export async function getSecondDoseByBrand(
     recordedAfter || startOfDay(chartData[0].date!),
     recordedBefore || new Date(),
   );
-  
+
   return {
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

@@ -36,6 +36,7 @@ import { getVentilatorUsageByType } from "./getVentilizationUsageByType";
 import { VentilatorUsageByTypeChart } from "@/components/charts/state_epidemic/VentilatorUsageByType";
 import { getTestTypeDistribution } from "./getTestTypeDistribution";
 import { TestTypeDistributionChart } from "@/components/charts/state_epidemic/TestTypeDistributionChart";
+import { Separator } from "@/components/ui/separator";
 
 export default async function StateEpidemic({
   searchParams: {
@@ -96,31 +97,31 @@ export default async function StateEpidemic({
     ventilatorUsageByTypeRange,
     ventilatorUsageByTypeRangeFrom,
     ventilatorUsageByTypeRangeTo,
-  }
+  },
 }: {
   searchParams: {
     // State
-    selectedState?: string,
+    selectedState?: string;
     // Cases
-    casesByTypeRange?: string,
-    casesByTypeRangeFrom?: string,
-    casesByTypeRangeTo?: string,
-    casesByVaccinationStatusRange?: string,
-    casesByVaccinationStatusRangeFrom?: string,
-    casesByVaccinationStatusRangeTo?: string,
-    casesByAgeGroupRange?: string,
-    casesByAgeGroupRangeFrom?: string,
-    casesByAgeGroupRangeTo?: string,
+    casesByTypeRange?: string;
+    casesByTypeRangeFrom?: string;
+    casesByTypeRangeTo?: string;
+    casesByVaccinationStatusRange?: string;
+    casesByVaccinationStatusRangeFrom?: string;
+    casesByVaccinationStatusRangeTo?: string;
+    casesByAgeGroupRange?: string;
+    casesByAgeGroupRangeFrom?: string;
+    casesByAgeGroupRangeTo?: string;
     // Deaths
-    totalDeathsRange?: string,
-    totalDeathsRangeFrom?: string,
-    totalDeathsRangeTo?: string,
-    deathsByDateOfDeathRange?: string,
-    deathsByDateOfDeathRangeFrom?: string,
-    deathsByDateOfDeathRangeTo?: string,
-    deathsByVaccinationStatusRange?: string,
-    deathsByVaccinationStatusRangeFrom?: string,
-    deathsByVaccinationStatusRangeTo?: string,
+    totalDeathsRange?: string;
+    totalDeathsRangeFrom?: string;
+    totalDeathsRangeTo?: string;
+    deathsByDateOfDeathRange?: string;
+    deathsByDateOfDeathRangeFrom?: string;
+    deathsByDateOfDeathRangeTo?: string;
+    deathsByVaccinationStatusRange?: string;
+    deathsByVaccinationStatusRangeFrom?: string;
+    deathsByVaccinationStatusRangeTo?: string;
     // Tests
     testTypeDistributionRange?: string,
     testTypeDistributionRangeFrom?: string,
@@ -129,40 +130,41 @@ export default async function StateEpidemic({
     testsByTypeRangeFrom?: string,
     testsByTypeTo?: string,
     // Hospital Resources
-    bedAllocationRange?: string,
-    bedAllocationRangeFrom?: string,
-    bedAllocationRangeTo?: string,
-    admissionsRange?: string,
-    admissionsRangeFrom?: string,
-    admissionsRangeTo?: string,
-    dischargedRange?: string,
-    dischargedRangeFrom?: string,
-    dischargedRangeTo?: string,
-    hospitalizationsRange?: string,
-    hospitalizationsRangeFrom?: string,
-    hospitalizationsRangeTo?: string,
-    icuBedAllocationRange?: string,
-    icuBedAllocationRangeFrom?: string,
-    icuBedAllocationRangeTo?: string,
-    icuBedUtilizationRange?: string,
-    icuBedUtilizationRangeFrom?: string,
-    icuBedUtilizationRangeTo?: string,
-    ventilatorUtilizationRange?: string,
-    ventilatorUtilizationRangeFrom?: string,
-    ventilatorUtilizationRangeTo?: string,
-    portableVentilatorUtilizationRange?: string,
-    portableVentilatorUtilizationRangeFrom?: string,
-    portableVentilatorUtilizationRangeTo?: string,
-    ventilatorUsageBreakdownRange?: string,
-    ventilatorUsageBreakdownRangeFrom?: string,
-    ventilatorUsageBreakdownRangeTo?: string,
-    ventilatorUsageByTypeRange?: string,
-    ventilatorUsageByTypeRangeFrom?: string,
-    ventilatorUsageByTypeRangeTo?: string,
-  }
+    bedAllocationRange?: string;
+    bedAllocationRangeFrom?: string;
+    bedAllocationRangeTo?: string;
+    admissionsRange?: string;
+    admissionsRangeFrom?: string;
+    admissionsRangeTo?: string;
+    dischargedRange?: string;
+    dischargedRangeFrom?: string;
+    dischargedRangeTo?: string;
+    hospitalizationsRange?: string;
+    hospitalizationsRangeFrom?: string;
+    hospitalizationsRangeTo?: string;
+    icuBedAllocationRange?: string;
+    icuBedAllocationRangeFrom?: string;
+    icuBedAllocationRangeTo?: string;
+    icuBedUtilizationRange?: string;
+    icuBedUtilizationRangeFrom?: string;
+    icuBedUtilizationRangeTo?: string;
+    ventilatorUtilizationRange?: string;
+    ventilatorUtilizationRangeFrom?: string;
+    ventilatorUtilizationRangeTo?: string;
+    portableVentilatorUtilizationRange?: string;
+    portableVentilatorUtilizationRangeFrom?: string;
+    portableVentilatorUtilizationRangeTo?: string;
+    ventilatorUsageBreakdownRange?: string;
+    ventilatorUsageBreakdownRangeFrom?: string;
+    ventilatorUsageBreakdownRangeTo?: string;
+    ventilatorUsageByTypeRange?: string;
+    ventilatorUsageByTypeRangeFrom?: string;
+    ventilatorUsageByTypeRangeTo?: string;
+  };
 }) {
   // State Selection
-  const selectedStateOption = getStateOption(selectedState) || STATE_OPTIONS.pulau_pinang;
+  const selectedStateOption =
+    getStateOption(selectedState) || STATE_OPTIONS.pulau_pinang;
 
   // Default range option
   const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
@@ -174,7 +176,7 @@ export default async function StateEpidemic({
       casesByTypeRangeFrom,
       casesByTypeRangeTo,
     ) || defaultRangeOption;
-  
+
   const casesByVaccinationStatusRangeOption =
     getRangeOption(
       casesByVaccinationStatusRange,
@@ -196,7 +198,7 @@ export default async function StateEpidemic({
       totalDeathsRangeFrom,
       totalDeathsRangeTo,
     ) || defaultRangeOption;
-  
+
   const deathsByDateOfDeathRangeOption =
     getRangeOption(
       deathsByDateOfDeathRange,
@@ -226,6 +228,10 @@ export default async function StateEpidemic({
       testsByTypeTo,
     ) || defaultRangeOption;
 
+  const testsByTypeRangeOption =
+    getRangeOption(testsByTypeRange, testsByTypeRangeFrom, testsByTypeTo) ||
+    defaultRangeOption;
+
   // Hospital Resources
   const bedAllocationRangeOption =
     getRangeOption(
@@ -233,20 +239,14 @@ export default async function StateEpidemic({
       bedAllocationRangeFrom,
       bedAllocationRangeTo,
     ) || defaultRangeOption;
-  
+
   const admissionsRangeOption =
-    getRangeOption(
-      admissionsRange,
-      admissionsRangeFrom,
-      admissionsRangeTo,
-    ) || defaultRangeOption;
-  
+    getRangeOption(admissionsRange, admissionsRangeFrom, admissionsRangeTo) ||
+    defaultRangeOption;
+
   const dischargedRangeOption =
-    getRangeOption(
-      dischargedRange,
-      dischargedRangeFrom,
-      dischargedRangeTo,
-    ) || defaultRangeOption;
+    getRangeOption(dischargedRange, dischargedRangeFrom, dischargedRangeTo) ||
+    defaultRangeOption;
 
   const hospitalizationsRangeOption =
     getRangeOption(
@@ -261,14 +261,14 @@ export default async function StateEpidemic({
       icuBedAllocationRangeFrom,
       icuBedAllocationRangeTo,
     ) || defaultRangeOption;
-  
+
   const icuBedUtilizationRangeOption =
     getRangeOption(
       icuBedUtilizationRange,
       icuBedUtilizationRangeFrom,
       icuBedUtilizationRangeTo,
     ) || defaultRangeOption;
-  
+
   const ventilatorUtilizationRangeOption =
     getRangeOption(
       ventilatorUtilizationRange,
@@ -282,7 +282,7 @@ export default async function StateEpidemic({
       portableVentilatorUtilizationRangeFrom,
       portableVentilatorUtilizationRangeTo,
     ) || defaultRangeOption;
-  
+
   const ventilatorUsageByTypeRangeOption =
     getRangeOption(
       ventilatorUsageByTypeRange,
@@ -300,28 +300,28 @@ export default async function StateEpidemic({
     getCasesByType(
       casesByTypeRangeOption.startDate,
       casesByTypeRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getCasesByVaccinationStatus(
       casesByVaccinationStatusRangeOption.startDate,
       casesByVaccinationStatusRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getCasesByAgeGroup(
       casesByAgeGroupRangeOption.startDate,
       casesByAgeGroupRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     // Deaths
     getTotalDeaths(
       totalDeathsRangeOption.startDate,
       totalDeathsRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getDeathsByDateOfDeath(
       deathsByDateOfDeathRangeOption.startDate,
       deathsByDateOfDeathRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getDeathsByVaccinationStatus(
       deathsByVaccinationStatusRangeOption.startDate,
@@ -337,54 +337,54 @@ export default async function StateEpidemic({
     getTestsByType(
       testsByTypeRangeOption.startDate,
       testsByTypeRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     // Hospital Resources
     getBedAllocation(
       bedAllocationRangeOption.startDate,
       bedAllocationRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getAdmissions(
       admissionsRangeOption.startDate,
       admissionsRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getDischarged(
       dischargedRangeOption.startDate,
       dischargedRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getHospitalizations(
       hospitalizationsRangeOption.startDate,
       hospitalizationsRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getICUBedAllocation(
       icuBedAllocationRangeOption.startDate,
       icuBedAllocationRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getICUBedUtilization(
       icuBedUtilizationRangeOption.startDate,
       icuBedUtilizationRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getVentilatorUtilization(
       ventilatorUtilizationRangeOption.startDate,
       ventilatorUtilizationRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getPortableVentilatorUtilization(
       portableVentilatorUtilizationRangeOption.startDate,
       portableVentilatorUtilizationRangeOption.endDate,
-      selectedStateOption.value
+      selectedStateOption.value,
     ),
     getVentilatorUsageByType(
       ventilatorUsageByTypeRangeOption.startDate,
       ventilatorUsageByTypeRangeOption.endDate,
-      selectedStateOption.value
-    )
+      selectedStateOption.value,
+    ),
   ]);
 
   return (
@@ -402,61 +402,82 @@ export default async function StateEpidemic({
         This dataset contains the epidemic data of every state in Malaysia.
       </p>
 
-      <div className="flex h-full m-6 flex-col gap-8">
+      <div className="m-6 flex h-full flex-col gap-8">
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Cases</h3>
-          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
+            {selectedStateOption.label}: Cases
+          </h3>
+          <div className="grid grid-cols-1 grid-rows-1 gap-2 lg:grid-cols-2">
             <div className="col-span-2">
               <ChartCard
                 title="Cases by Type"
                 description="Daily cases based on type"
                 queryKey="casesByTypeRange"
-                selectedRangeLabel={casesByTypeRangeOption.label}>
-                <CasesByTypeChart data={casesByTypeData.chartData}></CasesByTypeChart>
+                selectedRangeLabel={casesByTypeRangeOption.label}
+              >
+                <CasesByTypeChart
+                  data={casesByTypeData.chartData}
+                ></CasesByTypeChart>
               </ChartCard>
             </div>
             <ChartCard
-                title="Cases by Vaccination Status"
-                description="Daily cases based on vaccination status"
-                queryKey="casesByVaccinationStatusRange"
-                selectedRangeLabel={casesByVaccinationStatusRangeOption.label}>
-                <CasesByVaccinationStatusChart data={casesByVaccinationStatusData.chartData}></CasesByVaccinationStatusChart>
-              </ChartCard>
-            <ChartCard
-                title="Cases by Age Group"
-                description="Daily cases based on age group"
-                queryKey="casesByAgeGroupRange"
-                selectedRangeLabel={casesByAgeGroupRangeOption.label}>
-                <CasesByAgeGroupChart data={casesByAgeGroupData.chartData}></CasesByAgeGroupChart>
-              </ChartCard>
-          </div>
-        </div>
-
-        <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Deaths</h3>
-          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
-            <div className="col-span-2">
-              <ChartCard
-                  title="Total Deaths"
-                  description="Daily amounts of newly reported deaths"
-                  queryKey="totalDeathsRange"
-                  selectedRangeLabel={totalDeathsRangeOption.label}>
-                  <TotalDeathsChart data={totalDeathsData.chartData}></TotalDeathsChart>
-              </ChartCard>
-            </div>
-            <ChartCard
-                title="Deaths by Date of Death"
-                description="Daily amounts of deaths based on date of death"
-                queryKey="deathsByDateOfDeathRange"
-                selectedRangeLabel={deathsByDateOfDeathRangeOption.label}>
-                <DeathsByDateOfDeathChart data={deathsByDateOfDeathData.chartData}></DeathsByDateOfDeathChart>
+              title="Cases by Vaccination Status"
+              description="Daily cases based on vaccination status"
+              queryKey="casesByVaccinationStatusRange"
+              selectedRangeLabel={casesByVaccinationStatusRangeOption.label}
+            >
+              <CasesByVaccinationStatusChart
+                data={casesByVaccinationStatusData.chartData}
+              ></CasesByVaccinationStatusChart>
             </ChartCard>
             <ChartCard
-                title="Deaths by Vaccination Status"
-                description="Daily amounts of deaths based on vaccination status"
-                queryKey="deathsByVaccinationStatusRange"
-                selectedRangeLabel={deathsByVaccinationStatusRangeOption.label}>
-                <DeathsByVaccinationStatusChart data={deathsByVaccinationStatusData.chartData}></DeathsByVaccinationStatusChart>
+              title="Cases by Age Group"
+              description="Daily cases based on age group"
+              queryKey="casesByAgeGroupRange"
+              selectedRangeLabel={casesByAgeGroupRangeOption.label}
+            >
+              <CasesByAgeGroupChart
+                data={casesByAgeGroupData.chartData}
+              ></CasesByAgeGroupChart>
+            </ChartCard>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
+            {selectedStateOption.label}: Deaths
+          </h3>
+          <div className="grid grid-cols-1 grid-rows-1 gap-2 lg:grid-cols-2">
+            <div className="col-span-2">
+              <ChartCard
+                title="Total Deaths"
+                description="Daily amounts of newly reported deaths"
+                queryKey="totalDeathsRange"
+                selectedRangeLabel={totalDeathsRangeOption.label}
+              >
+                <TotalDeathsChart
+                  data={totalDeathsData.chartData}
+                ></TotalDeathsChart>
+              </ChartCard>
+            </div>
+            <ChartCard
+              title="Deaths by Date of Death"
+              description="Daily amounts of deaths based on date of death"
+              queryKey="deathsByDateOfDeathRange"
+              selectedRangeLabel={deathsByDateOfDeathRangeOption.label}
+            >
+              <DeathsByDateOfDeathChart
+                data={deathsByDateOfDeathData.chartData}
+              ></DeathsByDateOfDeathChart>
+            </ChartCard>
+            <ChartCard
+              title="Deaths by Vaccination Status"
+              description="Daily amounts of deaths based on vaccination status"
+              queryKey="deathsByVaccinationStatusRange"
+              selectedRangeLabel={deathsByVaccinationStatusRangeOption.label}
+            >
+              <DeathsByVaccinationStatusChart
+                data={deathsByVaccinationStatusData.chartData}
+              ></DeathsByVaccinationStatusChart>
             </ChartCard>
           </div>
         </div>
@@ -482,43 +503,60 @@ export default async function StateEpidemic({
         </div>
 
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Hospital Resources</h3>
-          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
+            {selectedStateOption.label}: Hospital Resources
+          </h3>
+          <div className="grid grid-cols-1 grid-rows-1 gap-2 lg:grid-cols-2">
             <ChartCard
               title="Bed Allocation"
               description="Overall allocation of hospital beds"
               queryKey="bedAllocationRange"
-              selectedRangeLabel={bedAllocationRangeOption.label}>
-              <BedAllocationChart data={bedAllocationData.chartData}></BedAllocationChart>
+              selectedRangeLabel={bedAllocationRangeOption.label}
+            >
+              <BedAllocationChart
+                data={bedAllocationData.chartData}
+              ></BedAllocationChart>
             </ChartCard>
             <ChartCard
               title="Admissions"
               description="Daily number of hospital admissions"
               queryKey="admissionsRange"
-              selectedRangeLabel={admissionsRangeOption.label}>
-              <AdmissionsChart data={admissionsData.chartData}></AdmissionsChart>
+              selectedRangeLabel={admissionsRangeOption.label}
+            >
+              <AdmissionsChart
+                data={admissionsData.chartData}
+              ></AdmissionsChart>
             </ChartCard>
             <ChartCard
               title="Discharged"
               description="Daily number of patients discharged from hospitals"
               queryKey="dischargedRange"
-              selectedRangeLabel={dischargedRangeOption.label}>
-              <DischargedChart data={dischargedData.chartData}></DischargedChart>
+              selectedRangeLabel={dischargedRangeOption.label}
+            >
+              <DischargedChart
+                data={dischargedData.chartData}
+              ></DischargedChart>
             </ChartCard>
             <ChartCard
               title="Hospitalizations"
               description="Daily number of hospitalizations"
               queryKey="hospitalizationsRange"
-              selectedRangeLabel={hospitalizationsRangeOption.label}>
-              <HospitalizationsChart data={hospitalizationsData.chartData}></HospitalizationsChart>
+              selectedRangeLabel={hospitalizationsRangeOption.label}
+            >
+              <HospitalizationsChart
+                data={hospitalizationsData.chartData}
+              ></HospitalizationsChart>
             </ChartCard>
             <div className="mt-10">
               <ChartCard
                 title="ICU Bed Allocation"
                 description="Overall allocation of ICU beds"
                 queryKey="icuBedAllocationRange"
-                selectedRangeLabel={icuBedAllocationRangeOption.label}>
-                <ICUBedAllocationChart data={icuBedAllocationData.chartData}></ICUBedAllocationChart>
+                selectedRangeLabel={icuBedAllocationRangeOption.label}
+              >
+                <ICUBedAllocationChart
+                  data={icuBedAllocationData.chartData}
+                ></ICUBedAllocationChart>
               </ChartCard>
             </div>
             <div className="mt-10">
@@ -526,8 +564,11 @@ export default async function StateEpidemic({
                 title="ICU Bed Utilization"
                 description="Daily ICU bed capacity utilization"
                 queryKey="icuBedUtilizationRange"
-                selectedRangeLabel={icuBedUtilizationRangeOption.label}>
-                <ICUBedUtilizationChart data={icuBedUtilizationData.chartData}></ICUBedUtilizationChart>
+                selectedRangeLabel={icuBedUtilizationRangeOption.label}
+              >
+                <ICUBedUtilizationChart
+                  data={icuBedUtilizationData.chartData}
+                ></ICUBedUtilizationChart>
               </ChartCard>
             </div>
             <div className="mt-10">
@@ -535,8 +576,11 @@ export default async function StateEpidemic({
                 title="Ventilator Utilization"
                 description="Daily ventilator capacity utilization"
                 queryKey="ventilatorUtilizationRange"
-                selectedRangeLabel={ventilatorUtilizationRangeOption.label}>
-                <VentilatorUtilizationChart data={ventilatorUtilizationData.chartData}></VentilatorUtilizationChart>
+                selectedRangeLabel={ventilatorUtilizationRangeOption.label}
+              >
+                <VentilatorUtilizationChart
+                  data={ventilatorUtilizationData.chartData}
+                ></VentilatorUtilizationChart>
               </ChartCard>
             </div>
             <div className="mt-10">
@@ -544,8 +588,13 @@ export default async function StateEpidemic({
                 title="Portable Ventilator Utilization"
                 description="Daily portable ventilator capacity utilization"
                 queryKey="portableVentilatorUtilizationRange"
-                selectedRangeLabel={portableVentilatorUtilizationRangeOption.label}>
-                <PortableVentilatorUtilizationChart data={portableVentilatorUtilizationData.chartData}></PortableVentilatorUtilizationChart>
+                selectedRangeLabel={
+                  portableVentilatorUtilizationRangeOption.label
+                }
+              >
+                <PortableVentilatorUtilizationChart
+                  data={portableVentilatorUtilizationData.chartData}
+                ></PortableVentilatorUtilizationChart>
               </ChartCard>
             </div>
             <div className="col-span-2">
@@ -553,13 +602,16 @@ export default async function StateEpidemic({
                 title="Ventilator Usage by Type"
                 description="Daily ventilator usage by patient type"
                 queryKey="ventilatorUsageByTypeRange"
-                selectedRangeLabel={ventilatorUsageByTypeRangeOption.label}>
-                <VentilatorUsageByTypeChart data={ventilatorUsageByTypeData.chartData}></VentilatorUsageByTypeChart>
+                selectedRangeLabel={ventilatorUsageByTypeRangeOption.label}
+              >
+                <VentilatorUsageByTypeChart
+                  data={ventilatorUsageByTypeData.chartData}
+                ></VentilatorUsageByTypeChart>
               </ChartCard>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

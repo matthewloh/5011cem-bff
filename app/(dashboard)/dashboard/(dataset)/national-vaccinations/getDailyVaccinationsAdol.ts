@@ -22,7 +22,7 @@ export async function getDailyVaccinationsAdol(
         daily_partial_adol: true,
         daily_full_adol: true,
         daily_booster_adol: true,
-        daily_booster2_adol: true
+        daily_booster2_adol: true,
       },
       where: {
         date: recordedAtQuery,
@@ -42,6 +42,6 @@ export async function getDailyVaccinationsAdol(
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

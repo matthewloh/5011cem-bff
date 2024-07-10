@@ -37,15 +37,33 @@ import { getLSTMForecastData } from "./getLSTMForecastData";
 import { PredictChartCard } from "@/components/charts/PredictChartCard";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { getRFRForecastData } from "./getRandForestForecastData";
+import { getARIMAForecastData } from "./getARIMAForecastData";
 
 type Forecast = Record<string, number>;
 export default async function ModelInsightsPage({
-  searchParams: { totalLSTMRange, totalLSTMRangeFrom, totalLSTMRangeTo },
+  searchParams: {
+    totalLSTMRange,
+    totalLSTMRangeFrom,
+    totalLSTMRangeTo,
+    totalRFRRange,
+    totalRFRRangeFrom,
+    totalRFRRangeTo,
+    totalARIMARange,
+    totalARIMARangeFrom,
+    totalARIMARangeTo,
+  },
 }: {
   searchParams: {
     totalLSTMRange?: string;
     totalLSTMRangeFrom?: string;
     totalLSTMRangeTo?: string;
+    totalRFRRange?: string;
+    totalRFRRangeFrom?: string;
+    totalRFRRangeTo?: string;
+    totalARIMARange?: string;
+    totalARIMARangeFrom?: string;
+    totalARIMARangeTo?: string;
   };
 }) {
   // const data = await fetch(
@@ -68,11 +86,37 @@ export default async function ModelInsightsPage({
       totalLSTMRangeTo,
     ) || defaultRangeOption;
 
-  const { chartDataFormatted } = await getLSTMForecastData(
-    totalLSTMRangeOption.startDate,
-    totalLSTMRangeOption.endDate,
+  const totalRFRRangeOption =
+    getPredictionRangeOption(
+      totalRFRRange,
+      totalRFRRangeFrom,
+      totalRFRRangeTo,
+    ) || defaultRangeOption;
+
+  const totalARIMARangeOption =
+    getPredictionRangeOption(
+      totalARIMARange,
+      totalARIMARangeFrom,
+      totalARIMARangeTo,
+    ) || defaultRangeOption;
+
+  const { chartDataFormatted: chartDataFormattedLSTM, comments: LSTMComments } =
+    await getLSTMForecastData(
+      totalLSTMRangeOption.startDate,
+      totalLSTMRangeOption.endDate,
+    );
+  const { chartDataFormatted: chartDataFormattedRFR, comments: RFRComments } =
+    await getRFRForecastData(
+      totalRFRRangeOption.startDate,
+      totalRFRRangeOption.endDate,
+    );
+  const {
+    chartDataFormatted: chartDataFormattedARIMA,
+    comments: ARIMAComments,
+  } = await getARIMAForecastData(
+    totalARIMARangeOption.startDate,
+    totalARIMARangeOption.endDate,
   );
-  // console.log(forecastData);
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -149,34 +193,37 @@ export default async function ModelInsightsPage({
               </div>
               <TabsContent value="LSTM">
                 <PredictChartCard
-                  title="Forecast"
+                  title="LSTM Forecasting of New COVID-19 Cases"
                   description="Machine learning forecasting provides estimates based on historical data and patterns. Forecast accuracy diminishes as the forecast extends. Long-term forecasts are prone to higher uncertainty and potential error due to the compounding of prediction inaccuracies and the influence of unforeseen events."
+                  footer={LSTMComments}
                   queryKey="totalLSTMRange"
                   selectedRangeLabel={totalLSTMRangeOption.label}
                 >
-                  <LSTMChart data={chartDataFormatted} />
+                  <LSTMChart data={chartDataFormattedLSTM} />
                 </PredictChartCard>
               </TabsContent>
-              {/* <TabsContent value="Random Forest Regression">
+              <TabsContent value="Random Forest Regression">
                 <PredictChartCard
-                  title="Random Forest Regression"
-                  description="Forecast Cases using Random Forest Regression"
-                  queryKey="totalLSTMRange"
-                  selectedRangeLabel={totalLSTMRangeOption.label}
+                  title="Random Forest Regression Forecasting of New COVID-19 Cases"
+                  description="Forecast Cases using Random Forest Regression, a machine learning algorithm that uses an ensemble of decision trees to predict outcomes. In this example, the output is 90 days ahead by default"
+                  footer={RFRComments}
+                  queryKey="totalRFRRange"
+                  selectedRangeLabel={totalRFRRangeOption.label}
                 >
-                  <LSTMChart data={chartDataFormatted} />
+                  <LSTMChart data={chartDataFormattedRFR} />
                 </PredictChartCard>
               </TabsContent>
               <TabsContent value="ARIMA">
                 <PredictChartCard
                   title="ARIMA"
-                  description="Forecast Cases using ARIMA"
-                  queryKey="totalLSTMRange"
-                  selectedRangeLabel={totalLSTMRangeOption.label}
+                  description="Forecasting New Cases using ARIMA"
+                  footer={ARIMAComments}
+                  queryKey="totalARIMARange"
+                  selectedRangeLabel={totalARIMARangeOption.label}
                 >
-                  <LSTMChart data={chartDataFormatted} />
+                  <LSTMChart data={chartDataFormattedARIMA} />
                 </PredictChartCard>
-              </TabsContent> */}
+              </TabsContent>
             </Tabs>
           </div>
         </main>

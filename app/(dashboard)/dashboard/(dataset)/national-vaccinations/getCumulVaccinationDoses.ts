@@ -22,7 +22,7 @@ export async function getCumulVaccinationDoses(
         cumul_partial: true,
         cumul_full: true,
         cumul_booster: true,
-        cumul_booster2: true
+        cumul_booster2: true,
       },
       where: {
         date: recordedAtQuery,
@@ -42,6 +42,6 @@ export async function getCumulVaccinationDoses(
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

@@ -24,7 +24,7 @@ export async function getThirdDoseByBrand(
         astra3: true,
         sinopharm3: true,
         cansino3: true,
-        pending3: true
+        pending3: true,
       },
       where: {
         date: recordedAtQuery,
@@ -39,11 +39,11 @@ export async function getThirdDoseByBrand(
     recordedAfter || startOfDay(chartData[0].date!),
     recordedBefore || new Date(),
   );
-  
+
   return {
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

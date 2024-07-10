@@ -44,6 +44,6 @@ export async function getDailyVaccinationsChild(
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

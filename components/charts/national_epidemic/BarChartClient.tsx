@@ -27,7 +27,7 @@ export default function CasesTremorClientChart({ data }: BarChartClientProps) {
   return (
     <>
       <BarChart
-        className="container h-80 w-full bg-white p-6 rounded-xl"
+        className="container h-80 w-full rounded-xl bg-white p-6"
         data={data}
         index="date"
         categories={[

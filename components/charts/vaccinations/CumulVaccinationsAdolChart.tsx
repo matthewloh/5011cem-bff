@@ -9,8 +9,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
-} from 'recharts';
+  ResponsiveContainer,
+} from "recharts";
 
 type CumulVaccinationsAdolData = {
   id: number;
@@ -25,15 +25,14 @@ type CumulVaccinationsAdolChartProps = {
   data: CumulVaccinationsAdolData;
 };
 
-export default function CumulVaccinationsAdolChart({ data }: CumulVaccinationsAdolChartProps) {
+export default function CumulVaccinationsAdolChart({
+  data,
+}: CumulVaccinationsAdolChartProps) {
   return (
     <ResponsiveContainer width="100%" minHeight={300}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="date"
-          stroke="hsl(var(--primary))"
-        />
+        <XAxis dataKey="date" stroke="hsl(var(--primary))" />
         <YAxis
           tickFormatter={(number) => number.toLocaleString()}
           width={85}
@@ -47,12 +46,7 @@ export default function CumulVaccinationsAdolChart({ data }: CumulVaccinationsAd
           stackId="a"
           fill="#0088FE"
         />
-        <Bar
-          dataKey="cumul_full_adol"
-          name="Full"
-          stackId="a"
-          fill="#00C49F"
-        />
+        <Bar dataKey="cumul_full_adol" name="Full" stackId="a" fill="#00C49F" />
         <Bar
           dataKey="cumul_booster_adol"
           name="Booster"
