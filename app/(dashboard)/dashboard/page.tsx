@@ -25,6 +25,15 @@ import DashboardVaccinationCard from "../../../components/charts/dashboard/dash-
 import DashboardDeathsCard from "@/components/charts/dashboard/dash-death";
 import DashboardNewCasesCard from "@/components/charts/dashboard/dash-new-cases";
 import DashboardHospitalizationsCard from "@/components/charts/dashboard/dash-hospital";
+import { getRangeOption, RANGE_OPTIONS } from "@/lib/rangeOptions";
+import { ICUBedUtilizationRateChart } from "@/components/charts/dashboard/dash-icu-util-rate";
+import { getICUBedUtilizationRate } from "./getICUBedUtilizationRate";
+import { getVentilatorUtilizationRate } from "./getVentilatorUtilizationRate";
+import { VentilatorUtilizationRateChart } from "@/components/charts/dashboard/dash-vent-util-rate";
+import { getAverageDeaths } from "./getAverageDeaths";
+import { AverageDeathsChart } from "@/components/charts/dashboard/dash-avg-deaths";
+import { getAverageCases } from "./getAverageCases";
+import { AverageCasesChart } from "@/components/charts/dashboard/dash-avg-cases";
 
 function Header() {
   return (
@@ -88,7 +97,37 @@ const CardText = {
   },
 };
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams: {
+    avgCasesRange,
+    avgCasesRangeFrom,
+    avgCasesRangeTo,
+    avgDeathsRange,
+    avgDeathsRangeFrom,
+    avgDeathsRangeTo,
+    icuBedUtilizationRateRange,
+    icuBedUtilizationRateRangeFrom,
+    icuBedUtilizationRateRangeTo,
+    ventUtilizationRateRange,
+    ventUtilizationRateRangeFrom,
+    ventUtilizationRateRangeTo,
+  }
+}: {
+  searchParams: {
+    avgCasesRange?: string,
+    avgCasesRangeFrom?: string,
+    avgCasesRangeTo?: string,
+    avgDeathsRange?: string,
+    avgDeathsRangeFrom?: string,
+    avgDeathsRangeTo?: string,
+    icuBedUtilizationRateRange?: string,
+    icuBedUtilizationRateRangeFrom?: string,
+    icuBedUtilizationRateRangeTo?: string,
+    ventUtilizationRateRange?: string,
+    ventUtilizationRateRangeFrom?: string,
+    ventUtilizationRateRangeTo?: string,
+  }
+}) {
   // Fetch a ton of data here
   // Pass it into cases card, deaths card, testing card, vaccinations card, hospitalizations card
   // prisma.malaysiaEpidemic.aggregate({
@@ -115,7 +154,58 @@ export default async function DashboardPage() {
   //   },
   //   _count: true,
   // }),
+  // Default range option
+  const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
 
+  const avgCasesRangeOption =
+    getRangeOption(
+      avgCasesRange,
+      avgCasesRangeFrom,
+      avgCasesRangeTo,
+  ) || defaultRangeOption;
+
+  const avgDeathsRangeOption =
+    getRangeOption(
+      avgDeathsRange,
+      avgDeathsRangeFrom,
+      avgDeathsRangeTo,
+    ) || defaultRangeOption;
+
+  const icuBedUtilizationRateRangeOption =
+    getRangeOption(
+      icuBedUtilizationRateRange,
+      icuBedUtilizationRateRangeFrom,
+      icuBedUtilizationRateRangeTo,
+    ) || defaultRangeOption;
+  
+  const ventUtilizationRateRangeOption =
+    getRangeOption(
+      ventUtilizationRateRange,
+      ventUtilizationRateRangeFrom,
+      ventUtilizationRateRangeTo,
+    ) || defaultRangeOption;
+  
+  const [
+    avgCasesData, avgDeathsData, icuBedUtilizationRateData, ventUtilizationRateData
+  ] = await Promise.all([
+    getAverageCases(
+      avgCasesRangeOption.startDate,
+      avgCasesRangeOption.endDate
+    ),
+    getAverageDeaths(
+      avgDeathsRangeOption.startDate,
+      avgDeathsRangeOption.endDate
+    ),
+    getICUBedUtilizationRate(
+      icuBedUtilizationRateRangeOption.startDate,
+      icuBedUtilizationRateRangeOption.endDate
+    ),
+    getVentilatorUtilizationRate(
+      ventUtilizationRateRangeOption.startDate,
+      ventUtilizationRateRangeOption.endDate
+    ),
+  ]);
+  
   return (
     <div className="min-h-screen bg-muted/50">
       <Header />
@@ -194,6 +284,47 @@ export default async function DashboardPage() {
               All deaths data
             </a>
           </section>
+
+          <div className="col-span-3">
+            <ChartCard
+              title="Average New Cases by State"
+              description="Comparison of average new cases by state"
+              queryKey="avgCasesRange"
+              selectedRangeLabel={avgCasesRangeOption.label}
+            >
+              <AverageCasesChart data={avgCasesData.chartData}></AverageCasesChart>
+            </ChartCard>
+          </div>
+          <div className="col-span-3">
+            <ChartCard
+              title="Average New Deaths by State"
+              description="Comparison of average new deaths by state"
+              queryKey="avgDeathsRange"
+              selectedRangeLabel={avgDeathsRangeOption.label}
+            >
+              <AverageDeathsChart data={avgDeathsData.chartData}></AverageDeathsChart>
+            </ChartCard>
+          </div>
+          <div className="col-span-3">
+            <ChartCard
+              title="ICU Bed Utilization Rate by State"
+              description="Comparison of ICU bed utilization rate by state"
+              queryKey="icuBedUtilizationRateRange"
+              selectedRangeLabel={icuBedUtilizationRateRangeOption.label}
+            >
+              <ICUBedUtilizationRateChart data={icuBedUtilizationRateData.chartData}></ICUBedUtilizationRateChart>
+            </ChartCard>
+          </div>
+          <div className="col-span-3">
+            <ChartCard
+              title="Ventilator Utilization Rate by State"
+              description="Comparison of ventilator utilization rate by state"
+              queryKey="ventUtilizationRateRange"
+              selectedRangeLabel={ventUtilizationRateRangeOption.label}
+            >
+              <VentilatorUtilizationRateChart data={ventUtilizationRateData.chartData}></VentilatorUtilizationRateChart>
+            </ChartCard>
+          </div>
         </main>
       </div>
     </div>
