@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/utils/formatters";
 import Link from "next/link";
+import { Syringe } from "lucide-react";
 
 export default async function DashboardVaccinationCard() {
   const { date } = (await prisma.malaysiaVaccination.findFirst({
@@ -50,7 +51,12 @@ export default async function DashboardVaccinationCard() {
   return (
     <Card className="col-span-2 row-span-1 rounded-lg bg-card p-6 shadow">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Vaccinations</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          <div className="flex flex-row items-center gap-2">
+            <Syringe className="text-emerald-400 animate-in-index"/>
+            Vaccinations
+          </div>
+        </CardTitle>
         <CardDescription>
           Data collected up to {formatDate(date)}
         </CardDescription>

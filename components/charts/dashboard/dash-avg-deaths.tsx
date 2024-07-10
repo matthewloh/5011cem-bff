@@ -1,6 +1,13 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartConfig,
@@ -9,7 +16,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 type AverageDeathsChartProp = {
   data: {
@@ -21,9 +28,9 @@ type AverageDeathsChartProp = {
 const chartConfig = {
   avg_deaths: {
     label: "Average New Deaths",
-    color: "hsl(var(--chart-1))"
+    color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function AverageDeathsChart({ data }: AverageDeathsChartProp) {
   return (
@@ -34,7 +41,7 @@ export function AverageDeathsChart({ data }: AverageDeathsChartProp) {
         margin={{
           left: 12,
           right: 12,
-          bottom: 12
+          bottom: 12,
         }}
       >
         <CartesianGrid strokeDasharray={"3 3"} />
@@ -46,21 +53,21 @@ export function AverageDeathsChart({ data }: AverageDeathsChartProp) {
           interval={0}
           angle={-20}
         />
-        <YAxis
-          tickLine={true}
-          axisLine={false}
-          tickMargin={8}
-        />
+        <YAxis tickLine={true} axisLine={false} tickMargin={8} />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="dot" />}
         />
-        <Bar
-          dataKey="avg_deaths"
-          fill="var(--color-avg_deaths)"
-          radius={4}
-        />
+        <Bar dataKey="avg_deaths" fill="var(--color-avg_deaths)" radius={4}>
+          <LabelList
+            position="insideTop"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+            formatter={(value: number) => value.toFixed(4)}
+          />
+        </Bar>
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

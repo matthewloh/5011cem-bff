@@ -1,6 +1,13 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartConfig,
@@ -9,7 +16,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 type AverageCasesChartProps = {
   data: {
@@ -21,9 +28,9 @@ type AverageCasesChartProps = {
 const chartConfig = {
   avg_cases: {
     label: "Average New Cases",
-    color: "hsl(var(--chart-1))"
+    color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function AverageCasesChart({ data }: AverageCasesChartProps) {
   return (
@@ -34,7 +41,7 @@ export function AverageCasesChart({ data }: AverageCasesChartProps) {
         margin={{
           left: 12,
           right: 12,
-          bottom: 12
+          bottom: 12,
         }}
       >
         <CartesianGrid strokeDasharray={"3 3"} />
@@ -46,21 +53,21 @@ export function AverageCasesChart({ data }: AverageCasesChartProps) {
           interval={0}
           angle={-20}
         />
-        <YAxis
-          tickLine={true}
-          axisLine={false}
-          tickMargin={8}
-        />
+        <YAxis tickLine={true} axisLine={false} tickMargin={8} />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="dot" />}
         />
-        <Bar
-          dataKey="avg_cases"
-          fill="var(--color-avg_cases)"
-          radius={4}
-        />
+        <Bar dataKey="avg_cases" fill="var(--color-avg_cases)" radius={4}>
+          <LabelList
+            position="insideTop"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+            formatter={(value: number) => value.toFixed(0)}
+          />
+        </Bar>
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

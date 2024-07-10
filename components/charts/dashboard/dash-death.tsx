@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/utils/formatters";
 import Link from "next/link";
+import { RiSkull2Fill } from "@remixicon/react";
+import { BarChartWithLabel } from "./BarChartWithLabel";
 
 export async function DashboardDeathsCard() {
   const { date } = (await prisma.malaysiaEpidemic.findFirst({
@@ -35,17 +37,38 @@ export async function DashboardDeathsCard() {
     // _min: {},
     // _avg: {},
   });
+  const deathsData = await prisma.malaysiaEpidemic.aggregate({
+    _sum: {
+      deaths_bid: true,
+      deaths_new: true,
+      deaths_bid_dod: true,
+      deaths_new_dod: true,
+      deaths_boost: true,
+      deaths_fvax: true,
+      deaths_pvax: true,
+      deaths_unvax: true,
+    },
+    orderBy: {
+      date: "desc",
+    },
+    take: 60,
+  });
 
   return (
-    <Card className="col-span-1 row-span-2 rounded-lg bg-card p-6 shadow">
+    <Card className="col-span-1 row-span-2 rounded-lg bg-card shadow">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Vaccinations</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          <div className="flex flex-row items-center gap-2">
+            <RiSkull2Fill className="text-gray-400" />
+            Deaths
+          </div>
+        </CardTitle>
         <CardDescription>
           Data collected up to {formatDate(date)}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p>{`Highest number of deaths : ${data._max.deaths_new} recorded ${formatDate(data._max.date!)}`}</p>
+        <BarChartWithLabel />
       </CardContent>
       <CardFooter>
         <div className="flex flex-col">

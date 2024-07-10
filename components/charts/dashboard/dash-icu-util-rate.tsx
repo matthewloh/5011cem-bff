@@ -1,6 +1,13 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartConfig,
@@ -9,7 +16,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 type ICUBedUtilizationRateChartProps = {
   data: {
@@ -21,11 +28,13 @@ type ICUBedUtilizationRateChartProps = {
 const chartConfig = {
   utilization_rate: {
     label: "Utilization Rate",
-    color: "hsl(var(--chart-1))"
-  }
-} satisfies ChartConfig
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
 
-export function ICUBedUtilizationRateChart({ data }: ICUBedUtilizationRateChartProps) {
+export function ICUBedUtilizationRateChart({
+  data,
+}: ICUBedUtilizationRateChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <BarChart
@@ -34,7 +43,7 @@ export function ICUBedUtilizationRateChart({ data }: ICUBedUtilizationRateChartP
         margin={{
           left: 12,
           right: 12,
-          bottom: 12
+          bottom: 12,
         }}
       >
         <CartesianGrid strokeDasharray={"3 3"} />
@@ -56,8 +65,20 @@ export function ICUBedUtilizationRateChart({ data }: ICUBedUtilizationRateChartP
           cursor={false}
           content={<ChartTooltipContent indicator="dot" />}
         />
-        <Bar dataKey="utilization_rate" fill="var(--color-utilization_rate)" radius={4} />
+        <Bar
+          dataKey="utilization_rate"
+          fill="var(--color-utilization_rate)"
+          radius={4}
+        >
+          <LabelList
+            position="top"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+            formatter={(value: number) => value.toFixed(0).concat("%")}
+          />
+        </Bar>
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

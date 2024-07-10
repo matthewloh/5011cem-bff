@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/utils/formatters";
-import { Hospital } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 
-export async function DashboardHospitalizationsCard() {
+export async function DashboardInteractiveCard() {
   const { date } = (await prisma.stateEpidemic.findFirst({
     orderBy: {
       date: "desc",
@@ -21,29 +21,34 @@ export async function DashboardHospitalizationsCard() {
   })) as { date: Date };
   const data = await prisma.stateEpidemic.aggregate({
     _sum: {
-      beds: true,
-      beds_covid: true,
-      hosp_covid: true,
+      cases_new: true,
+    },
+    _count: {
+      cases_new: true,
     },
     _max: {
       state: true,
-      date: true,
-      hosp_covid: true,
+      cases_new: true,
     },
-    // _min: {},
-    // _avg: {},
-    // orderBy: {
-    //   date: "desc",
-    // },
+    _min: {
+      cases_new: true,
+    },
+    _avg: {
+      cases_new: true,
+    },
+    take: 14 * 7,
+    orderBy: {
+      date: "desc",
+    },
   });
 
   return (
-    <Card className="col-span-2 row-span-1 rounded-lg bg-card p-6 shadow">
+    <Card className="col-span-4 row-span-2 rounded-lg bg-card p-6 shadow">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
           <div className="flex flex-row items-center gap-2">
-            <Hospital className="text-rose-400" />
-            Hospitalizations
+            <CirclePlus className="text-cyan-400" />
+            New Cases
           </div>
         </CardTitle>
         <CardDescription>
@@ -53,13 +58,13 @@ export async function DashboardHospitalizationsCard() {
       <CardContent>
         {data && (
           <div>
-            <p>Total beds: {data._sum.beds}</p>
-            <p>Total hospitalizations: {data._sum.hosp_covid}</p>
-            <p>Total covid beds: {data._sum.beds_covid}</p>
+            <p>Total new cases: {data._sum.cases_new}</p>
+            <p>Total number of records: {data._count.cases_new}</p>
             <p>
-              Highest number of hospitalizations: {data._max.hosp_covid}{" "}
-              recorded {formatDate(data._max.date!)} in {data._max.state}
+              Highest cases in a state: {data._max.cases_new} in{" "}
+              {data._max.state}
             </p>
+            <p>Minimum cases: {data._min.cases_new}</p>
           </div>
         )}
       </CardContent>
@@ -68,4 +73,4 @@ export async function DashboardHospitalizationsCard() {
   );
 }
 
-export default DashboardHospitalizationsCard;
+export default DashboardInteractiveCard;

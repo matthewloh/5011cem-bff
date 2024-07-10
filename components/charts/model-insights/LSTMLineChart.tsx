@@ -52,7 +52,7 @@ export function LSTMChart({ data }: { data: LSTMForecastProps }) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="w-full md:max-h-[500px] lg:max-h-[700px]"
+      className="w-full md:max-h-[500px] lg:max-h-[600px]"
     >
       <LineChart
         accessibilityLayer

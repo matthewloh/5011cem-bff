@@ -1,6 +1,13 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartConfig,
@@ -9,7 +16,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 type VentilatorUtilizationRateChartProps = {
   data: {
@@ -22,15 +29,17 @@ type VentilatorUtilizationRateChartProps = {
 const chartConfig = {
   vent_util_rate: {
     label: "Ventilator",
-    color: "hsl(var(--chart-1))"
+    color: "hsl(var(--chart-1))",
   },
   ventport_util_rate: {
     label: "Portable Ventilator",
-    color: "hsl(var(--chart-2))"
-  }
-} satisfies ChartConfig
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
 
-export function VentilatorUtilizationRateChart({ data }: VentilatorUtilizationRateChartProps) {
+export function VentilatorUtilizationRateChart({
+  data,
+}: VentilatorUtilizationRateChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <BarChart
@@ -39,7 +48,7 @@ export function VentilatorUtilizationRateChart({ data }: VentilatorUtilizationRa
         margin={{
           left: 12,
           right: 12,
-          bottom: 12
+          bottom: 12,
         }}
       >
         <CartesianGrid strokeDasharray={"3 3"} />
@@ -51,11 +60,7 @@ export function VentilatorUtilizationRateChart({ data }: VentilatorUtilizationRa
           interval={0}
           angle={-20}
         />
-        <YAxis
-          tickLine={true}
-          axisLine={false}
-          tickMargin={8}
-        />
+        <YAxis tickLine={true} axisLine={false} tickMargin={8} />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="dot" />}
@@ -64,13 +69,29 @@ export function VentilatorUtilizationRateChart({ data }: VentilatorUtilizationRa
           dataKey="vent_util_rate"
           fill="var(--color-vent_util_rate)"
           radius={4}
-        />
+        >
+          <LabelList
+            position="centerTop"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+            formatter={(value: number) => value.toFixed(0).concat("%")}
+          />
+        </Bar>
         <Bar
           dataKey="ventport_util_rate"
           fill="var(--color-ventport_util_rate)"
           radius={4}
-        />
+        >
+          <LabelList
+            position="centerTop"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+            formatter={(value: number) => value.toFixed(0).concat("%")}
+          />
+        </Bar>
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

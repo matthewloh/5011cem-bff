@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDate } from "@/utils/formatters";
+import { CirclePlus } from "lucide-react";
 
 export async function DashboardNewCasesCard() {
   const { date } = (await prisma.stateEpidemic.findFirst({
@@ -44,7 +45,12 @@ export async function DashboardNewCasesCard() {
   return (
     <Card className="col-span-1 row-span-2 rounded-lg bg-card p-6 shadow">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">New Cases</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          <div className="flex flex-row items-center gap-2">
+            <CirclePlus className="text-cyan-400" />
+            New Cases
+          </div>
+        </CardTitle>
         <CardDescription>
           Data collected up to {formatDate(date)}
         </CardDescription>

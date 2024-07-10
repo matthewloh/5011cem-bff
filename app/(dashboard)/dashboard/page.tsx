@@ -34,68 +34,9 @@ import { getAverageDeaths } from "./getAverageDeaths";
 import { AverageDeathsChart } from "@/components/charts/dashboard/dash-avg-deaths";
 import { getAverageCases } from "./getAverageCases";
 import { AverageCasesChart } from "@/components/charts/dashboard/dash-avg-cases";
-
-function Header() {
-  return (
-    <header className="bg-white shadow">
-      <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold leading-tight text-foreground">
-          A Summary of COVID-19 Data in Malaysia
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Last updated on Friday, 10 December 2021 at 4:00pm
-        </p>
-      </div>
-    </header>
-  );
-}
-
-type DashboardChartCardProps = {
-  title: string;
-  description: string;
-  footer?: string;
-  children?: React.ReactNode;
-};
-
-function DashboardChartCard({
-  title,
-  description,
-  footer,
-  children,
-}: DashboardChartCardProps) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent></CardContent>
-      {footer && (
-        <CardFooter>
-          <div className="flex w-full items-start gap-2 text-sm">
-            <div className="grid gap-2">
-              <div className="flex items-center gap-2 font-medium leading-none">
-                Trending up by 5.2% this month{" "}
-                <TrendingUp className="h-4 w-4" />
-              </div>
-              <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                January - June 2024
-              </div>
-            </div>
-          </div>
-        </CardFooter>
-      )}
-    </Card>
-  );
-}
-
-const CardText = {
-  vaccinations: {
-    title: "People Vaccinated",
-    description: "A summary of the number of people vaccinated.",
-    footer: "All vaccinations data",
-  },
-};
+import DashboardInteractiveCard from "@/components/charts/dashboard/dash-interactive";
+import { DashBarInteractive } from "@/components/charts/dashboard/DashBarLine";
+import { subDays } from "date-fns";
 
 export default async function DashboardPage({
   searchParams: {
@@ -111,65 +52,32 @@ export default async function DashboardPage({
     ventUtilizationRateRange,
     ventUtilizationRateRangeFrom,
     ventUtilizationRateRangeTo,
-  }
+  },
 }: {
   searchParams: {
-    avgCasesRange?: string,
-    avgCasesRangeFrom?: string,
-    avgCasesRangeTo?: string,
-    avgDeathsRange?: string,
-    avgDeathsRangeFrom?: string,
-    avgDeathsRangeTo?: string,
-    icuBedUtilizationRateRange?: string,
-    icuBedUtilizationRateRangeFrom?: string,
-    icuBedUtilizationRateRangeTo?: string,
-    ventUtilizationRateRange?: string,
-    ventUtilizationRateRangeFrom?: string,
-    ventUtilizationRateRangeTo?: string,
-  }
+    avgCasesRange?: string;
+    avgCasesRangeFrom?: string;
+    avgCasesRangeTo?: string;
+    avgDeathsRange?: string;
+    avgDeathsRangeFrom?: string;
+    avgDeathsRangeTo?: string;
+    icuBedUtilizationRateRange?: string;
+    icuBedUtilizationRateRangeFrom?: string;
+    icuBedUtilizationRateRangeTo?: string;
+    ventUtilizationRateRange?: string;
+    ventUtilizationRateRangeFrom?: string;
+    ventUtilizationRateRangeTo?: string;
+  };
 }) {
-  // Fetch a ton of data here
-  // Pass it into cases card, deaths card, testing card, vaccinations card, hospitalizations card
-  // prisma.malaysiaEpidemic.aggregate({
-  //   _sum: {
-  //     cases_new: true,
-  //     cases_import: true,
-  //     cases_recovered: true,
-  //     cases_active: true,
-  //     cases_cluster: true,
-  //     cases_unvax: true,
-  //     cases_boost: true,
-  //     cases_pvax: true,
-  //     cases_fvax: true,
-  //     // cases_0_4: true,
-  //     // cases_5_11: true,
-  //     // cases_12_17: true,
-  //     // cases_18_29: true,
-  //     // cases_30_39: true,
-  //     // cases_40_49: true,
-  //     // cases_50_59: true,
-  //     // cases_60_69: true,
-  //     // cases_70_79: true,
-  //     // cases_80: true,
-  //   },
-  //   _count: true,
-  // }),
-  // Default range option
   const defaultRangeOption = RANGE_OPTIONS.from_2023_to_now;
 
   const avgCasesRangeOption =
-    getRangeOption(
-      avgCasesRange,
-      avgCasesRangeFrom,
-      avgCasesRangeTo,
-  ) || defaultRangeOption;
+    getRangeOption(avgCasesRange, avgCasesRangeFrom, avgCasesRangeTo) ||
+    defaultRangeOption;
 
   const avgDeathsRangeOption =
-    getRangeOption(
-      avgDeathsRange,
-      avgDeathsRangeFrom,
-      avgDeathsRangeTo,
-    ) || defaultRangeOption;
+    getRangeOption(avgDeathsRange, avgDeathsRangeFrom, avgDeathsRangeTo) ||
+    defaultRangeOption;
 
   const icuBedUtilizationRateRangeOption =
     getRangeOption(
@@ -177,44 +85,101 @@ export default async function DashboardPage({
       icuBedUtilizationRateRangeFrom,
       icuBedUtilizationRateRangeTo,
     ) || defaultRangeOption;
-  
+
   const ventUtilizationRateRangeOption =
     getRangeOption(
       ventUtilizationRateRange,
       ventUtilizationRateRangeFrom,
       ventUtilizationRateRangeTo,
     ) || defaultRangeOption;
-  
+
   const [
-    avgCasesData, avgDeathsData, icuBedUtilizationRateData, ventUtilizationRateData
+    avgCasesData,
+    avgDeathsData,
+    icuBedUtilizationRateData,
+    ventUtilizationRateData,
   ] = await Promise.all([
-    getAverageCases(
-      avgCasesRangeOption.startDate,
-      avgCasesRangeOption.endDate
-    ),
+    getAverageCases(avgCasesRangeOption.startDate, avgCasesRangeOption.endDate),
     getAverageDeaths(
       avgDeathsRangeOption.startDate,
-      avgDeathsRangeOption.endDate
+      avgDeathsRangeOption.endDate,
     ),
     getICUBedUtilizationRate(
       icuBedUtilizationRateRangeOption.startDate,
-      icuBedUtilizationRateRangeOption.endDate
+      icuBedUtilizationRateRangeOption.endDate,
     ),
     getVentilatorUtilizationRate(
       ventUtilizationRateRangeOption.startDate,
-      ventUtilizationRateRangeOption.endDate
+      ventUtilizationRateRangeOption.endDate,
     ),
   ]);
-  
+  const date = await prisma.malaysiaVaccination.findFirst({
+    select: {
+      date: true,
+    },
+    orderBy: {
+      date: "desc",
+    },
+  });
+  const date_epi = await prisma.malaysiaEpidemic.findFirst({
+    select: {
+      date: true,
+    },
+    orderBy: {
+      date: "desc",
+    },
+  });
+  // Comparison of two dates, select the latest date
+  if (!date || !date_epi || !date.date || !date_epi.date) {
+    return <div>Loading...</div>;
+  }
+  const latest_date = date.date > date_epi.date ? date.date : date_epi.date;
+  // Find the three highest cumulative cases_new of three states
+  const stateData = await prisma.stateEpidemic.groupBy({
+    by: ["date", "state", "cases_new", "deaths_new", "cases_recovered"],
+    orderBy: {
+      cases_new: "desc",
+    },
+    take: 180,
+    where: {
+      AND: {
+        date: {
+          gte: subDays(new Date(), 90),
+          lte: new Date(),
+        },
+      },
+    },
+  });
+  const chartData = stateData.map((d) => {
+    return {
+      date: d.date,
+      state: d.state,
+      cases_new: d.cases_new,
+      deaths_new: d.deaths_new,
+      cases_recovered: d.cases_recovered,
+    };
+  });
+  console.log(chartData[chartData.length - 1]);
   return (
-    <div className="min-h-screen bg-muted/50">
-      <Header />
-      <div className="container mx-auto mt-8 h-screen w-screen">
-        <main className="grid grid-flow-row-dense grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <div className="min-h-screen bg-background/50">
+      <header className="bg-white shadow">
+        <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold leading-tight text-foreground">
+            A Summary of COVID-19 Data in Malaysia
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Last updated on {formatDate(latest_date)}
+          </p>
+        </div>
+      </header>
+      <div className="animate-in-index animate-fade-in container flex flex-1 flex-col items-center justify-center py-6">
+        <main className="grid grid-flow-row-dense grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
           <DashboardVaccinationCard />
           <DashboardDeathsCard />
           <DashboardHospitalizationsCard />
-          <section className="col-span-2 rounded-lg bg-card p-6 shadow">
+          <DashboardNewCasesCard />
+          <DashBarInteractive randomData={chartData} />
+          {/* <section className="col-span-2 row-span-2 rounded-lg bg-card p-6 shadow">
             <h2 className="mb-4 text-xl font-bold">Hospitalizations</h2>
             <div className="col-span-2 grid grid-cols-2 gap-4">
               <div>
@@ -261,8 +226,7 @@ export default async function DashboardPage({
               All vaccinations data
             </a>
           </section>
-          <DashboardNewCasesCard />
-          <section className="col-span-4 rounded-lg bg-white p-6 shadow">
+          <section className="col-span-4 row-span-2 rounded-lg bg-white p-6 shadow">
             <h2 className="mb-4 text-xl font-bold">
               Deaths within 28 days of positive test
             </h2>
@@ -283,46 +247,54 @@ export default async function DashboardPage({
             >
               All deaths data
             </a>
-          </section>
+          </section> */}
 
-          <div className="col-span-3">
+          <div className="col-span-4">
             <ChartCard
               title="Average New Cases by State"
               description="Comparison of average new cases by state"
               queryKey="avgCasesRange"
               selectedRangeLabel={avgCasesRangeOption.label}
             >
-              <AverageCasesChart data={avgCasesData.chartData}></AverageCasesChart>
+              <AverageCasesChart
+                data={avgCasesData.chartData}
+              ></AverageCasesChart>
             </ChartCard>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-4">
             <ChartCard
               title="Average New Deaths by State"
               description="Comparison of average new deaths by state"
               queryKey="avgDeathsRange"
               selectedRangeLabel={avgDeathsRangeOption.label}
             >
-              <AverageDeathsChart data={avgDeathsData.chartData}></AverageDeathsChart>
+              <AverageDeathsChart
+                data={avgDeathsData.chartData}
+              ></AverageDeathsChart>
             </ChartCard>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-4">
             <ChartCard
               title="ICU Bed Utilization Rate by State"
               description="Comparison of ICU bed utilization rate by state"
               queryKey="icuBedUtilizationRateRange"
               selectedRangeLabel={icuBedUtilizationRateRangeOption.label}
             >
-              <ICUBedUtilizationRateChart data={icuBedUtilizationRateData.chartData}></ICUBedUtilizationRateChart>
+              <ICUBedUtilizationRateChart
+                data={icuBedUtilizationRateData.chartData}
+              ></ICUBedUtilizationRateChart>
             </ChartCard>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-4">
             <ChartCard
               title="Ventilator Utilization Rate by State"
               description="Comparison of ventilator utilization rate by state"
               queryKey="ventUtilizationRateRange"
               selectedRangeLabel={ventUtilizationRateRangeOption.label}
             >
-              <VentilatorUtilizationRateChart data={ventUtilizationRateData.chartData}></VentilatorUtilizationRateChart>
+              <VentilatorUtilizationRateChart
+                data={ventUtilizationRateData.chartData}
+              ></VentilatorUtilizationRateChart>
             </ChartCard>
           </div>
         </main>
