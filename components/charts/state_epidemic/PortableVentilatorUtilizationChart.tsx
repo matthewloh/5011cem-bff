@@ -27,10 +27,12 @@ const chartConfig = {
   vent_port_used: {
     label: "Used",
     color: "hsl(var(--chart-2))",
-  }
+  },
 } satisfies ChartConfig;
 
-export function PortableVentilatorUtilizationChart({ data }: PortableVentilatorUtilizationChartProps) {
+export function PortableVentilatorUtilizationChart({
+  data,
+}: PortableVentilatorUtilizationChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <AreaChart

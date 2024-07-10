@@ -1,40 +1,63 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import {
   PieChart,
   Pie,
   ResponsiveContainer,
   Cell,
   Tooltip,
-  Legend
-} from 'recharts';
+  Legend,
+} from "recharts";
 
 type VaccineDistributionData = {
   name: string;
   value: number;
 }[];
-  
+
 type VaccineDistributionChartProps = {
   data: VaccineDistributionData;
 };
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#777777'];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#777777",
+];
 
 const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+  index,
+}) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+    >
       {`${(percent * 100).toFixed(0)}%`}
     </text>
   );
 };
 
-export default function VaccineDistributionChart({ data }: VaccineDistributionChartProps) {
+export default function VaccineDistributionChart({
+  data,
+}: VaccineDistributionChartProps) {
   return (
     <ResponsiveContainer width="100%" minHeight={200}>
       <PieChart>

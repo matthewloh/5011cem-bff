@@ -44,6 +44,6 @@ export async function getCumulVaccinationDoses(
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }

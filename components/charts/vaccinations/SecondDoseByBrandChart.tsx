@@ -25,15 +25,14 @@ type SecondDoseByBrandChartProps = {
   data: SecondDoseByBrandData;
 };
 
-export default function SecondDoseByBrandChart({ data }: SecondDoseByBrandChartProps) {
+export default function SecondDoseByBrandChart({
+  data,
+}: SecondDoseByBrandChartProps) {
   return (
     <ResponsiveContainer width="100%" minHeight={300}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-            dataKey="date"
-            stroke="hsl(var(--primary))"
-        />
+        <XAxis dataKey="date" stroke="hsl(var(--primary))" />
         <YAxis
           tickFormatter={(number) => number.toLocaleString()}
           width={85}

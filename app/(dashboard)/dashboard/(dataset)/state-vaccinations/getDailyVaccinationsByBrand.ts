@@ -61,13 +61,33 @@ export async function getDailyVaccinationsByBrand(
 
   return {
     chartData: chartData.map((day) => ({
-        date: format(day.date!),
-        pfizer: (day.pfizer1 ?? 0) + (day.pfizer2 ?? 0) + (day.pfizer3 ?? 0) + (day.pfizer4 ?? 0),
-        sinovac: (day.sinovac1 ?? 0) + (day.sinovac2 ?? 0) + (day.sinovac3 ?? 0) + (day.sinovac4 ?? 0),
-        astra: (day.astra1 ?? 0) + (day.astra2 ?? 0) + (day.astra3 ?? 0) + (day.astra3 ?? 0),
-        sinopharm: (day.sinopharm1 ?? 0) + (day.sinopharm2 ?? 0) + (day.sinopharm3 ?? 0) + (day.sinopharm4 ?? 0),
-        cansino: (day.cansino ?? 0) + (day.cansino3 ?? 0) + (day.cansino4 ?? 0),
-        pending: (day.pending1 ?? 0) + (day.pending2 ?? 0) + (day.pending3 ?? 0) + (day.pending4 ?? 0)
-    }))
+      date: format(day.date!),
+      pfizer:
+        (day.pfizer1 ?? 0) +
+        (day.pfizer2 ?? 0) +
+        (day.pfizer3 ?? 0) +
+        (day.pfizer4 ?? 0),
+      sinovac:
+        (day.sinovac1 ?? 0) +
+        (day.sinovac2 ?? 0) +
+        (day.sinovac3 ?? 0) +
+        (day.sinovac4 ?? 0),
+      astra:
+        (day.astra1 ?? 0) +
+        (day.astra2 ?? 0) +
+        (day.astra3 ?? 0) +
+        (day.astra3 ?? 0),
+      sinopharm:
+        (day.sinopharm1 ?? 0) +
+        (day.sinopharm2 ?? 0) +
+        (day.sinopharm3 ?? 0) +
+        (day.sinopharm4 ?? 0),
+      cansino: (day.cansino ?? 0) + (day.cansino3 ?? 0) + (day.cansino4 ?? 0),
+      pending:
+        (day.pending1 ?? 0) +
+        (day.pending2 ?? 0) +
+        (day.pending3 ?? 0) +
+        (day.pending4 ?? 0),
+    })),
   };
 }

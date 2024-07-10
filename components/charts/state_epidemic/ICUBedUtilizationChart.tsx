@@ -37,7 +37,7 @@ const chartConfig = {
   icu_noncovid: {
     label: "Non-COVID",
     color: "hsl(var(--chart-4))",
-  }
+  },
 } satisfies ChartConfig;
 
 export function ICUBedUtilizationChart({ data }: ICUBedUtilizationChartProps) {

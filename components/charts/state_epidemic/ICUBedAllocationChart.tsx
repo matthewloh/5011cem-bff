@@ -32,7 +32,7 @@ const chartConfig = {
   beds_icu_rep: {
     label: "Anaesthesiology & Critical Care",
     color: "hsl(var(--chart-3))",
-  }
+  },
 } satisfies ChartConfig;
 
 export function ICUBedAllocationChart({ data }: ICUBedAllocationChartProps) {

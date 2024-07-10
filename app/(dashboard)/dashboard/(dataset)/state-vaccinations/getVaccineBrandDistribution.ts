@@ -59,30 +59,56 @@ export async function getVaccineBrandDistribution(
     recordedBefore || new Date(),
   );
 
-  const aggregatedData = chartData.reduce((acc, curr) => {
-    acc.pfizer += (curr.pfizer1 ?? 0) + (curr.pfizer2 ?? 0) + (curr.pfizer3 ?? 0) + (curr.pfizer4 ?? 0);
-    acc.sinovac += (curr.sinovac1 ?? 0) + (curr.sinovac2 ?? 0) + (curr.sinovac3 ?? 0) + (curr.sinovac4 ?? 0);
-    acc.astra += (curr.astra1 ?? 0) + (curr.astra2 ?? 0) + (curr.astra3 ?? 0) + (curr.astra4 ?? 0);
-    acc.sinopharm += (curr.sinopharm1 ?? 0) + (curr.sinopharm2 ?? 0) + (curr.sinopharm3 ?? 0) + (curr.sinopharm4 ?? 0);
-    acc.cansino += (curr.cansino ?? 0) + (curr.cansino3 ?? 0) + (curr.cansino4 ?? 0);
-    acc.pending += (curr.pending1 ?? 0) + (curr.pending2 ?? 0) + (curr.pending3 ?? 0) + (curr.pending4 ?? 0);
+  const aggregatedData = chartData.reduce(
+    (acc, curr) => {
+      acc.pfizer +=
+        (curr.pfizer1 ?? 0) +
+        (curr.pfizer2 ?? 0) +
+        (curr.pfizer3 ?? 0) +
+        (curr.pfizer4 ?? 0);
+      acc.sinovac +=
+        (curr.sinovac1 ?? 0) +
+        (curr.sinovac2 ?? 0) +
+        (curr.sinovac3 ?? 0) +
+        (curr.sinovac4 ?? 0);
+      acc.astra +=
+        (curr.astra1 ?? 0) +
+        (curr.astra2 ?? 0) +
+        (curr.astra3 ?? 0) +
+        (curr.astra4 ?? 0);
+      acc.sinopharm +=
+        (curr.sinopharm1 ?? 0) +
+        (curr.sinopharm2 ?? 0) +
+        (curr.sinopharm3 ?? 0) +
+        (curr.sinopharm4 ?? 0);
+      acc.cansino +=
+        (curr.cansino ?? 0) + (curr.cansino3 ?? 0) + (curr.cansino4 ?? 0);
+      acc.pending +=
+        (curr.pending1 ?? 0) +
+        (curr.pending2 ?? 0) +
+        (curr.pending3 ?? 0) +
+        (curr.pending4 ?? 0);
 
-    return acc;
-  }, {
-    pfizer: 0,
-    sinovac: 0,
-    astra: 0,
-    sinopharm: 0,
-    cansino: 0,
-    pending: 0
-  });
+      return acc;
+    },
+    {
+      pfizer: 0,
+      sinovac: 0,
+      astra: 0,
+      sinopharm: 0,
+      cansino: 0,
+      pending: 0,
+    },
+  );
 
-  const vaccineDistributionData = Object.entries(aggregatedData).map(([name, value]) => ({
-    name,
-    value
-  }));
-  
+  const vaccineDistributionData = Object.entries(aggregatedData).map(
+    ([name, value]) => ({
+      name,
+      value,
+    }),
+  );
+
   return {
-    chartData: vaccineDistributionData
+    chartData: vaccineDistributionData,
   };
 }

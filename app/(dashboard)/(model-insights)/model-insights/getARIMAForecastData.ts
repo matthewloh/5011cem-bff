@@ -6,7 +6,7 @@ import { it } from "node:test";
 
 type Forecast = Record<string, number>;
 
-export async function getRFRForecastData(
+export async function getARIMAForecastData(
   recordedAfter: Date | null,
   recordedBefore: Date | null,
 ) {
@@ -17,7 +17,8 @@ export async function getRFRForecastData(
   if (recordedBefore)
     params.append("recordedBefore", recordedBefore.toISOString());
 
-  const urlString = `${"http://127.0.0.1:3000/api/predict/random_forest"}?${params.toString()}`;
+  const urlString = `${"http://127.0.0.1:3000/api/predict/arima"}?${params.toString()}`;
+
   const data = await fetch(urlString, {
     cache: "no-cache",
   }).then((response) => response.json());

@@ -8,7 +8,6 @@ export async function getCasesByType(
   recordedBefore: Date | null,
   selectedState: string | undefined,
 ) {
-  
   const recordedAtQuery: Prisma.StateEpidemicWhereInput["date"] = {};
   if (recordedAfter) recordedAtQuery.gte = recordedAfter;
   if (recordedBefore) recordedAtQuery.lte = recordedBefore;
@@ -41,11 +40,11 @@ export async function getCasesByType(
     recordedAfter || startOfDay(chartData[0].date!),
     recordedBefore || new Date(),
   );
-  
+
   return {
     chartData: chartData.map((day) => ({
       ...day,
-      date: format(day.date!)
-    }))
+      date: format(day.date!),
+    })),
   };
 }

@@ -30,7 +30,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function DeathsByDateOfDeathChart({ data }: DeathsByDateOfDeathChartProps) {
+export function DeathsByDateOfDeathChart({
+  data,
+}: DeathsByDateOfDeathChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <AreaChart
