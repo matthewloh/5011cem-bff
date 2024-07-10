@@ -34,6 +34,8 @@ import { getPortableVentilatorUtilization } from "./getPortableVentilatorUtiliza
 import { PortableVentilatorUtilizationChart } from "@/components/charts/state_epidemic/PortableVentilatorUtilizationChart";
 import { getVentilatorUsageByType } from "./getVentilizationUsageByType";
 import { VentilatorUsageByTypeChart } from "@/components/charts/state_epidemic/VentilatorUsageByType";
+import { getTestTypeDistribution } from "./getTestTypeDistribution";
+import { TestTypeDistributionChart } from "@/components/charts/state_epidemic/TestTypeDistributionChart";
 
 export default async function StateEpidemic({
   searchParams: {
@@ -60,6 +62,9 @@ export default async function StateEpidemic({
     deathsByVaccinationStatusRangeFrom,
     deathsByVaccinationStatusRangeTo,
     // Tests
+    testTypeDistributionRange,
+    testTypeDistributionRangeFrom,
+    testTypeDistributionRangeTo,
     testsByTypeRange,
     testsByTypeRangeFrom,
     testsByTypeTo,
@@ -117,6 +122,9 @@ export default async function StateEpidemic({
     deathsByVaccinationStatusRangeFrom?: string,
     deathsByVaccinationStatusRangeTo?: string,
     // Tests
+    testTypeDistributionRange?: string,
+    testTypeDistributionRangeFrom?: string,
+    testTypeDistributionRangeTo?: string,
     testsByTypeRange?: string,
     testsByTypeRangeFrom?: string,
     testsByTypeTo?: string,
@@ -204,6 +212,13 @@ export default async function StateEpidemic({
     ) || defaultRangeOption;
 
   // Tests
+  const testTypeDistributionRangeOption =
+    getRangeOption(
+      testTypeDistributionRange,
+      testTypeDistributionRangeFrom,
+      testTypeDistributionRangeTo,
+    ) || defaultRangeOption;
+
   const testsByTypeRangeOption =
     getRangeOption(
       testsByTypeRange,
@@ -278,7 +293,7 @@ export default async function StateEpidemic({
   const [
     casesByTypeData, casesByVaccinationStatusData, casesByAgeGroupData,
     totalDeathsData, deathsByDateOfDeathData, deathsByVaccinationStatusData,
-    testsByTypeData,
+    testTypeDistributionData, testsByTypeData,
     bedAllocationData, admissionsData, dischargedData, hospitalizationsData, icuBedAllocationData, icuBedUtilizationData, ventilatorUtilizationData, portableVentilatorUtilizationData, ventilatorUsageByTypeData
   ] = await Promise.all([
     // Cases
@@ -314,6 +329,11 @@ export default async function StateEpidemic({
       selectedStateOption.value
     ),
     // Tests
+    getTestTypeDistribution(
+      testTypeDistributionRangeOption.startDate,
+      testTypeDistributionRangeOption.endDate,
+      selectedStateOption.value
+    ),
     getTestsByType(
       testsByTypeRangeOption.startDate,
       testsByTypeRangeOption.endDate,
@@ -384,6 +404,22 @@ export default async function StateEpidemic({
 
       <div className="flex h-full m-6 flex-col gap-8">
         <div className="flex flex-col">
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">Overview</h3>
+          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+            <div className="col-span-2">
+              <ChartCard
+                title="Lorem Ipsum"
+                description="Lorem ipsum dolor sit amet"
+                queryKey=""
+                selectedRangeLabel=""
+              >
+                <></>
+              </ChartCard>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col">
           <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Cases</h3>
           <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
             <div className="col-span-2">
@@ -444,15 +480,20 @@ export default async function StateEpidemic({
         <div className="flex flex-col">
           <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Tests</h3>
           <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
-            <div className="col-span-2">
-              <ChartCard
-                title="Tests by Type"
-                description="Daily amounts of tests conducted"
-                queryKey="testsByTypeRange"
-                selectedRangeLabel={testsByTypeRangeOption.label}>
-                <TestsByTypeChart data={testsByTypeData.chartData}></TestsByTypeChart>
-              </ChartCard>
-            </div>
+            <ChartCard
+              title="Test Type Distribution"
+              description="Percentage distribution of tests by type"
+              queryKey="testTypeDistributionRange"
+              selectedRangeLabel={testTypeDistributionRangeOption.label}>
+                <TestTypeDistributionChart data={testTypeDistributionData.chartData}></TestTypeDistributionChart>
+            </ChartCard>
+            <ChartCard
+              title="Daily Tests"
+              description="Daily amounts of tests conducted"
+              queryKey="testsByTypeRange"
+              selectedRangeLabel={testsByTypeRangeOption.label}>
+              <TestsByTypeChart data={testsByTypeData.chartData}></TestsByTypeChart>
+            </ChartCard>
           </div>
         </div>
 
