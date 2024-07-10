@@ -28,10 +28,9 @@ export async function getLSTMForecastData(
   if (recordedBefore) recordedatQuery.lte = recordedBefore;
   // Converting the forecast object to an array of objects
   const forecastData = Object.entries(forecast).map(([key, value]) => ({
-    date: key,
-    value: value,
+    date: key.split("T")[0],
+    predicted_value: value,
   }));
-
   const actualData = await prisma.malaysiaEpidemic.findMany({
     select: {
       date: true,
@@ -44,36 +43,23 @@ export async function getLSTMForecastData(
       date: "asc",
     },
   });
-  /* 
-  type LSTMForecastProps = {
-    date: string;
-    value: number;
-    actual_value: number;
-  }[]; 
-  */
 
-  // const chartData = {
-  //   date,
-  //   value,
-  //   actual_value
-  // }
-
-  const chartData = forecastData.map((forecast, index) => {
-    const actualValue = actualData[index]?.cases_new || 0;
-    return {
-      date: forecast.date,
-      value: forecast.value,
-      actual_value: actualValue,
-    };
-  });
+  const forecastMap = new Map(
+    forecastData.map((item) => [item.date, item.predicted_value]),
+  );
+  const chartData = actualData.map((actual) => ({
+    date: actual.date,
+    value: forecastMap.get(actual.date!.toISOString().split("T")[0]) || null,
+    actual_value: actual.cases_new,
+  }));
+  console.log(chartData);
   const { format } = getChartDateArray(
-    recordedAfter || startOfDay(chartData[0].date),
+    recordedAfter || startOfDay(chartData[0].date!),
     recordedBefore || new Date(),
   );
-
   const chartDataFormatted = chartData.map((day) => ({
     ...day,
-    date: format(new Date(day.date)),
+    date: format(day.date!),
   }));
   return {
     chartDataFormatted,
