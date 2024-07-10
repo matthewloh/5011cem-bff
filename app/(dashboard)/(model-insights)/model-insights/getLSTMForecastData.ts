@@ -21,15 +21,19 @@ export async function getLSTMForecastData(
   const data = await fetch(urlString, {
     cache: "no-cache",
   }).then((response) => response.json());
-
   const forecast = data.message.Forecast as Forecast;
+  const comments = data.comments as string;
   const recordedatQuery: Prisma.MalaysiaEpidemicWhereInput["date"] = {};
-  if (recordedAfter) recordedatQuery.gte = recordedAfter;
+  if (recordedAfter) recordedatQuery.gte = new Date("2020-01-25");
   if (recordedBefore) recordedatQuery.lte = recordedBefore;
   // Converting the forecast object to an array of objects
   const forecastData = Object.entries(forecast).map(([key, value]) => ({
     date: key.split("T")[0],
-    predicted_value: value,
+    value: value,
+  }));
+  const forecastDataAsDate = forecastData.map((item) => ({
+    date: new Date(item.date),
+    value: item.value,
   }));
   const actualData = await prisma.malaysiaEpidemic.findMany({
     select: {
@@ -45,14 +49,38 @@ export async function getLSTMForecastData(
   });
 
   const forecastMap = new Map(
-    forecastData.map((item) => [item.date, item.predicted_value]),
+    forecastData.map((item) => [item.date, item.value]),
   );
+  const forecastMapDateType = new Map(
+    forecastDataAsDate.map((item) => [item.date, item.value]),
+  );
+
+  const latestForecastDate =
+    forecastDataAsDate[forecastDataAsDate.length - 1].date;
+  const latestActualDate = actualData[actualData.length - 1].date!;
+
+  const isForecastAfterActual = latestForecastDate > latestActualDate;
+
   const chartData = actualData.map((actual) => ({
     date: actual.date,
     value: forecastMap.get(actual.date!.toISOString().split("T")[0]) || null,
     actual_value: actual.cases_new,
   }));
-  console.log(chartData);
+  // Append the forecast data to the chartData if the forecast is after the actual data
+  if (isForecastAfterActual) {
+    const forecastDataAfterActual = forecastDataAsDate.filter(
+      (item) => item.date > latestActualDate,
+    );
+
+    const forecastDataAfterActualChart = forecastDataAfterActual.map(
+      (item) => ({
+        date: item.date,
+        value: item.value,
+        actual_value: null,
+      }),
+    );
+    chartData.push(...forecastDataAfterActualChart);
+  }
   const { format } = getChartDateArray(
     recordedAfter || startOfDay(chartData[0].date!),
     recordedBefore || new Date(),
@@ -63,5 +91,6 @@ export async function getLSTMForecastData(
   }));
   return {
     chartDataFormatted,
+    comments,
   };
 }

@@ -40,7 +40,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function CasesByVaccinationStatusChart({ data }: CasesByVaccinationStatusChartProps) {
+export function CasesByVaccinationStatusChart({
+  data,
+}: CasesByVaccinationStatusChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <AreaChart

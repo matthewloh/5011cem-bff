@@ -25,10 +25,12 @@ import { Calendar } from "../ui/calendar";
 
 import type { DateRange } from "react-day-picker";
 import { subDays } from "date-fns";
+import { DatePickerDemo } from "./model-insights/date-picker-insight";
 
 type ChartCardProps = {
   title: string;
   description: string;
+  footer?: string | null;
   queryKey: string;
   selectedRangeLabel: string;
   children: ReactNode;
@@ -37,6 +39,7 @@ type ChartCardProps = {
 export function PredictChartCard({
   title,
   description,
+  footer,
   children,
   queryKey,
   selectedRangeLabel,
@@ -45,8 +48,9 @@ export function PredictChartCard({
   const router = useRouter();
   const pathname = usePathname();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: subDays(new Date(), 29),
-    to: new Date(),
+    // Choose from 2022-03-09 onwards to 2024-04-20 by default
+    from: new Date("2022-03-09"),
+    to: new Date("2024-04-20"),
   });
   function setRange(range: keyof typeof PREDICTION_RANGE_OPTIONS | DateRange) {
     const params = new URLSearchParams(searchParams);
@@ -118,6 +122,11 @@ export function PredictChartCard({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
+      <CardFooter>
+        {footer && (
+          <div className="text-sm text-secondary-foreground">{footer}</div>
+        )}
+      </CardFooter>
     </Card>
   );
 }

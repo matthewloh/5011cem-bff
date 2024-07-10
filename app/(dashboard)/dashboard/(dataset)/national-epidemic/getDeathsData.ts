@@ -2,9 +2,7 @@ import prisma from "@/lib/db";
 import { getChartDateArray } from "@/utils/formatters";
 import { Prisma } from "@prisma/client";
 
-import {
-  startOfDay
-} from "date-fns";
+import { startOfDay } from "date-fns";
 export async function getDeathsData(
   recordedAfter: Date | null,
   recordedBefore: Date | null,

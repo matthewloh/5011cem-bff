@@ -8,7 +8,7 @@ from api.src.prisma import prisma
 from prisma.types import StateEpidemicWhereInput
 import numpy as np
 import pandas as pd
-
+import pmdarima as pm
 from sklearn.preprocessing import StandardScaler
 from datetime import datetime
 
@@ -159,13 +159,14 @@ async def predict_lstm_model(
         trainX.append(df_scaled[i-past:i, 0:df.shape[1]])
 
     trainX = np.array(trainX)
-    # recorded_after = pd.to_datetime(recorded_after)
-    # recorded_before = pd.to_datetime(recorded_before)
+    recorded_after = pd.to_datetime(recorded_after)
+    recorded_before = pd.to_datetime(recorded_before)
 
-    # recorded_after = recorded_after.replace(tzinfo=None)
-    # recorded_before = recorded_before.replace(tzinfo=None)
+    recorded_after = recorded_after.replace(tzinfo=None)
+    recorded_before = recorded_before.replace(tzinfo=None)
+    extra_days_count = int((recorded_before - test_data.index[-1]).days)
     # future_dates_count = (recorded_before - test_data.index[-1]).days
-    future_dates_count = len(test_data)
+    future_dates_count = len(test_data) + extra_days_count
     # print(test_data.index[-1])  # the last date in the test data
 
     forecast_dates = pd.date_range(
@@ -178,8 +179,11 @@ async def predict_lstm_model(
     forecast_df = pd.DataFrame(
         {'Date': forecast_dates, 'Forecast': pred})  # plot this one out
     forecast_df.set_index('Date', inplace=True)
-    print(forecast_df)
-    return {"message": forecast_df.to_dict()}
+    # print(forecast_df.to_dict())
+    return {
+        "message": forecast_df.to_dict(),
+        "comments": f"This data is forecasted from {forecast_dates[0].strftime('%d %B %Y')} to {forecast_dates[-1].strftime('%d %B %Y')}."
+    }
 
 
 @app.get("/api/predict/random_forest")
@@ -195,7 +199,7 @@ async def predict_random_forest(
 
     recorded_after = recorded_after.replace(tzinfo=None)
     recorded_before = recorded_before.replace(tzinfo=None)
-    #
+
     df = pd.read_csv(r'api/dataset/training_dataset.csv')  # Marcus csv
     df.drop(columns=['Unnamed: 0', "state", "cases_new_capita"], inplace=True)
     df["date"] = pd.to_datetime(df["date"])
@@ -224,7 +228,6 @@ async def predict_random_forest(
 
     recorded_after  # Start Date
     recorded_before  # End Date
-    future_dates_count = int((recorded_before - recorded_after).days)
 
     # if recorded_after > "2024-04-20":  # You cant set a start date after the last date in the dataset
     #     return "Invalid date range. Please enter a date range before 2024-04-20."
@@ -232,7 +235,11 @@ async def predict_random_forest(
     data = df.loc[df.index.get_level_values('date') == "2024-04-20"]
     data = data.drop(columns=col_name)
 
-    days = future_dates_count + 365
+    # Convert recorded before into days
+    days = int(
+        (recorded_before - datetime.strptime("2024-04-20", "%Y-%m-%d")).days)
+
+    days = 90 if days == 0 else days
 
     result = []
 
@@ -251,15 +258,50 @@ async def predict_random_forest(
 
     result_df = pd.DataFrame(result, columns=col_name)
     result_df.index = pd.date_range(
-        start=recorded_after, periods=days + 1, freq='D')
+        start="2024-04-21", periods=days + 1, freq='D')
     # Get cases_new only
     result_df = result_df["cases_new"]
-    print(result_df)
-    return {"message": result_df.to_dict()}
+    # print(result_df.to_dict())
+    return {"message": {"Forecast": result_df.to_dict()}, "comments": f"This data is forecasted from {result_df.index[0].strftime('%d %B %Y')} to {result_df.index[-1].strftime('%d %B %Y')}."}
 
 
 @app.get("/api/predict/arima")
 async def predict_arima(
-
+    recorded_before: Optional[datetime] = Query(
+        None, alias="recordedBefore", description="End date in ISO format received from the frontend"),
+    # Start date of the range to forecast
+    recorded_after: Optional[datetime] = Query(
+        None, alias="recordedAfter", description="Start date in ISO format received from the frontend")
 ):
-    pass
+    recorded_after = pd.to_datetime(recorded_after)
+    recorded_before = pd.to_datetime(recorded_before)
+
+    recorded_after = recorded_after.replace(tzinfo=None)
+    recorded_before = recorded_before.replace(tzinfo=None)
+
+    df = pd.read_csv(r"api/dataset/training_dataset.csv")  # Up to 20/4/2021
+    df.drop(columns=['Unnamed: 0', 'state', 'cases_new_capita'], inplace=True)
+    # sum each date for each column sum all 14 rows
+    df = df.groupby('date').sum()
+    df.index = pd.to_datetime(df.index)
+    df = df.asfreq('d')  # changes the frequency to daily
+
+    # Split the data into training and testing sets
+    split_index = int(len(df) * 0.5)  # Trains up to 2022-03-09 for 0.5
+    # Get the date cutoff based on the split index
+    test_data = df.iloc[split_index:]
+
+    extra_days_count = int((recorded_before - test_data.index[-1]).days)
+    future_dates_count = len(test_data) + extra_days_count
+
+    forecast = arima_model.predict(n_periods=future_dates_count)
+    forecast_index = test_data.index
+    forecast_dates = pd.date_range(
+        start=forecast_index[0],
+        periods=future_dates_count,
+    )
+    arima_forecast = pd.DataFrame(
+        {'Date': forecast_dates, 'Forecast': forecast})
+    arima_forecast.set_index('Date', inplace=True)
+
+    return {"message": arima_forecast.to_dict(), "comments": f"This data is forecasted from {forecast_dates[0].strftime('%d %B %Y')} to {forecast_dates[-1].strftime('%d %B %Y')}."}

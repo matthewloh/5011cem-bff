@@ -10,7 +10,7 @@ import {
   interval,
   max,
   min,
-  startOfWeek
+  startOfWeek,
 } from "date-fns";
 
 const DATE_TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
@@ -29,7 +29,6 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
 export function formatDate(date: Date) {
   return DATE_FORMATTER.format(date);
 }
-
 
 export function getChartDateArray(startDate: Date, endDate: Date = new Date()) {
   const days = differenceInDays(endDate, startDate);

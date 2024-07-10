@@ -12,13 +12,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, Map } from "lucide-react";
 
 type StateDropdownProps = {
-  queryKey: string,
-  selectedStateLabel: string
-}
+  queryKey: string;
+  selectedStateLabel: string;
+};
 
 export function StateDropdown({
   queryKey,
-  selectedStateLabel
+  selectedStateLabel,
 }: StateDropdownProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -33,10 +33,7 @@ export function StateDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="flex flex-row gap-2"
-          variant="outline"
-        >
+        <Button className="flex flex-row gap-2" variant="outline">
           <Map size={16} />
           <span className="inline-block align-middle">
             {selectedStateLabel || "Select State"}
@@ -45,16 +42,14 @@ export function StateDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {
-          Object.entries(STATE_OPTIONS).map(([key, value]) => (
-            <DropdownMenuItem
-              onClick={() => setState(key as keyof typeof STATE_OPTIONS)}
-              key={key}
-            >
-              {value.label}
-            </DropdownMenuItem>
-          ))
-        }
+        {Object.entries(STATE_OPTIONS).map(([key, value]) => (
+          <DropdownMenuItem
+            onClick={() => setState(key as keyof typeof STATE_OPTIONS)}
+            key={key}
+          >
+            {value.label}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

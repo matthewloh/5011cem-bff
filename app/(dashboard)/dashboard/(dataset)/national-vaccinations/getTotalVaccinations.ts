@@ -20,7 +20,7 @@ export async function getTotalVaccinations(
         id: true,
         date: true,
         daily: true,
-        cumul: true
+        cumul: true,
       },
       where: {
         date: recordedAtQuery,
@@ -35,11 +35,11 @@ export async function getTotalVaccinations(
     recordedAfter || startOfDay(chartData[0].date!),
     recordedBefore || new Date(),
   );
-  
+
   return {
     chartData: chartData.map((day) => ({
       ...day,
-      date: format(day.date!)
-    }))
+      date: format(day.date!),
+    })),
   };
 }

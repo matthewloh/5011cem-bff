@@ -35,7 +35,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function VentilatorUsageByTypeChart({ data }: VentilatorUsageByTypeChartProps) {
+export function VentilatorUsageByTypeChart({
+  data,
+}: VentilatorUsageByTypeChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <AreaChart

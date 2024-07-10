@@ -9,8 +9,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
-} from 'recharts';
+  ResponsiveContainer,
+} from "recharts";
 
 type DailyVaccinationDoseData = {
   id: number;
@@ -25,15 +25,14 @@ type DailyVaccinationDoseChartProps = {
   data: DailyVaccinationDoseData;
 };
 
-export default function DailyVaccinationDoseChart({ data }: DailyVaccinationDoseChartProps) {
+export default function DailyVaccinationDoseChart({
+  data,
+}: DailyVaccinationDoseChartProps) {
   return (
     <ResponsiveContainer width="100%" minHeight={300}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="date"
-          stroke="hsl(var(--primary))"
-        />
+        <XAxis dataKey="date" stroke="hsl(var(--primary))" />
         <YAxis
           tickFormatter={(number) => number.toLocaleString()}
           width={85}
@@ -47,12 +46,7 @@ export default function DailyVaccinationDoseChart({ data }: DailyVaccinationDose
           stackId="a"
           fill="#0088FE"
         />
-        <Bar
-          dataKey="daily_full"
-          name="Full"
-          stackId="a"
-          fill="#00C49F"
-        />
+        <Bar dataKey="daily_full" name="Full" stackId="a" fill="#00C49F" />
         <Bar
           dataKey="daily_booster"
           name="Booster"

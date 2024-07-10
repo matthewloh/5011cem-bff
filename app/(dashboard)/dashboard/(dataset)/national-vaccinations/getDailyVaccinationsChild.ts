@@ -22,7 +22,7 @@ export async function getDailyVaccinationsChild(
         daily_partial_child: true,
         daily_full_child: true,
         daily_booster_child: true,
-        daily_booster2_child: true
+        daily_booster2_child: true,
       },
       where: {
         date: recordedAtQuery,
@@ -42,6 +42,6 @@ export async function getDailyVaccinationsChild(
     chartData: chartData.map((day) => ({
       ...day,
       date: format(day.date!),
-    }))
+    })),
   };
 }
