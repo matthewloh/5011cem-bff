@@ -34,6 +34,8 @@ import { getPortableVentilatorUtilization } from "./getPortableVentilatorUtiliza
 import { PortableVentilatorUtilizationChart } from "@/components/charts/state_epidemic/PortableVentilatorUtilizationChart";
 import { getVentilatorUsageByType } from "./getVentilizationUsageByType";
 import { VentilatorUsageByTypeChart } from "@/components/charts/state_epidemic/VentilatorUsageByType";
+import { getTestTypeDistribution } from "./getTestTypeDistribution";
+import { TestTypeDistributionChart } from "@/components/charts/state_epidemic/TestTypeDistributionChart";
 import { Separator } from "@/components/ui/separator";
 
 export default async function StateEpidemic({
@@ -61,6 +63,9 @@ export default async function StateEpidemic({
     deathsByVaccinationStatusRangeFrom,
     deathsByVaccinationStatusRangeTo,
     // Tests
+    testTypeDistributionRange,
+    testTypeDistributionRangeFrom,
+    testTypeDistributionRangeTo,
     testsByTypeRange,
     testsByTypeRangeFrom,
     testsByTypeTo,
@@ -118,9 +123,12 @@ export default async function StateEpidemic({
     deathsByVaccinationStatusRangeFrom?: string;
     deathsByVaccinationStatusRangeTo?: string;
     // Tests
-    testsByTypeRange?: string;
-    testsByTypeRangeFrom?: string;
-    testsByTypeTo?: string;
+    testTypeDistributionRange?: string,
+    testTypeDistributionRangeFrom?: string,
+    testTypeDistributionRangeTo?: string,
+    testsByTypeRange?: string,
+    testsByTypeRangeFrom?: string,
+    testsByTypeTo?: string,
     // Hospital Resources
     bedAllocationRange?: string;
     bedAllocationRangeFrom?: string;
@@ -206,9 +214,19 @@ export default async function StateEpidemic({
     ) || defaultRangeOption;
 
   // Tests
+  const testTypeDistributionRangeOption =
+    getRangeOption(
+      testTypeDistributionRange,
+      testTypeDistributionRangeFrom,
+      testTypeDistributionRangeTo,
+    ) || defaultRangeOption;
+
   const testsByTypeRangeOption =
-    getRangeOption(testsByTypeRange, testsByTypeRangeFrom, testsByTypeTo) ||
-    defaultRangeOption;
+    getRangeOption(
+      testsByTypeRange,
+      testsByTypeRangeFrom,
+      testsByTypeTo,
+    ) || defaultRangeOption;
 
   // Hospital Resources
   const bedAllocationRangeOption =
@@ -269,22 +287,10 @@ export default async function StateEpidemic({
     ) || defaultRangeOption;
 
   const [
-    casesByTypeData,
-    casesByVaccinationStatusData,
-    casesByAgeGroupData,
-    totalDeathsData,
-    deathsByDateOfDeathData,
-    deathsByVaccinationStatusData,
-    testsByTypeData,
-    bedAllocationData,
-    admissionsData,
-    dischargedData,
-    hospitalizationsData,
-    icuBedAllocationData,
-    icuBedUtilizationData,
-    ventilatorUtilizationData,
-    portableVentilatorUtilizationData,
-    ventilatorUsageByTypeData,
+    casesByTypeData, casesByVaccinationStatusData, casesByAgeGroupData,
+    totalDeathsData, deathsByDateOfDeathData, deathsByVaccinationStatusData,
+    testTypeDistributionData, testsByTypeData,
+    bedAllocationData, admissionsData, dischargedData, hospitalizationsData, icuBedAllocationData, icuBedUtilizationData, ventilatorUtilizationData, portableVentilatorUtilizationData, ventilatorUsageByTypeData
   ] = await Promise.all([
     // Cases
     getCasesByType(
@@ -316,9 +322,14 @@ export default async function StateEpidemic({
     getDeathsByVaccinationStatus(
       deathsByVaccinationStatusRangeOption.startDate,
       deathsByVaccinationStatusRangeOption.endDate,
-      selectedStateOption.value,
+      selectedStateOption.value
     ),
     // Tests
+    getTestTypeDistribution(
+      testTypeDistributionRangeOption.startDate,
+      testTypeDistributionRangeOption.endDate,
+      selectedStateOption.value
+    ),
     getTestsByType(
       testsByTypeRangeOption.startDate,
       testsByTypeRangeOption.endDate,
@@ -468,22 +479,22 @@ export default async function StateEpidemic({
         </div>
 
         <div className="flex flex-col">
-          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">
-            {selectedStateOption.label}: Tests
-          </h3>
-          <div className="grid grid-cols-1 grid-rows-1 gap-2 lg:grid-cols-2">
-            <div className="col-span-2">
-              <ChartCard
-                title="Tests by Type"
-                description="Daily amounts of tests conducted"
-                queryKey="testsByTypeRange"
-                selectedRangeLabel={testsByTypeRangeOption.label}
-              >
-                <TestsByTypeChart
-                  data={testsByTypeData.chartData}
-                ></TestsByTypeChart>
-              </ChartCard>
-            </div>
+          <h3 className="my-4 border-b pb-2 text-3xl font-semibold">{selectedStateOption.label}: Tests</h3>
+          <div className="grid grid-rows-1 grid-cols-1 gap-2 lg:grid-cols-2">
+            <ChartCard
+              title="Test Type Distribution"
+              description="Percentage distribution of tests by type"
+              queryKey="testTypeDistributionRange"
+              selectedRangeLabel={testTypeDistributionRangeOption.label}>
+                <TestTypeDistributionChart data={testTypeDistributionData.chartData}></TestTypeDistributionChart>
+            </ChartCard>
+            <ChartCard
+              title="Daily Tests"
+              description="Daily amounts of tests conducted"
+              queryKey="testsByTypeRange"
+              selectedRangeLabel={testsByTypeRangeOption.label}>
+              <TestsByTypeChart data={testsByTypeData.chartData}></TestsByTypeChart>
+            </ChartCard>
           </div>
         </div>
 

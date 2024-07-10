@@ -11,7 +11,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-type TestsByTypeChart = {
+type TestsByTypeChartProps = {
   data: {
     date: string | null;
     rtk_ag: number | null;
@@ -30,7 +30,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TestsByTypeChart({ data }: TestsByTypeChart) {
+export function TestsByTypeChart({ data }: TestsByTypeChartProps) {
   return (
     <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
       <AreaChart
