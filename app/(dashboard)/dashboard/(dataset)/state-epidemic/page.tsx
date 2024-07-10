@@ -228,10 +228,6 @@ export default async function StateEpidemic({
       testsByTypeTo,
     ) || defaultRangeOption;
 
-  const testsByTypeRangeOption =
-    getRangeOption(testsByTypeRange, testsByTypeRangeFrom, testsByTypeTo) ||
-    defaultRangeOption;
-
   // Hospital Resources
   const bedAllocationRangeOption =
     getRangeOption(
