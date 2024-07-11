@@ -11,7 +11,8 @@
     "lint": "next lint",
     "db:genpy": "prisma generate --generator=py",
     "db:genjs": "prisma generate --generator=javascript",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.4",
