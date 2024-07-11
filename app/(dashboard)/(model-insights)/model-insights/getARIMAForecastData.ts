@@ -29,8 +29,14 @@ export async function getARIMAForecastData(
     recordedBefore = new Date("2024-04-20");
   }
   const recordedBeforeString = recordedBefore?.toISOString().split("T")[0];
+  let finalDateString = `2022-03-09_${recordedBeforeString}`;
+  // if final date string not in ARIMAData, then use the last date in ARIMAData
+  if (!ARIMAData[finalDateString as keyof typeof ARIMAData]) {
+    const keys = Object.keys(ARIMAData);
+    finalDateString = keys[keys.length - 1];
+  }
   const data =
-    ARIMAData[`2022-03-09_${recordedBeforeString}` as keyof typeof ARIMAData];
+    ARIMAData[finalDateString as keyof typeof ARIMAData];
 
   const forecast = data.message.Forecast as Forecast;
   const comments = data.comments as string;

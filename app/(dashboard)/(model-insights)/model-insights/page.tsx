@@ -92,8 +92,9 @@ export default async function ModelInsightsPage({
           <div className="w-full rounded-xl bg-background/30 p-6 align-text-top leading-loose">
             <p className="font-sans text-lg text-foreground">
               Due to resource constraints, the models are currently hard-coded.
-              The limitations of filtering are described in the descriptions
-              below.
+              The model&apos;s overall size is too large to be hosted on Vercel.
+              The additional limitations of filtering are described in the
+              descriptions below.
             </p>
           </div>
 
@@ -134,7 +135,7 @@ export default async function ModelInsightsPage({
               <TabsContent value="ARIMA">
                 <PredictChartCard
                   title="ARIMA"
-                  description="Forecasting New Cases using ARIMA, a statistical model that uses time series data to predict future values. The model is based on the assumption that the future values of a time series can be predicted based on its past values. The current implementation allows for filtering."
+                  description="Forecasting New Cases using ARIMA, a statistical model that uses time series data to predict future values. The model is based on the assumption that the future values of a time series can be predicted based on its past values. The current implementation allows for filtering by the few options, but not custom. Custom filtering is only supported with a long-running server hosting the model. It currently defaults to the next year upon reading a custom filter range."
                   footer={ARIMAComments}
                   queryKey="totalARIMARange"
                   selectedRangeLabel={totalARIMARangeOption.label}
