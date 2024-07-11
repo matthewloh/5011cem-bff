@@ -3,22 +3,7 @@
  * @see https://v0.dev/t/BbTTX1hYAlE
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { CartesianGrid, XAxis, Line, LineChart } from "recharts";
-import {
-  ChartTooltipContent,
-  ChartTooltip,
-  ChartContainer,
-} from "@/components/ui/chart";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { ChartCard } from "@/components/charts/national_epidemic/ChartCard";
-import { TrendingUp } from "lucide-react";
 import prisma from "@/lib/db";
 import { formatDate } from "@/utils/formatters";
 import DashboardVaccinationCard from "../../../components/charts/dashboard/dash-vacc";
@@ -34,7 +19,6 @@ import { getAverageDeaths } from "./getAverageDeaths";
 import { AverageDeathsChart } from "@/components/charts/dashboard/dash-avg-deaths";
 import { getAverageCases } from "./getAverageCases";
 import { AverageCasesChart } from "@/components/charts/dashboard/dash-avg-cases";
-import DashboardInteractiveCard from "@/components/charts/dashboard/dash-interactive";
 import { DashBarInteractive } from "@/components/charts/dashboard/DashBarLine";
 import { subDays } from "date-fns";
 
@@ -135,30 +119,30 @@ export default async function DashboardPage({
   }
   const latest_date = date.date > date_epi.date ? date.date : date_epi.date;
   // Find the three highest cumulative cases_new of three states
-  const stateData = await prisma.stateEpidemic.groupBy({
-    by: ["date", "state", "cases_new", "deaths_new", "cases_recovered"],
-    orderBy: {
-      cases_new: "desc",
-    },
-    take: 180,
-    where: {
-      AND: {
-        date: {
-          gte: subDays(new Date(), 90),
-          lte: new Date(),
-        },
-      },
-    },
-  });
-  const chartData = stateData.map((d) => {
-    return {
-      date: d.date,
-      state: d.state,
-      cases_new: d.cases_new,
-      deaths_new: d.deaths_new,
-      cases_recovered: d.cases_recovered,
-    };
-  });
+  // const stateData = await prisma.stateEpidemic.groupBy({
+  //   by: ["date", "state", "cases_new", "deaths_new", "cases_recovered"],
+  //   orderBy: {
+  //     cases_new: "desc",
+  //   },
+  //   take: 180,
+  //   where: {
+  //     AND: {
+  //       date: {
+  //         gte: subDays(new Date(), 90),
+  //         lte: new Date(),
+  //       },
+  //     },
+  //   },
+  // });
+  // const chartData = stateData.map((d) => {
+  //   return {
+  //     date: d.date,
+  //     state: d.state,
+  //     cases_new: d.cases_new,
+  //     deaths_new: d.deaths_new,
+  //     cases_recovered: d.cases_recovered,
+  //   };
+  // });
   return (
     <div className="min-h-screen bg-background/50">
       <header className="border-b bg-background shadow">
@@ -177,7 +161,7 @@ export default async function DashboardPage({
           <DashboardDeathsCard />
           <DashboardHospitalizationsCard />
           <DashboardNewCasesCard />
-          <DashBarInteractive randomData={chartData} />
+          {/* <DashBarInteractive randomData={chartData} /> */}
           {/* <section className="col-span-2 row-span-2 rounded-lg bg-card p-6 shadow">
             <h2 className="mb-4 text-xl font-bold">Hospitalizations</h2>
             <div className="col-span-2 grid grid-cols-2 gap-4">
