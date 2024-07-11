@@ -1,40 +1,58 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import {
   PieChart,
   Pie,
   ResponsiveContainer,
   Cell,
   Tooltip,
-  Legend
-} from 'recharts';
+  Legend,
+} from "recharts";
 
 type TestTypeDistributionData = {
   name: string | null;
   value: number | null;
 }[];
-  
+
 type TestTypeDistributionChartProps = {
   data: TestTypeDistributionData;
 };
 
-const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))'];
+const COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))"];
 
 const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+
+const renderCustomizedLabel = (props: {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+  index: number;
+}) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+    >
       {`${(percent * 100).toFixed(0)}%`}
     </text>
   );
 };
 
-export function TestTypeDistributionChart({ data }: TestTypeDistributionChartProps) {
+export function TestTypeDistributionChart({
+  data,
+}: TestTypeDistributionChartProps) {
   return (
     <ResponsiveContainer width="100%" minHeight={200}>
       <PieChart>
