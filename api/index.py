@@ -25,18 +25,6 @@ with open(r"api/model_binaries/ARIMA_model.pkl", "rb") as file:
     arima_model = pickle.load(file)
 
 
-@app.on_event("startup")
-async def startup():
-    pass
-    # await prisma.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    pass
-    # await prisma.disconnect()
-
-
 @app.get("/api/python")
 def hello_world():
     return {"message": "Hello World"}

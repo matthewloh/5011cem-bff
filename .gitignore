@@ -39,6 +39,8 @@ venv
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-api/__pycache__/model.cpython-312.pyc
-api/__pycache__/index.cpython-312.pyc
 api/__pycache__/*.pyc
+./api/__pycache__/*.pyc
+./api/src/__pycache__/*.pyc
+api/__pycache__
+api/src/__pycache__
