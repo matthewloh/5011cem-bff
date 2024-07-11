@@ -161,7 +161,7 @@ export default async function DashboardPage({
   });
   return (
     <div className="min-h-screen bg-background/50">
-      <header className="bg-white shadow">
+      <header className="border-b bg-background shadow">
         <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight text-foreground">
             A Summary of COVID-19 Data in Malaysia

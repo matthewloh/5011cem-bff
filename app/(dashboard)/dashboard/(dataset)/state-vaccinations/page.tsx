@@ -322,7 +322,7 @@ export default async function StateVaccinations({
           />
         </div>
       </div>
-      <p className="px-6 text-lg text-gray-700">
+      <p className="px-6 text-lg text-foreground">
         This dataset contains the vaccination data of every state in Malaysia.
       </p>
 
