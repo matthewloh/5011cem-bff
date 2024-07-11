@@ -13,8 +13,8 @@ app = FastAPI()
 with open(r"api/model_binaries/LSTM_UNI_model.pkl", "rb") as file:
     model = pickle.load(file)
 
-with open(r"api/model_binaries/random_forest_regression_model.pkl", "rb") as file:
-    random_forest_model = pickle.load(file)
+# with open(r"api/model_binaries/random_forest_regression_model.pkl", "rb") as file:
+#     random_forest_model = pickle.load(file)
 
 with open(r"api/model_binaries/ARIMA_model.pkl", "rb") as file:
     arima_model = pickle.load(file)
@@ -92,83 +92,83 @@ async def predict_lstm_model(
     }
 
 
-@app.get("/api/predict/random_forest")
-async def predict_random_forest(
-    recorded_before: Optional[datetime] = Query(
-        None, alias="recordedBefore", description="End date in ISO format received from the frontend"),
-    # Start date of the range to forecast
-    recorded_after: Optional[datetime] = Query(
-        None, alias="recordedAfter", description="Start date in ISO format received from the frontend")
-):
-    recorded_after = pd.to_datetime(recorded_after)
-    recorded_before = pd.to_datetime(recorded_before)
+# @app.get("/api/predict/random_forest")
+# async def predict_random_forest(
+#     recorded_before: Optional[datetime] = Query(
+#         None, alias="recordedBefore", description="End date in ISO format received from the frontend"),
+#     # Start date of the range to forecast
+#     recorded_after: Optional[datetime] = Query(
+#         None, alias="recordedAfter", description="Start date in ISO format received from the frontend")
+# ):
+#     recorded_after = pd.to_datetime(recorded_after)
+#     recorded_before = pd.to_datetime(recorded_before)
 
-    recorded_after = recorded_after.replace(tzinfo=None)
-    recorded_before = recorded_before.replace(tzinfo=None)
+#     recorded_after = recorded_after.replace(tzinfo=None)
+#     recorded_before = recorded_before.replace(tzinfo=None)
 
-    df = pd.read_csv(r'api/dataset/training_dataset.csv')  # Marcus csv
-    df.drop(columns=['Unnamed: 0', "state", "cases_new_capita"], inplace=True)
-    df["date"] = pd.to_datetime(df["date"])
-    df = df[df["date"] >= "2021-01-01"]
-    df = df.groupby('date').sum()
+#     df = pd.read_csv(r'api/dataset/training_dataset.csv')  # Marcus csv
+#     df.drop(columns=['Unnamed: 0', "state", "cases_new_capita"], inplace=True)
+#     df["date"] = pd.to_datetime(df["date"])
+#     df = df[df["date"] >= "2021-01-01"]
+#     df = df.groupby('date').sum()
 
-    # df_var = df.copy()
+#     # df_var = df.copy()
 
-    col_name = df.columns.tolist()  # Combine
+#     col_name = df.columns.tolist()  # Combine
 
-    for col in col_name:
-        for i in range(1, 3):  # Two lag columns
-            df[f"{col}_lag_{i}"] = df[col].shift(i)
+#     for col in col_name:
+#         for i in range(1, 3):  # Two lag columns
+#             df[f"{col}_lag_{i}"] = df[col].shift(i)
 
-    pd.set_option('display.max_columns', None)
+#     pd.set_option('display.max_columns', None)
 
-    df.dropna(inplace=True)
+#     df.dropna(inplace=True)
 
-    df_x = df.drop(columns=col_name)
-    df_y = df[col_name]  # Target variable
+#     df_x = df.drop(columns=col_name)
+#     df_y = df[col_name]  # Target variable
 
-    # test_data_x = test_data.drop(columns=col_name)
-    # test_data_y = test_data[col_name]
+#     # test_data_x = test_data.drop(columns=col_name)
+#     # test_data_y = test_data[col_name]
 
-    # Prediction process
+#     # Prediction process
 
-    recorded_after  # Start Date
-    recorded_before  # End Date
+#     recorded_after  # Start Date
+#     recorded_before  # End Date
 
-    # if recorded_after > "2024-04-20":  # You cant set a start date after the last date in the dataset
-    #     return "Invalid date range. Please enter a date range before 2024-04-20."
+#     # if recorded_after > "2024-04-20":  # You cant set a start date after the last date in the dataset
+#     #     return "Invalid date range. Please enter a date range before 2024-04-20."
 
-    data = df.loc[df.index.get_level_values('date') == "2024-04-20"]
-    data = data.drop(columns=col_name)
+#     data = df.loc[df.index.get_level_values('date') == "2024-04-20"]
+#     data = data.drop(columns=col_name)
 
-    # Convert recorded before into days
-    days = int(
-        (recorded_before - datetime.strptime("2024-04-20", "%Y-%m-%d")).days)
+#     # Convert recorded before into days
+#     days = int(
+#         (recorded_before - datetime.strptime("2024-04-20", "%Y-%m-%d")).days)
 
-    days = 90 if days == 0 else days
+#     days = 90 if days == 0 else days
 
-    result = []
+#     result = []
 
-    next_day = random_forest_model.predict(data)
-    result.append(next_day[0])
+#     next_day = random_forest_model.predict(data)
+#     result.append(next_day[0])
 
-    for i in range(days):
-        count = 0
-        for col in col_name:
-            data[f"{col}_lag_1"] = data[f"{col}_lag_2"]
-            data[f"{col}_lag_2"] = next_day[0][count]
-            count = count + 1
+#     for i in range(days):
+#         count = 0
+#         for col in col_name:
+#             data[f"{col}_lag_1"] = data[f"{col}_lag_2"]
+#             data[f"{col}_lag_2"] = next_day[0][count]
+#             count = count + 1
 
-        next_day = random_forest_model.predict(data)
-        result.append(next_day[0])
+#         next_day = random_forest_model.predict(data)
+#         result.append(next_day[0])
 
-    result_df = pd.DataFrame(result, columns=col_name)
-    result_df.index = pd.date_range(
-        start="2024-04-21", periods=days + 1, freq='D')
-    # Get cases_new only
-    result_df = result_df["cases_new"]
-    # print(result_df.to_dict())
-    return {"message": {"Forecast": result_df.to_dict()}, "comments": f"This data is forecasted from {result_df.index[0].strftime('%d %B %Y')} to {result_df.index[-1].strftime('%d %B %Y')}."}
+#     result_df = pd.DataFrame(result, columns=col_name)
+#     result_df.index = pd.date_range(
+#         start="2024-04-21", periods=days + 1, freq='D')
+#     # Get cases_new only
+#     result_df = result_df["cases_new"]
+#     # print(result_df.to_dict())
+#     return {"message": {"Forecast": result_df.to_dict()}, "comments": f"This data is forecasted from {result_df.index[0].strftime('%d %B %Y')} to {result_df.index[-1].strftime('%d %B %Y')}."}
 
 
 @app.get("/api/predict/arima")

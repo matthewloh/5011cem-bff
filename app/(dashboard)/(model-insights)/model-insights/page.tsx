@@ -37,7 +37,7 @@ import { getLSTMForecastData } from "./getLSTMForecastData";
 import { PredictChartCard } from "@/components/charts/PredictChartCard";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { getRFRForecastData } from "./getRandForestForecastData";
+// import { getRFRForecastData } from "./getRandForestForecastData";
 import { getARIMAForecastData } from "./getARIMAForecastData";
 
 type Forecast = Record<string, number>;
@@ -86,12 +86,12 @@ export default async function ModelInsightsPage({
       totalLSTMRangeTo,
     ) || defaultRangeOption;
 
-  const totalRFRRangeOption =
-    getPredictionRangeOption(
-      totalRFRRange,
-      totalRFRRangeFrom,
-      totalRFRRangeTo,
-    ) || defaultRangeOption;
+  // const totalRFRRangeOption =
+  //   getPredictionRangeOption(
+  //     totalRFRRange,
+  //     totalRFRRangeFrom,
+  //     totalRFRRangeTo,
+  //   ) || defaultRangeOption;
 
   const totalARIMARangeOption =
     getPredictionRangeOption(
@@ -105,11 +105,11 @@ export default async function ModelInsightsPage({
       totalLSTMRangeOption.startDate,
       totalLSTMRangeOption.endDate,
     );
-  const { chartDataFormatted: chartDataFormattedRFR, comments: RFRComments } =
-    await getRFRForecastData(
-      totalRFRRangeOption.startDate,
-      totalRFRRangeOption.endDate,
-    );
+  // const { chartDataFormatted: chartDataFormattedRFR, comments: RFRComments } =
+  //   await getRFRForecastData(
+  //     totalRFRRangeOption.startDate,
+  //     totalRFRRangeOption.endDate,
+  //   );
   const {
     chartDataFormatted: chartDataFormattedARIMA,
     comments: ARIMAComments,
@@ -184,9 +184,9 @@ export default async function ModelInsightsPage({
               <div className="my-6 flex items-center">
                 <TabsList>
                   <TabsTrigger value="LSTM">LSTM</TabsTrigger>
-                  <TabsTrigger value="Random Forest Regression">
+                  {/* <TabsTrigger value="Random Forest Regression">
                     Random Forest Regression
-                  </TabsTrigger>
+                  </TabsTrigger> */}
                   <TabsTrigger value="ARIMA">ARIMA</TabsTrigger>
                 </TabsList>
                 <div className="ml-auto flex items-center gap-2"></div>
@@ -202,7 +202,7 @@ export default async function ModelInsightsPage({
                   <LSTMChart data={chartDataFormattedLSTM} />
                 </PredictChartCard>
               </TabsContent>
-              <TabsContent value="Random Forest Regression">
+              {/* <TabsContent value="Random Forest Regression">
                 <PredictChartCard
                   title="Random Forest Regression Forecasting of New COVID-19 Cases"
                   description="Forecast Cases using Random Forest Regression, a machine learning algorithm that uses an ensemble of decision trees to predict outcomes. In this example, the output is 90 days ahead by default"
@@ -212,7 +212,7 @@ export default async function ModelInsightsPage({
                 >
                   <LSTMChart data={chartDataFormattedRFR} />
                 </PredictChartCard>
-              </TabsContent>
+              </TabsContent> */}
               <TabsContent value="ARIMA">
                 <PredictChartCard
                   title="ARIMA"
