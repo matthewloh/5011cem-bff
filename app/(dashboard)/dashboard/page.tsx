@@ -159,7 +159,6 @@ export default async function DashboardPage({
       cases_recovered: d.cases_recovered,
     };
   });
-  console.log(chartData[chartData.length - 1]);
   return (
     <div className="min-h-screen bg-background/50">
       <header className="bg-white shadow">

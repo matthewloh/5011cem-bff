@@ -51,7 +51,9 @@ const chartConfig = {
     color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig;
-
+const chartDataProps = {
+  
+}
 export function BarChartWithLabel() {
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);

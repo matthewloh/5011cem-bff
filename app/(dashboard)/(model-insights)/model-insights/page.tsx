@@ -6,7 +6,7 @@
 //   const data = await fetch(
 //     `${"http://127.0.0.1:3000/api/python/Pulau Pinang"}`,
 //   ).then((response) => response.json());
-//   console.log(data);
+//   Console.log(data);
 //   return <div>ModelInsightPage</div>;
 // }
 
@@ -193,7 +193,7 @@ export default async function ModelInsightsPage({
               </div>
               <TabsContent value="LSTM">
                 <PredictChartCard
-                  title="LSTM Forecasting of New COVID-19 Cases"
+                  title="LSTM Forecasting of New COVID-19 Cases (Not Affected by Filter)"
                   description="Machine learning forecasting provides estimates based on historical data and patterns. Forecast accuracy diminishes as the forecast extends. Long-term forecasts are prone to higher uncertainty and potential error due to the compounding of prediction inaccuracies and the influence of unforeseen events."
                   footer={LSTMComments}
                   queryKey="totalLSTMRange"

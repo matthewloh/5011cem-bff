@@ -9,13 +9,13 @@ from prisma.types import StateEpidemicWhereInput
 import numpy as np
 import pandas as pd
 import pmdarima as pm
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from datetime import datetime
 
 app = FastAPI()
 
 
-with open(r"api/model_binaries/LSTM_model.pkl", "rb") as file:
+with open(r"api/model_binaries/LSTM_UNI_model.pkl", "rb") as file:
     model = pickle.load(file)
 
 with open(r"api/model_binaries/random_forest_regression_model.pkl", "rb") as file:
@@ -141,41 +141,40 @@ async def predict_lstm_model(
     df = df.asfreq('d')  # changes the frequency to daily
 
     # Scale the data
-    scaler = StandardScaler()
-    scaler = scaler.fit(df)
-    df_scaled = scaler.transform(df)
+    scaler = MinMaxScaler()
+    scaler = scaler.fit(df[['cases_new']])
+    df_scaled = scaler.transform(df[['cases_new']])
 
     # Split the data into training and testing sets
     split_index = int(len(df) * 0.5)  # Trains up to 2022-03-09 for 0.5
     # Get the date cutoff based on the split index
-    train_data = df.iloc[:split_index]
-    test_data = df.iloc[split_index:]
+    train_data = df_scaled[:split_index]
+    test_data = df_scaled[split_index:]
 
-    trainX = []
+    testX = []
     past = 14
     future = 1
+    print(df.shape[1])
+    for i in range(past, len(test_data) - future + 1):
+        testX.append(test_data[i-past:i, 0:df.shape[1]])
 
-    for i in range(past, len(df_scaled) + 1):
-        trainX.append(df_scaled[i-past:i, 0:df.shape[1]])
-
-    trainX = np.array(trainX)
+    testX = np.array(testX)
     recorded_after = pd.to_datetime(recorded_after)
     recorded_before = pd.to_datetime(recorded_before)
 
     recorded_after = recorded_after.replace(tzinfo=None)
     recorded_before = recorded_before.replace(tzinfo=None)
-    extra_days_count = int((recorded_before - test_data.index[-1]).days)
+    # extra_days_count = int((recorded_before - test_data.index[-1]).days)
     # future_dates_count = (recorded_before - test_data.index[-1]).days
-    future_dates_count = len(test_data) + extra_days_count
+    future_dates_count = len(test_data) - 14
     # print(test_data.index[-1])  # the last date in the test data
 
     forecast_dates = pd.date_range(
-        start=test_data.index[0],
+        start="2022-03-23",
         periods=future_dates_count,
     )
-    forecast = model.predict(trainX[-future_dates_count:])
-    forecast_copies = np.repeat(forecast, df.shape[1], axis=-1)
-    pred = scaler.inverse_transform(forecast_copies)[:, 0]
+    forecast = model.predict(testX[-future_dates_count:])
+    pred = scaler.inverse_transform(forecast)[:, 0]
     forecast_df = pd.DataFrame(
         {'Date': forecast_dates, 'Forecast': pred})  # plot this one out
     forecast_df.set_index('Date', inplace=True)

@@ -57,14 +57,13 @@ export async function DashboardNewCasesCard() {
       </CardHeader>
       <CardContent>
         {data && (
-          <div>
+          <div className="flex flex-col gap-2">
             <p>Total new cases: {data._sum.cases_new}</p>
             <p>Total number of records: {data._count.cases_new}</p>
             <p>
               Highest cases in a state: {data._max.cases_new} in{" "}
               {data._max.state}
             </p>
-            <p>Minimum cases: {data._min.cases_new}</p>
           </div>
         )}
       </CardContent>

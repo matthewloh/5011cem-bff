@@ -11,6 +11,7 @@ import { formatDate } from "@/utils/formatters";
 import Link from "next/link";
 import { RiSkull2Fill } from "@remixicon/react";
 import { BarChartWithLabel } from "./BarChartWithLabel";
+import { subDays } from "date-fns";
 
 export async function DashboardDeathsCard() {
   const { date } = (await prisma.malaysiaEpidemic.findFirst({
@@ -53,7 +54,43 @@ export async function DashboardDeathsCard() {
     },
     take: 60,
   });
-
+  // const stateData = await prisma.stateEpidemic.groupBy({
+  //   by: [
+  //     "date",
+  //     "state",
+  //     "deaths_new",
+  //     "deaths_unvax",
+  //     "deaths_pvax",
+  //     "deaths_fvax",
+  //   ],
+  //   orderBy: {
+  //     date: "desc",
+  //   },
+  //   // take: 14 * 5, // 14 states * 5 days
+  //   where: {
+  //     date: {
+  //       gte: new Date("2024-01-01"),
+  //       lte: new Date(),
+  //     },
+  //   },
+  //   _sum: {
+  //     deaths_new: true,
+  //     deaths_unvax: true,
+  //     deaths_fvax: true,
+  //     deaths_pvax: true,
+  //     deaths_boost: true,
+  //   },
+  // });
+  // const chartData = stateData.map((d) => {
+  //   return {
+  //     date: d.date,
+  //     deaths_new: d.deaths_new,
+  //     deaths_unvax: d.deaths_unvax,
+  //     deaths_pvax: d.deaths_pvax,
+  //     deaths_fvax: d.deaths_fvax,
+  //   };
+  // });
+  // console.log()
   return (
     <Card className="col-span-1 row-span-2 rounded-lg bg-card shadow">
       <CardHeader>
@@ -68,7 +105,18 @@ export async function DashboardDeathsCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <BarChartWithLabel />
+        <div className="flex flex-col gap-2">
+          <p className="text-4xl font-bold">
+            {data._sum.deaths_new!.toLocaleString()}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Total Deaths in Malaysia
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {deathsData._sum!.deaths_new} deaths in the last 60 days
+          </p>
+        </div>
+        {/* <BarChartWithLabel /> */}
       </CardContent>
       <CardFooter>
         <div className="flex flex-col">

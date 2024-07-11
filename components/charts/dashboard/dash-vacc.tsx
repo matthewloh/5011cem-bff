@@ -53,7 +53,7 @@ export default async function DashboardVaccinationCard() {
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
           <div className="flex flex-row items-center gap-2">
-            <Syringe className="text-emerald-400 animate-in-index"/>
+            <Syringe className="animate-in-index text-emerald-400" />
             Vaccinations
           </div>
         </CardTitle>
@@ -62,7 +62,13 @@ export default async function DashboardVaccinationCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p>{`Highest number of daily vaccinations: ${data._max.daily}`}</p>
+        <div className="flex flex-col gap-2">
+          <p className="text-4xl font-bold">
+            {data._sum.daily!.toLocaleString()}
+          </p>
+          <p>{`Average daily vaccinations: ${data._avg.daily?.toFixed(0)} over last 14 days`}</p>
+          <p>{`Highest number of daily vaccinations: ${data._max.daily}`}</p>
+        </div>
       </CardContent>
       <CardFooter>
         <div className="flex flex-col">

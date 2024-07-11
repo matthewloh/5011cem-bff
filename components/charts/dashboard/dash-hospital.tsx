@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/utils/formatters";
 import { Hospital } from "lucide-react";
+import Link from "next/link";
 
 export async function DashboardHospitalizationsCard() {
   const { date } = (await prisma.stateEpidemic.findFirst({
@@ -52,18 +53,28 @@ export async function DashboardHospitalizationsCard() {
       </CardHeader>
       <CardContent>
         {data && (
-          <div>
-            <p>Total beds: {data._sum.beds}</p>
-            <p>Total hospitalizations: {data._sum.hosp_covid}</p>
-            <p>Total covid beds: {data._sum.beds_covid}</p>
-            <p>
-              Highest number of hospitalizations: {data._max.hosp_covid}{" "}
+          <div className="flex flex-col gap-2">
+            <p className="text-4xl font-bold">Total beds: {data._sum.beds}</p>
+            <p className="text-2xl font-semibold">
+              Total Hospitalizations: {data._sum.hosp_covid}
+            </p>
+            <p className="text-xl font-bold">
+              Total Covid Beds: {data._sum.beds_covid}
+            </p>
+            <p className="text-lg font-bold">
+              Highest Number of Hospitalizations: {data._max.hosp_covid}{" "}
               recorded {formatDate(data._max.date!)} in {data._max.state}
             </p>
           </div>
         )}
       </CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter>
+        <div className="flex flex-col">
+          <Link href="/dashboard/state-epidemic" className="text-indigo-400">
+            <p>View State Epidemic Data</p>
+          </Link>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

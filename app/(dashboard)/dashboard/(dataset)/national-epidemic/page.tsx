@@ -121,7 +121,7 @@ export default async function NationalEpidemic({
       </div>
       <div className="m-6 flex flex-col">
         <InteractiveLineChart
-          title="Interactive Testing Line Chart"
+          title="Testing Numbers (RTK & PCR) Line Chart"
           description="Filter by date range according to the categories of RTK Antigen and PCR tests."
           queryKey="totalTestingRange"
           selectedRangeLabel={totalTestingRangeOption.label}
