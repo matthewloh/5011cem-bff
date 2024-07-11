@@ -1,15 +1,12 @@
+import json
 import os
 import pickle
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query, Response
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
-from api.model import convert, predict
-from api.src.prisma import prisma
-from prisma.types import StateEpidemicWhereInput
 import numpy as np
 import pandas as pd
-import pmdarima as pm
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime
 
 app = FastAPI()
@@ -28,81 +25,6 @@ with open(r"api/model_binaries/ARIMA_model.pkl", "rb") as file:
 @app.get("/api/python")
 def hello_world():
     return {"message": "Hello World"}
-
-
-@app.get("/api/python/{name}")
-async def hello_name(name: str):
-    mvac = await prisma.statevaccination.find_first(
-        where={
-            "state": name
-        }
-    )
-    print(mvac.model_dump())
-    return {"message": f"{mvac.model_dump()}"}
-
-
-@app.get("/api/python/{name}/vaccination")
-async def get_vaccination_data(name: str):
-    mvac = await prisma.statevaccination.find_first(
-        where={
-            "state": name
-        }
-    )
-    return {"message": f"{mvac.model_dump()}"}
-
-
-@app.get("/api/python/lstm_model/{end_date}")
-async def get_data_from_end_date(end_date: str):
-    # dateObject = datetime.strptime(end_date, "%Y-%m-%d")
-    testString = "2021-09-01"
-    testDateObj = datetime.strptime(testString, "%Y-%m-%d")
-    print(testDateObj)
-    # Print current path
-    print("Current path is: ", os.getcwd())
-    with open(r"api/model_binaries/LSTM_model.pkl", "rb") as file:
-        model = pickle.load(file)
-
-    data = await prisma.statevaccination.find_many(
-        where={
-            "date": {
-                "gte": testDateObj
-            }
-        },
-        take=10
-
-    )
-    return data[0].model_dump_json()
-
-
-class StockIn(BaseModel):
-    ticker: str
-
-
-class StockOut(StockIn):
-    forecast: dict
-
-
-@app.post("/api/predict", response_model=StockOut, status_code=200)
-def get_prediction(payload: StockIn):
-    ticker = payload.ticker
-
-    prediction_list = predict(ticker)
-
-    if not prediction_list:
-        raise HTTPException(status_code=400, detail="Model not found.")
-    response_object = {"ticker": ticker, "forecast": convert(prediction_list)}
-    print(response_object)
-    return response_object
-
-
-@app.get("/api/predict/finance/{ticker}")
-async def get_prediction(ticker: str):
-    prediction_list = predict(ticker)
-    if not prediction_list:
-        raise HTTPException(status_code=400, detail="Balls.")
-    response_object = {"ticker": ticker, "forecast": convert(prediction_list)}
-    print(response_object)
-    return response_object
 
 
 @app.get("/api/predict/lstm_model")
@@ -167,6 +89,25 @@ async def predict_lstm_model(
         {'Date': forecast_dates, 'Forecast': pred})  # plot this one out
     forecast_df.set_index('Date', inplace=True)
     # print(forecast_df.to_dict())
+    # Save the file to the api folder as a JSON file
+    date_range = f"{forecast_dates[0].strftime(
+        '%Y-%m-%d')}_{forecast_dates[-1].strftime('%Y-%m-%d')}"
+
+    # Write with message and comments to api/model_outputs folder
+    respObj = {
+        "message": forecast_df.to_dict(),
+        "comments": f"This data is forecasted from {forecast_dates[0].strftime('%d %B %Y')} to {forecast_dates[-1].strftime('%d %B %Y')}."
+    }
+    # Convert timestamp key to string
+    respObj["message"]["Forecast"] = {
+        str(key): value for key, value in respObj["message"]["Forecast"].items()
+    }
+
+    respObj = json.dumps(respObj)
+
+    with open(f"api/model_outputs/lstm_forecast_{date_range}.json", "w") as file:
+        file.write(str(respObj))
+
     return {
         "message": forecast_df.to_dict(),
         "comments": f"This data is forecasted from {forecast_dates[0].strftime('%d %B %Y')} to {forecast_dates[-1].strftime('%d %B %Y')}."
@@ -249,6 +190,25 @@ async def predict_random_forest(
     # Get cases_new only
     result_df = result_df["cases_new"]
     # print(result_df.to_dict())
+    # Save the file to the api folder as a JSON file
+    date_range = f"{result_df.index[0].strftime(
+        '%Y-%m-%d')}_{result_df.index[-1].strftime('%Y-%m-%d')}"
+
+    # Write with message and comments to api/model_outputs folder
+    respObj = {
+        "message": {"Forecast": result_df.to_dict()},
+        "comments": f"This data is forecasted from {result_df.index[0].strftime('%d %B %Y')} to {result_df.index[-1].strftime('%d %B %Y')}."
+    }
+    # Convert timestamp key to string
+    respObj["message"]["Forecast"] = {
+        str(key): value for key, value in respObj["message"]["Forecast"].items()
+    }
+
+    respObj = json.dumps(respObj)
+
+    with open(f"api/model_outputs/rfr_forecast_{date_range}.json", "w") as file:
+        file.write(str(respObj))
+
     return {"message": {"Forecast": result_df.to_dict()}, "comments": f"This data is forecasted from {result_df.index[0].strftime('%d %B %Y')} to {result_df.index[-1].strftime('%d %B %Y')}."}
 
 
@@ -290,5 +250,23 @@ async def predict_arima(
     arima_forecast = pd.DataFrame(
         {'Date': forecast_dates, 'Forecast': forecast})
     arima_forecast.set_index('Date', inplace=True)
+
+    # Save the file to the api folder as a JSON file
+    date_range = f"{forecast_dates[0].strftime(
+        '%Y-%m-%d')}_{forecast_dates[-1].strftime('%Y-%m-%d')}"
+    # Write with message and comments to api/model_outputs folder
+    respObj = {
+        "message": arima_forecast.to_dict(),
+        "comments": f"This data is forecasted from {forecast_dates[0].strftime('%d %B %Y')} to {forecast_dates[-1].strftime('%d %B %Y')}."
+    }
+    # Convert timestamp key to string
+    respObj["message"]["Forecast"] = {
+        str(key): value for key, value in respObj["message"]["Forecast"].items()
+    }
+
+    respObj = json.dumps(respObj)
+
+    with open(f"api/model_outputs/arima_forecast_{date_range}.json", "w") as file:
+        file.write(str(respObj))
 
     return {"message": arima_forecast.to_dict(), "comments": f"This data is forecasted from {forecast_dates[0].strftime('%d %B %Y')} to {forecast_dates[-1].strftime('%d %B %Y')}."}
