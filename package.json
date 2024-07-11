@@ -12,7 +12,7 @@
     "db:genpy": "prisma generate --generator=py",
     "db:genjs": "prisma generate --generator=javascript",
     "studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --generator=js"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.4",
