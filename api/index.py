@@ -1,16 +1,11 @@
-import os
 import pickle
+from datetime import datetime
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query, Response
-from pydantic import BaseModel
-from api.model import convert, predict
-from api.src.prisma import prisma
-from prisma.types import StateEpidemicWhereInput
+
 import numpy as np
 import pandas as pd
-import pmdarima as pm
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from datetime import datetime
+from fastapi import FastAPI, Query
+from sklearn.preprocessing import MinMaxScaler
 
 app = FastAPI()
 
@@ -28,81 +23,6 @@ with open(r"api/model_binaries/ARIMA_model.pkl", "rb") as file:
 @app.get("/api/python")
 def hello_world():
     return {"message": "Hello World"}
-
-
-@app.get("/api/python/{name}")
-async def hello_name(name: str):
-    mvac = await prisma.statevaccination.find_first(
-        where={
-            "state": name
-        }
-    )
-    print(mvac.model_dump())
-    return {"message": f"{mvac.model_dump()}"}
-
-
-@app.get("/api/python/{name}/vaccination")
-async def get_vaccination_data(name: str):
-    mvac = await prisma.statevaccination.find_first(
-        where={
-            "state": name
-        }
-    )
-    return {"message": f"{mvac.model_dump()}"}
-
-
-@app.get("/api/python/lstm_model/{end_date}")
-async def get_data_from_end_date(end_date: str):
-    # dateObject = datetime.strptime(end_date, "%Y-%m-%d")
-    testString = "2021-09-01"
-    testDateObj = datetime.strptime(testString, "%Y-%m-%d")
-    print(testDateObj)
-    # Print current path
-    print("Current path is: ", os.getcwd())
-    with open(r"api/model_binaries/LSTM_model.pkl", "rb") as file:
-        model = pickle.load(file)
-
-    data = await prisma.statevaccination.find_many(
-        where={
-            "date": {
-                "gte": testDateObj
-            }
-        },
-        take=10
-
-    )
-    return data[0].model_dump_json()
-
-
-class StockIn(BaseModel):
-    ticker: str
-
-
-class StockOut(StockIn):
-    forecast: dict
-
-
-@app.post("/api/predict", response_model=StockOut, status_code=200)
-def get_prediction(payload: StockIn):
-    ticker = payload.ticker
-
-    prediction_list = predict(ticker)
-
-    if not prediction_list:
-        raise HTTPException(status_code=400, detail="Model not found.")
-    response_object = {"ticker": ticker, "forecast": convert(prediction_list)}
-    print(response_object)
-    return response_object
-
-
-@app.get("/api/predict/finance/{ticker}")
-async def get_prediction(ticker: str):
-    prediction_list = predict(ticker)
-    if not prediction_list:
-        raise HTTPException(status_code=400, detail="Balls.")
-    response_object = {"ticker": ticker, "forecast": convert(prediction_list)}
-    print(response_object)
-    return response_object
 
 
 @app.get("/api/predict/lstm_model")
@@ -142,7 +62,6 @@ async def predict_lstm_model(
     testX = []
     past = 14
     future = 1
-    print(df.shape[1])
     for i in range(past, len(test_data) - future + 1):
         testX.append(test_data[i-past:i, 0:df.shape[1]])
 
