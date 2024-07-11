@@ -6,18 +6,18 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
+  // output   = "../node_modules/.prisma/client"
 }
 
-generator js {
-  provider = "prisma-client-js"
-}
+// generator js {
+//   provider = "prisma-client-js"
+// }
 
-generator py {
-  provider             = "prisma-client-py"
-  interface            = "asyncio"
-  recursive_type_depth = 5
-}
+// generator py {
+//   provider             = "prisma-client-py"
+//   interface            = "asyncio"
+//   recursive_type_depth = 5
+// }
 
 datasource db {
   provider  = "postgresql"

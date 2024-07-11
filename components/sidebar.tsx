@@ -15,7 +15,7 @@ import { ModeToggle } from "./mode-toggle";
 const navigation = [
   { name: "Home", href: "/home", icon: RiHome2Line },
   { name: "Dashboard", href: "/dashboard", icon: RiListCheck },
-  { name: "Model Insights", href: "/model-insights", icon: RiRobot2Fill },
+  // { name: "Model Insights", href: "/model-insights", icon: RiRobot2Fill },
 ] as const;
 
 const shortcuts = [
