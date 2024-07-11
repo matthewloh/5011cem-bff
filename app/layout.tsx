@@ -10,8 +10,9 @@ const fontSans = FontSans({
 });
 
 export const metadata = {
-  title: "COVID-19 Dashboard Application",
-  description: "LSTM analytics on Malaysian COVID-19 Data",
+  title: "Big Data Programming Project COVID-19 Dashboard",
+  description:
+    "Machine Learning Analytics and Data Visualization Dashboard for Malaysian COVID-19 Data hosted and deployed using Vercel, Next.js, Shadcn, Recharts, Prisma and Supabase",
 };
 
 export default function RootLayout({
