@@ -157,10 +157,10 @@ export default async function DashboardPage({
       </header>
       <div className="animate-in-index animate-fade-in container flex flex-1 flex-col items-center justify-center py-6">
         <main className="grid grid-flow-row-dense grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
-          {/* <DashboardVaccinationCard />
-          <DashboardDeathsCard />
+          <DashboardVaccinationCard />
+          {/* <DashboardDeathsCard /> */}
           <DashboardHospitalizationsCard />
-          <DashboardNewCasesCard /> */}
+          {/* <DashboardNewCasesCard /> */}
           {/* <DashBarInteractive randomData={chartData} /> */}
           {/* <section className="col-span-2 row-span-2 rounded-lg bg-card p-6 shadow">
             <h2 className="mb-4 text-xl font-bold">Hospitalizations</h2>

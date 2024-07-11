@@ -22,15 +22,6 @@ export async function DashboardDeathsCard() {
       date: true,
     },
   })) as { date: Date };
-  const vacData = await prisma.malaysiaEpidemic.findMany({
-    orderBy: {
-      date: "desc",
-    },
-    take: 14,
-    select: {
-      date: true,
-    },
-  });
   const data = await prisma.malaysiaEpidemic.aggregate({
     _sum: { deaths_new: true },
     _count: { deaths_new: true },
@@ -54,43 +45,7 @@ export async function DashboardDeathsCard() {
     },
     take: 60,
   });
-  // const stateData = await prisma.stateEpidemic.groupBy({
-  //   by: [
-  //     "date",
-  //     "state",
-  //     "deaths_new",
-  //     "deaths_unvax",
-  //     "deaths_pvax",
-  //     "deaths_fvax",
-  //   ],
-  //   orderBy: {
-  //     date: "desc",
-  //   },
-  //   // take: 14 * 5, // 14 states * 5 days
-  //   where: {
-  //     date: {
-  //       gte: new Date("2024-01-01"),
-  //       lte: new Date(),
-  //     },
-  //   },
-  //   _sum: {
-  //     deaths_new: true,
-  //     deaths_unvax: true,
-  //     deaths_fvax: true,
-  //     deaths_pvax: true,
-  //     deaths_boost: true,
-  //   },
-  // });
-  // const chartData = stateData.map((d) => {
-  //   return {
-  //     date: d.date,
-  //     deaths_new: d.deaths_new,
-  //     deaths_unvax: d.deaths_unvax,
-  //     deaths_pvax: d.deaths_pvax,
-  //     deaths_fvax: d.deaths_fvax,
-  //   };
-  // });
-  // console.log()
+
   return (
     <Card className="col-span-1 row-span-2 rounded-lg bg-card shadow">
       <CardHeader>

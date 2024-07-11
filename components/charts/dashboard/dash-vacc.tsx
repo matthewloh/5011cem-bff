@@ -20,16 +20,7 @@ export default async function DashboardVaccinationCard() {
       date: true,
     },
   })) as { date: Date };
-  const vacData = await prisma.malaysiaVaccination.findMany({
-    orderBy: {
-      date: "desc",
-    },
-    take: 14,
-    select: {
-      date: true,
-      daily: true,
-    },
-  });
+
   const data = await prisma.malaysiaVaccination.aggregate({
     _sum: {
       daily: true,
