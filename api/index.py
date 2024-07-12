@@ -1,9 +1,7 @@
 import json
-import os
 import pickle
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query
-from pydantic import BaseModel
+from fastapi import FastAPI,  Query
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
@@ -22,11 +20,6 @@ with open(r"api/model_binaries/ARIMA_model.pkl", "rb") as file:
     arima_model = pickle.load(file)
 
 
-@app.get("/api/python")
-def hello_world():
-    return {"message": "Hello World"}
-
-
 @app.get("/api/predict/lstm_model")
 async def predict_lstm_model(
     # End date of the range to forecast
@@ -36,13 +29,6 @@ async def predict_lstm_model(
     recorded_after: Optional[datetime] = Query(
         None, alias="recordedAfter", description="Start date in ISO format received from the frontend")
 ):
-    # # Remove timezone info
-    # recorded_before_has_tz = pd.to_datetime(recorded_before) if recorded_before else datetime(
-    #     year=2023, month=3, day=10)
-    # recorded_after_has_tz = pd.to_datetime(recorded_after) if recorded_after else datetime(
-    #     year=2022, month=3, day=9)
-    # print(recorded_before_has_tz, recorded_after_has_tz)
-    # Load and preprocess the data
     df = pd.read_csv(r"api/dataset/training_dataset.csv")  # Up to 20/4/2021
     df.drop(columns=['Unnamed: 0', 'state', 'cases_new_capita'], inplace=True)
     # sum each date for each column sum all 14 rows
@@ -64,7 +50,7 @@ async def predict_lstm_model(
     testX = []
     past = 14
     future = 1
-    print(df.shape[1])
+
     for i in range(past, len(test_data) - future + 1):
         testX.append(test_data[i-past:i, 0:df.shape[1]])
 
@@ -74,10 +60,8 @@ async def predict_lstm_model(
 
     recorded_after = recorded_after.replace(tzinfo=None)
     recorded_before = recorded_before.replace(tzinfo=None)
-    # extra_days_count = int((recorded_before - test_data.index[-1]).days)
-    # future_dates_count = (recorded_before - test_data.index[-1]).days
+
     future_dates_count = len(test_data) - 14
-    # print(test_data.index[-1])  # the last date in the test data
 
     forecast_dates = pd.date_range(
         start="2022-03-23",
@@ -88,8 +72,8 @@ async def predict_lstm_model(
     forecast_df = pd.DataFrame(
         {'Date': forecast_dates, 'Forecast': pred})  # plot this one out
     forecast_df.set_index('Date', inplace=True)
-    # print(forecast_df.to_dict())
-    # Save the file to the api folder as a JSON file
+
+    # Save the output to a JSON file
     date_range = f"{forecast_dates[0].strftime(
         '%Y-%m-%d')}_{forecast_dates[-1].strftime('%Y-%m-%d')}"
 
@@ -116,6 +100,7 @@ async def predict_lstm_model(
 
 @app.get("/api/predict/random_forest")
 async def predict_random_forest(
+    # End date of the range to forecast
     recorded_before: Optional[datetime] = Query(
         None, alias="recordedBefore", description="End date in ISO format received from the frontend"),
     # Start date of the range to forecast
@@ -149,16 +134,8 @@ async def predict_random_forest(
     df_x = df.drop(columns=col_name)
     df_y = df[col_name]  # Target variable
 
-    # test_data_x = test_data.drop(columns=col_name)
-    # test_data_y = test_data[col_name]
 
     # Prediction process
-
-    recorded_after  # Start Date
-    recorded_before  # End Date
-
-    # if recorded_after > "2024-04-20":  # You cant set a start date after the last date in the dataset
-    #     return "Invalid date range. Please enter a date range before 2024-04-20."
 
     data = df.loc[df.index.get_level_values('date') == "2024-04-20"]
     data = data.drop(columns=col_name)
@@ -189,7 +166,6 @@ async def predict_random_forest(
         start="2024-04-21", periods=days + 1, freq='D')
     # Get cases_new only
     result_df = result_df["cases_new"]
-    # print(result_df.to_dict())
     # Save the file to the api folder as a JSON file
     date_range = f"{result_df.index[0].strftime(
         '%Y-%m-%d')}_{result_df.index[-1].strftime('%Y-%m-%d')}"
