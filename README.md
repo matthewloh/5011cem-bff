@@ -10,7 +10,7 @@
 
 ## Introduction
 
-This branch of the repository contains the full-fledged version of the project, which contains the FastAPI application and machine learning models, which incompatible to be deployed on Vercel. Future enhancements include modifying the FastAPI application and its deployed pickle files to allow for deployment on Vercel or other hosting platforms.
+This is the main branch branch of the repository which is deployed to vercel. It has the FastAPI application removed. The branch model-outputs-saved contains the FastAPI application code and is the full-fledged version of the project, which contains the FastAPI application and machine learning models, which incompatible to be deployed on Vercel. Future enhancements include modifying the FastAPI application and its deployed pickle files to allow for deployment on Vercel or other hosting platforms.
 
 ## How It Works
 
